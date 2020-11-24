@@ -1,62 +1,29 @@
 import pygame
 
-class gameBoard (object):
+def main():
+    # 初始化导入的pygame中的模块
+    pygame.init()
+    # 初始化用于显示的窗口并设置窗口尺寸
+    screen = pygame.display.set_mode((800, 600))
+    # 设置当前窗口的标题
+    pygame.display.set_caption('大球吃小球')
+    # 设置窗口的背景色(颜色是由红绿蓝三原色构成的元组)
+    screen.fill((242, 242, 242))
 
-	def __init__(self):
-		pygame.init()
+    #draw a hex
+    x, y, r = 100,100,30   
+    pygame.draw.polygon(screen, (140, 20, 20,), [(x, y+r*1.1547), (x+r, y+r*0.57735), (x+r, y-r*0.57735), (x, y-r*1.1547), (x-r, y-r*0.57735), (x-r, y+r*0.57735)], 0)
+	
+# 刷新当前窗口(渲染窗口将绘制的图像呈现出来)
+    pygame.display.flip()
+    running = True
+    # 开启一个事件循环处理发生的事件
+    while running:
+        # 从消息队列中获取事件并对事件进行处理
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
 
-		self.win = pygame.display.set_mode((500, 500))
-		pygame.display.set_caption("First Game")
 
-		self.x = 250
-		self.y = 250
-		self.width = 40
-		self.heigh = 60
-		self.vel = 5
-
-		self.runTheGame()
-
-
-	def runTheGame(self):
-		isJump = False
-		jumpCount = 10
-
-		run = True
-		while run:
-			pygame.time.delay(10)
-
-			for event in pygame.event.get():
-				if event.type == pygame.QUIT:
-					run = False
-
-			keys = pygame.key.get_pressed()
-
-			if keys[pygame.K_LEFT] and self.x > self.vel:
-				self.x -= self.vel
-			if keys[pygame.K_RIGHT] and self.x < 500 - self.width - self.vel:
-				self.x += self.vel
-			if not(isJump):
-				if keys[pygame.K_UP] and self.y > self.vel:
-					self.y -= self.vel
-				if keys[pygame.K_DOWN] and self.y < 500 - self.heigh - self.vel:
-					self.y += self.vel
-				if keys[pygame.K_SPACE]:
-					isJump = True
-			else:
-				if jumpCount >= -10:
-					neg = 1
-					if jumpCount < 0:
-						neg = -1
-					self.y -= (jumpCount ** 2 ) * 0.5 * neg
-					jumpCount -= 1
-				else:
-					isJump = False
-					jumpCount = 10
-
-			self.win.fill((0,0,0))
-			pygame.draw.rect(self.win, (133,60,45), (self.x, self.y, self.width, self.heigh))
-			pygame.display.update()
-
-		pygame.quit()
-
-gameBoard()
+if __name__ == '__main__':
+    main()
