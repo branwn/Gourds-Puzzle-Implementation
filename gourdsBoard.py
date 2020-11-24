@@ -13,11 +13,10 @@ def main():
     widthOfHex = 80;
     # draw a matrix with offsets in even rows
     nd_two = np.array([[1, 0, 3], [0, 5, 0]])
-    offset = 100
+    offset = widthOfHex*1.7
     for i in range(len(nd_two)):
         for j in range(len(nd_two[0])):
             if(nd_two[i][j]):
-                pygame.draw.circle(screen, (0,0,0), [offset+j*widthOfHex, offset+i*widthOfHex*1.732], 8, 1)
                 # draw a hexagonal cell
                 pygame.draw.polygon(screen, (100, 100, 200,),
                                     [(offset + j * widthOfHex, offset + i * widthOfHex * 1.732 + widthOfHex * 1.1547), (
