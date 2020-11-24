@@ -9,14 +9,27 @@ def main():
     pygame.display.set_caption('Gourds Board')
     # background colour setting
     screen.fill((242, 242, 242))
+    # set width of the hexagonal cell
+    widthOfHex = 80;
     # draw a matrix with offsets in even rows
-    nd_two = np.array([[1, 0, 1], [0, 5, 0]])
-    # draw a hex
-    x, y, r = 100, 100, 40
-    pygame.draw.polygon(screen, (100, 100, 200,),
-                        [(x, y + r * 1.1547), (x + r, y + r * 0.57735), (x + r, y - r * 0.57735), (x, y - r * 1.1547),
-                         (x - r, y - r * 0.57735), (x - r, y + r * 0.57735)], 1)
-
+    nd_two = np.array([[1, 0, 3], [0, 5, 0]])
+    offset = 100
+    for i in range(len(nd_two)):
+        for j in range(len(nd_two[0])):
+            if(nd_two[i][j]):
+                pygame.draw.circle(screen, (0,0,0), [offset+j*widthOfHex, offset+i*widthOfHex*1.732], 8, 1)
+                # draw a hexagonal cell
+                pygame.draw.polygon(screen, (100, 100, 200,),
+                                    [(offset + j * widthOfHex, offset + i * widthOfHex * 1.732 + widthOfHex * 1.1547), (
+                                    offset + j * widthOfHex + widthOfHex,
+                                    offset + i * widthOfHex * 1.732 + widthOfHex * 0.57735), (
+                                     offset + j * widthOfHex + widthOfHex,
+                                     offset + i * widthOfHex * 1.732 - widthOfHex * 0.57735),
+                                     (offset + j * widthOfHex, offset + i * widthOfHex * 1.732 - widthOfHex * 1.1547),
+                                     (offset + j * widthOfHex - widthOfHex,
+                                      offset + i * widthOfHex * 1.732 - widthOfHex * 0.57735), (
+                                     offset + j * widthOfHex - widthOfHex,
+                                     offset + i * widthOfHex * 1.732 + widthOfHex * 0.57735)], 1)
 
     # 刷新当前窗口(渲染窗口将绘制的图像呈现出来)
     pygame.display.flip()
