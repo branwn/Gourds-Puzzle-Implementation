@@ -85,17 +85,23 @@ def searchGourdsFromCoordinate(pos):
     return searchGourdsFromIndex(x, y)
 
 
-def searchGourdsFromIndex(x, y):
+def searchGourdsFromIndex(x, y, xDestination = -1, yDestination = -1):
     # search if there is a gourd on (x, y)
     for i in range(len(gourdsLocation)):
         if (x == gourdsLocation[i][0] and y == gourdsLocation[i][1]):
+            if xDestination != -1:
+                gourdsLocation[i][0] = xDestination
+                gourdsLocation[i][1] = yDestination
             return x, y
         if (x == gourdsLocation[i][2] and y == gourdsLocation[i][3]):
+            if xDestination != -1:
+                gourdsLocation[i][2] = xDestination
+                gourdsLocation[i][3] = yDestination
             return x, y
     return -1, -1
 
 
-def searchAnEmptyCell(x, y):
+def searchAnEmptyCellAround(x, y):
     # search an empty cell around x, y
 
     if (matrixOfBoard[y - 1][x - 1] == 1) and (searchGourdsFromIndex(x - 1, y - 1) == (-1, -1)):  # upper left
@@ -121,12 +127,19 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
-            # 鼠标按下
+
+            # MOUSE BUTTON DOWN
             if event.type == pygame.MOUSEBUTTONDOWN:
-                x, y = searchGourdsFromCoordinate(event.pos)
-                if x != -1:
-                    print(x, y)
-                    print(searchAnEmptyCell(x, y))
+                xGourd, yGourd = searchGourdsFromCoordinate(event.pos)
+                if xGourd != -1:
+                    print(xGourd, yGourd)
+                    xCell, yCell = searchAnEmptyCellAround(xGourd, yGourd)
+                    if xCell != -1:
+                        searchGourdsFromIndex(xGourd, yGourd, xCell, yCell)
+                        screen.fill((242, 242, 242))
+                        boardConstructor()
+                        gourdsConstructor()
+                        pygame.display.flip()
 
             # 鼠标弹起
             if event.type == pygame.MOUSEBUTTONUP:
