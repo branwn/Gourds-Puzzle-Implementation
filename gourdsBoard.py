@@ -16,6 +16,7 @@ def main():
     offset = widthOfHexCell*1.7
     for i in range(len(nd_two)):
         for j in range(len(nd_two[0])):
+            pygame.draw.circle(screen,(0,0,0),(offset + j * widthOfHexCell, offset + i * widthOfHexCell * 1.732) ,6,1)
             if(nd_two[i][j]):
                 # draw a hexagonal cell
                 pygame.draw.polygon(screen, (100, 100, 200,),
