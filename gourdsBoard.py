@@ -23,16 +23,7 @@ gourdsColour = np.array([[[1,1],[2,2],[255,0,0],[0,255,0]]])
 
 def boardConstructor():
 
-    font = pygame.font.Font('OpenSans-Light.ttf', 30)
-    text = font.render('hello', True, (0, 0, 255), (0, 255, 0))
-    screen.blit(text, (0, 0))
-    pygame.display.update()
-    # text_w, text_h = text.get_size()
-    # screen.blit(text, (400-text_w, 0))
-    # new_text = pygame.transform.rotozoom(text, 45, 1.5)
-    # screen.blit(new_text, (100, 200))
-    #
-    pygame.display.flip()
+    font = pygame.font.Font('OpenSans-Light.ttf', 16)
 
 
 
@@ -40,8 +31,10 @@ def boardConstructor():
     for i in range(len(matrixOfBoard)):
         for j in range(len(matrixOfBoard[0])):
             #display matrix
+            text = font.render(str(matrixOfBoard[i][j]), True, (0, 0, 255))
+            screen.blit(text, (-6 + offset + j * widthOfHexCell, -12 + offset + i * widthOfHexCell * 1.732))
+            # pygame.draw.circle(screen,(0,0,0),(offset + j * widthOfHexCell, offset + i * widthOfHexCell * 1.732) ,6,1)
 
-            pygame.draw.circle(screen,(0,0,0),(offset + j * widthOfHexCell, offset + i * widthOfHexCell * 1.732) ,6,1)
             if(matrixOfBoard[i][j]):
                 # draw a hexagonal cell
                 pygame.draw.polygon(screen, (100, 100, 200,),
@@ -61,7 +54,7 @@ def boardConstructor():
 
 def gourdsConstructor():
     for i in range(len(gourdsPlacement)):
-        pygame.draw.circle(screen,(150,0,0),(offset + 2 * widthOfHexCell, offset + i * widthOfHexCell * 1.732) ,widthOfHexCell*0.6,0)
+        pygame.draw.circle(screen,(150,0,0),(offset + 2 * widthOfHexCell, offset + i * widthOfHexCell * 1.732) ,widthOfHexCell*0.6,1)
         # print(i[0][0])
     # refresh the window
     pygame.display.flip()
