@@ -11,7 +11,8 @@ screen.fill((242, 242, 242))
 # set width of the hexagonal cell
 widthOfHexCell = 50;
 offset = widthOfHexCell
-
+# gourd size
+gourdSize = widthOfHexCell * 0.6
 
 # set a matrix of board
 matrixOfBoard = np.array([[0, 0, 0, 0, 0, 0, 0],
@@ -25,41 +26,58 @@ gourdsLocation = np.array([[2, 1, 3, 2]])
 
 
 def boardConstructor():
-
     font = pygame.font.Font('OpenSans-Light.ttf', 16)
 
     for i in range(len(matrixOfBoard)):
         for j in range(len(matrixOfBoard[0])):
-            #display matrix
+            # display matrix
             text = font.render(str(matrixOfBoard[i][j]), True, (0, 0, 255))
             screen.blit(text, (-4 + offset + j * widthOfHexCell, -12 + offset + i * widthOfHexCell * 1.732))
             # pygame.draw.circle(screen,(0,0,0),(offset + j * widthOfHexCell, offset + i * widthOfHexCell * 1.732) ,6,1)
 
-            if(matrixOfBoard[i][j]):
+            if (matrixOfBoard[i][j]):
                 # draw a hexagonal cell
                 pygame.draw.polygon(screen, (100, 100, 200,),
-                                    [(offset + j * widthOfHexCell, offset + i * widthOfHexCell * 1.732 + widthOfHexCell * 1.1547), (
-                                    offset + j * widthOfHexCell + widthOfHexCell,
-                                    offset + i * widthOfHexCell * 1.732 + widthOfHexCell * 0.57735), (
-                                     offset + j * widthOfHexCell + widthOfHexCell,
-                                     offset + i * widthOfHexCell * 1.732 - widthOfHexCell * 0.57735),
-                                     (offset + j * widthOfHexCell, offset + i * widthOfHexCell * 1.732 - widthOfHexCell * 1.1547),
+                                    [(offset + j * widthOfHexCell,
+                                      offset + i * widthOfHexCell * 1.732 + widthOfHexCell * 1.1547), (
+                                         offset + j * widthOfHexCell + widthOfHexCell,
+                                         offset + i * widthOfHexCell * 1.732 + widthOfHexCell * 0.57735), (
+                                         offset + j * widthOfHexCell + widthOfHexCell,
+                                         offset + i * widthOfHexCell * 1.732 - widthOfHexCell * 0.57735),
+                                     (offset + j * widthOfHexCell,
+                                      offset + i * widthOfHexCell * 1.732 - widthOfHexCell * 1.1547),
                                      (offset + j * widthOfHexCell - widthOfHexCell,
                                       offset + i * widthOfHexCell * 1.732 - widthOfHexCell * 0.57735), (
-                                     offset + j * widthOfHexCell - widthOfHexCell,
-                                     offset + i * widthOfHexCell * 1.732 + widthOfHexCell * 0.57735)], 1)
+                                         offset + j * widthOfHexCell - widthOfHexCell,
+                                         offset + i * widthOfHexCell * 1.732 + widthOfHexCell * 0.57735)], 1)
 
     # refresh the window
     pygame.display.flip()
+
 
 def gourdsConstructor():
     for i in range(len(gourdsLocation)):
-        pygame.draw.circle(screen, (100,0,0), (offset + gourdsLocation[i][0] * widthOfHexCell, offset + gourdsLocation[i][1] * widthOfHexCell * 1.732), widthOfHexCell * 0.5, 1)
-        pygame.draw.circle(screen, (100,0,0), (offset + gourdsLocation[i][2] * widthOfHexCell, offset + gourdsLocation[i][3] * widthOfHexCell * 1.732), widthOfHexCell * 0.5, 1)
-        pygame.draw.line(screen, (100,0,0), (offset + gourdsLocation[i][0] * widthOfHexCell, offset + gourdsLocation[i][1] * widthOfHexCell * 1.732), (offset + gourdsLocation[i][2] * widthOfHexCell, offset + gourdsLocation[i][3] * widthOfHexCell * 1.732), width=1)
+        pygame.draw.circle(screen, (100, 0, 0), (
+            offset + gourdsLocation[i][0] * widthOfHexCell, offset + gourdsLocation[i][1] * widthOfHexCell * 1.732),
+                           gourdSize, 1)
+        pygame.draw.circle(screen, (100, 0, 0), (
+            offset + gourdsLocation[i][2] * widthOfHexCell, offset + gourdsLocation[i][3] * widthOfHexCell * 1.732),
+                           gourdSize, 1)
+        pygame.draw.line(screen, (100, 0, 0), (
+            offset + gourdsLocation[i][0] * widthOfHexCell, offset + gourdsLocation[i][1] * widthOfHexCell * 1.732), (
+                             offset + gourdsLocation[i][2] * widthOfHexCell,
+                             offset + gourdsLocation[i][3] * widthOfHexCell * 1.732), width=1)
     # refresh the window
     pygame.display.flip()
-    
+
+
+def onAGourd(pos):
+    x, y = pos
+    print(x, y)
+    return -1,-1
+    pass
+
+
 def main():
     # 开启一个事件循环处理发生的事件
     running = True
@@ -68,6 +86,15 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+            # 鼠标按下
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                x, y = onAGourd(event.pos)
+                if x != -1:
+                    pass
+
+                # 鼠标弹起
+                if event.type == pygame.MOUSEBUTTONUP:
+                    pass
 
 
 if __name__ == '__main__':
