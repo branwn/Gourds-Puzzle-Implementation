@@ -71,7 +71,7 @@ def gourdsConstructor():
     pygame.display.flip()
 
 
-def onAGourd(pos):
+def searchGourdsFromCoordinate(pos):
     x, y = pos
 
     # shrink the searching area
@@ -79,17 +79,38 @@ def onAGourd(pos):
     y = y - offset
     x = x / widthOfHexCell
     y = y / 1.732 / widthOfHexCell
-    x = int(x+0.5)
-    y = int(y+0.5)
+    x = int(x + 0.5)
+    y = int(y + 0.5)
 
+    return searchGourdsFromIndex(x, y)
+
+
+def searchGourdsFromIndex(x, y):
     # search if there is a gourd on (x, y)
     for i in range(len(gourdsLocation)):
-        if(x == gourdsLocation[i][0] and y == gourdsLocation[i][1]):
+        if (x == gourdsLocation[i][0] and y == gourdsLocation[i][1]):
             return x, y
         if (x == gourdsLocation[i][2] and y == gourdsLocation[i][3]):
             return x, y
-    return -1,-1
+    return -1, -1
 
+
+def searchAnEmptyCell(x, y):
+    # search an empty cell around x, y
+
+    if (matrixOfBoard[y - 1][x - 1] == 1) and (searchGourdsFromIndex(x - 1, y - 1) == (-1, -1)):  # upper left
+        return x - 1, y - 1
+    if (matrixOfBoard[y + 1][x - 1] == 1) and (searchGourdsFromIndex(x - 1, y + 1) == (-1, -1)):  # lower left
+        return x - 1, y + 1
+    if (matrixOfBoard[y + 1][x + 1] == 1) and (searchGourdsFromIndex(x + 1, y + 1) == (-1, -1)):  # lower right
+        return x + 1, y + 1
+    if (matrixOfBoard[y - 1][x + 1] == 1) and (searchGourdsFromIndex(x + 1, y - 1) == (-1, -1)):  # upper right
+        return x + 1, y - 1
+    if (matrixOfBoard[y][x - 2] == 1) and (searchGourdsFromIndex(x - 2, y) == (-1, -1)):  # left
+        return x - 2, y
+    if (matrixOfBoard[y][x + 2] == 1) and (searchGourdsFromIndex(x + 2, y) == (-1, -1)):  # right
+        return x + 2, y
+    return -1, -1
 
 
 def main():
@@ -102,14 +123,14 @@ def main():
                 running = False
             # 鼠标按下
             if event.type == pygame.MOUSEBUTTONDOWN:
-                x, y = onAGourd(event.pos)
-                print(x, y)
+                x, y = searchGourdsFromCoordinate(event.pos)
                 if x != -1:
-                    pass
+                    print(x, y)
+                    print(searchAnEmptyCell(x, y))
 
-                # 鼠标弹起
-                if event.type == pygame.MOUSEBUTTONUP:
-                    pass
+            # 鼠标弹起
+            if event.type == pygame.MOUSEBUTTONUP:
+                pass
 
 
 if __name__ == '__main__':
