@@ -3,13 +3,13 @@ import numpy as np  # for matrix
 
 pygame.init()
 # size of the window
-screen = pygame.display.set_mode((700, 600))
+screen = pygame.display.set_mode((500, 400))
 # caption setting
 pygame.display.set_caption('Gourds')
 # background colour setting
 screen.fill((242, 242, 242))
 # set width of the hexagonal cell
-widthOfHexCell = 80;
+widthOfHexCell = 50;
 offset = widthOfHexCell
 
 
@@ -54,8 +54,8 @@ def boardConstructor():
 
 def gourdsConstructor():
     for i in range(len(gourdsLocation)):
-        pygame.draw.circle(screen, (100,0,0), (offset + gourdsLocation[i][0] * widthOfHexCell, offset + gourdsLocation[i][1] * widthOfHexCell * 1.732), widthOfHexCell * 0.6, 1)
-        pygame.draw.circle(screen, (100,0,0), (offset + gourdsLocation[i][2] * widthOfHexCell, offset + gourdsLocation[i][3] * widthOfHexCell * 1.732), widthOfHexCell * 0.6, 1)
+        pygame.draw.circle(screen, (100,0,0), (offset + gourdsLocation[i][0] * widthOfHexCell, offset + gourdsLocation[i][1] * widthOfHexCell * 1.732), widthOfHexCell * 0.5, 1)
+        pygame.draw.circle(screen, (100,0,0), (offset + gourdsLocation[i][2] * widthOfHexCell, offset + gourdsLocation[i][3] * widthOfHexCell * 1.732), widthOfHexCell * 0.5, 1)
         pygame.draw.line(screen, (100,0,0), (offset + gourdsLocation[i][0] * widthOfHexCell, offset + gourdsLocation[i][1] * widthOfHexCell * 1.732), (offset + gourdsLocation[i][2] * widthOfHexCell, offset + gourdsLocation[i][3] * widthOfHexCell * 1.732), width=1)
     # refresh the window
     pygame.display.flip()
