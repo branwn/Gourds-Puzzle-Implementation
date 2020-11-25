@@ -73,9 +73,23 @@ def gourdsConstructor():
 
 def onAGourd(pos):
     x, y = pos
-    print(x, y)
+
+    # shrink the searching area
+    x = x - offset
+    y = y - offset
+    x = x / widthOfHexCell
+    y = y / 1.732 / widthOfHexCell
+    x = int(x+0.5)
+    y = int(y+0.5)
+
+    # search if there is a gourd on (x, y)
+    for i in range(len(gourdsLocation)):
+        if(x == gourdsLocation[i][0] and y == gourdsLocation[i][1]):
+            return x, y
+        if (x == gourdsLocation[i][2] and y == gourdsLocation[i][3]):
+            return x, y
     return -1,-1
-    pass
+
 
 
 def main():
@@ -89,6 +103,7 @@ def main():
             # 鼠标按下
             if event.type == pygame.MOUSEBUTTONDOWN:
                 x, y = onAGourd(event.pos)
+                print(x, y)
                 if x != -1:
                     pass
 
