@@ -148,11 +148,42 @@ def searchAnEmptyCellAround(x, y):
     return -1, -1
 
 
-def gourdsMovement(indexOfGourd, xGourd, yGourd, xCell, yCell):
-    searchGourdsByIndex(xGourd, yGourd, xCell, yCell)
+def gourdsMovement(indexOfGourd, xGourdClicked, yGourdClicked, xCell, yCell):
+
+    # identify the clicked and linked parts of gourd
+    xGourdLinked, yGourdLinked = -1, -1
+    if gourdsLocation[indexOfGourd][0] == xGourdClicked and gourdsLocation[indexOfGourd][1] == yGourdClicked:
+        xGourdLinked = gourdsLocation[indexOfGourd][2]
+        yGourdLinked = gourdsLocation[indexOfGourd][3]
+    else:
+        xGourdLinked = gourdsLocation[indexOfGourd][0]
+        yGourdLinked = gourdsLocation[indexOfGourd][1]
+
+    # move gourd
+    distanceSquare = (xGourdLinked - xCell)**2 + (yGourdLinked - yCell)**2
+    if distanceSquare <= 4:  # pivot
+        xGourdClicked = xCell
+        yGourdClicked = yCell
+    else:  # slide or turn
+        xGourdLinked = xGourdClicked
+        yGourdLinked = yGourdClicked
+        xGourdClicked = xCell
+        yGourdClicked = yCell
+
+    # identify the clicked and linked parts and save
+    if gourdsLocation[indexOfGourd][0] == xGourdClicked and gourdsLocation[indexOfGourd][1] == yGourdClicked:
+        gourdsLocation[indexOfGourd][0] = xGourdClicked
+        gourdsLocation[indexOfGourd][1] = yGourdClicked
+        gourdsLocation[indexOfGourd][2] = xGourdLinked
+        gourdsLocation[indexOfGourd][3] = yGourdLinked
+    else:
+        gourdsLocation[indexOfGourd][0] = xGourdLinked
+        gourdsLocation[indexOfGourd][1] = yGourdLinked
+        gourdsLocation[indexOfGourd][2] = xGourdClicked
+        gourdsLocation[indexOfGourd][3] = yGourdClicked
 
 
-def mouseClick(pos):
+def mouseClicked(pos):
     # search Gourds From Coordinate
     indexOfGourd, xGourd, yGourd = searchGourdsByCoordinate(pos)
     if indexOfGourd == -1: return -1;
@@ -180,7 +211,7 @@ def main():
 
             # MOUSE BUTTON DOWN
             if event.type == pygame.MOUSEBUTTONDOWN:
-                mouseClick(event.pos)
+                mouseClicked(event.pos)
             # MOUSE BUTTON UP
             if event.type == pygame.MOUSEBUTTONUP:
                 pass
