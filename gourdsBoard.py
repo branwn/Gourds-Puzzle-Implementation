@@ -155,7 +155,7 @@ def gourdsMovementAnimation(before, after):
         after[2] - before[2],
         after[3] - before[3]
     ]
-    print(distance)
+    print(before,'\n',after)
     persentageMoveStep = 0.1
     for i in range(1,10):
         pygame.time.delay(10)
@@ -181,28 +181,33 @@ def gourdsMovementAnimation(before, after):
 def gourdsMovement(indexOfGourd, xGourdClicked, yGourdClicked, xCell, yCell):
 
     # identify the clicked and linked parts of gourd
-    xGourdLinked, yGourdLinked = -1, -1
     if gourdsLocation[indexOfGourd][0] == xGourdClicked and gourdsLocation[indexOfGourd][1] == yGourdClicked:
+        firstPartClicked = True
         xGourdLinked = gourdsLocation[indexOfGourd][2]
         yGourdLinked = gourdsLocation[indexOfGourd][3]
-    else:
+    elif gourdsLocation[indexOfGourd][2] == xGourdClicked and gourdsLocation[indexOfGourd][3] == yGourdClicked:
+        firstPartClicked = False
         xGourdLinked = gourdsLocation[indexOfGourd][0]
         yGourdLinked = gourdsLocation[indexOfGourd][1]
-
+    else:
+        print("Something went wrong in gourdsMovement")
+        return -1
     # move gourd
 
     distanceSquare = ((xGourdLinked - xCell) ** 2) + (((yGourdLinked - yCell)*1.732) ** 2)
     if distanceSquare < 4.3:  # pivot
+        print("pivot")
         xGourdClicked = xCell
         yGourdClicked = yCell
     else:  # slide or turn
+        print("slide or turn")
         xGourdLinked = xGourdClicked
         yGourdLinked = yGourdClicked
         xGourdClicked = xCell
         yGourdClicked = yCell
 
     # identify the clicked and linked parts and save
-    if gourdsLocation[indexOfGourd][0] == xGourdClicked and gourdsLocation[indexOfGourd][1] == yGourdClicked:
+    if firstPartClicked:
         # animation
         gourdsMovementAnimation((gourdsLocation[indexOfGourd][0], gourdsLocation[indexOfGourd][1], gourdsLocation[indexOfGourd][2], gourdsLocation[indexOfGourd][3]),
                                 (xGourdClicked, yGourdClicked, xGourdLinked, yGourdLinked))
@@ -210,6 +215,7 @@ def gourdsMovement(indexOfGourd, xGourdClicked, yGourdClicked, xCell, yCell):
         gourdsLocation[indexOfGourd][1] = yGourdClicked
         gourdsLocation[indexOfGourd][2] = xGourdLinked
         gourdsLocation[indexOfGourd][3] = yGourdLinked
+
     else:
         # animation
         gourdsMovementAnimation((gourdsLocation[indexOfGourd][0], gourdsLocation[indexOfGourd][1], gourdsLocation[indexOfGourd][2], gourdsLocation[indexOfGourd][3]),
@@ -219,6 +225,7 @@ def gourdsMovement(indexOfGourd, xGourdClicked, yGourdClicked, xCell, yCell):
         gourdsLocation[indexOfGourd][2] = xGourdClicked
         gourdsLocation[indexOfGourd][3] = yGourdClicked
 
+    return 0
 
 def mouseClicked(pos):
     # search Gourds From Coordinate
