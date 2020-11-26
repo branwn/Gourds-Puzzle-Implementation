@@ -17,11 +17,11 @@ gourdSize = widthOfHexCell * 0.6
 
 # set a matrix of board
 displayMatrix = False
-matrixOfBoard = np.array([#0, 1, 2, 3, 4, 5, 6, 7, 8
-                          [0, 1, 0, 1, 0, 0],  #0
-                          [1, 0, 1, 0, 1, 0],  #1
-                          [0, 1, 0, 1, 0, 0]   #2
-                          ])
+matrixOfBoard = np.array([ # 0, 1, 2, 3, 4, 5, 6, 7, 8
+                            [0, 1, 0, 1, 0, 0],  #0
+                            [1, 0, 1, 0, 1, 0],  #1
+                            [0, 1, 0, 1, 0, 0]   #2
+                            ])
 
 # set a initial gourds placement
 gourdsLocation = np.array([# x, y, x, y
@@ -156,7 +156,6 @@ def gourdsMovementAnimation(before, after):
         after[2] - before[2],
         after[3] - before[3]
     ]
-    print(before,'\n',after)
     persentageMoveStep = 0.08
     for i in range(0,13):
         pygame.time.delay(20)
@@ -215,11 +214,9 @@ def gourdsMovement(indexOfGourd, xGourdClicked, yGourdClicked, xCell, yCell):
 
     distanceSquare = ((xGourdLinked - xCell) ** 2) + (((yGourdLinked - yCell)*1.732) ** 2)
     if distanceSquare < 4.3:  # pivot
-        print("pivot")
         xGourdClicked = xCell
         yGourdClicked = yCell
     else:  # slide or turn
-        print("slide or turn")
         xGourdLinked = xGourdClicked
         yGourdLinked = yGourdClicked
         xGourdClicked = xCell
