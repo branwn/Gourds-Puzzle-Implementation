@@ -15,7 +15,7 @@ offset = widthOfHexCell*1.5
 gourdSize = widthOfHexCell * 0.6
 
 # set a matrix of board
-displayMatrix = False
+displayMatrix = True
 matrixOfBoard = np.array([#0, 1, 2, 3, 4, 5, 6, 7, 8
                           [0, 1, 0, 1, 0, 0],  #0
                           [1, 0, 1, 0, 1, 0],  #1
@@ -148,6 +148,30 @@ def searchAnEmptyCellAround(x, y):
     return -1, -1
 
 
+def gourdsMovementAnimation(before, after):
+    distance = [
+        after[0] - before[0],
+        after[1] - before[1],
+        after[2] - before[2],
+        after[3] - before[3]
+    ]
+    # print(distance)
+    # for i in range(1,100):
+    #     pygame.draw.circle(screen, (100, 0, 0), (
+    #         int(offset + gourdsLocation[i][0] * widthOfHexCell), int(offset + gourdsLocation[i][1] * widthOfHexCell * 1.732)),
+    #                        gourdSize, 1)
+    #     pygame.draw.circle(screen, (100, 0, 0), (
+    #         int(offset + gourdsLocation[i][2] * widthOfHexCell), int(offset + gourdsLocation[i][3] * widthOfHexCell * 1.732)),
+    #                        gourdSize, 1)
+    #     pygame.draw.line(screen, (100, 0, 0), (
+    #         offset + gourdsLocation[i][0] * widthOfHexCell, int(offset + gourdsLocation[i][1] * widthOfHexCell * 1.732)), (
+    #                          offset + gourdsLocation[i][2] * widthOfHexCell,
+    #                          int(offset + gourdsLocation[i][3] * widthOfHexCell * 1.732)), width=2)
+    #     # refresh the window
+    #     pygame.display.flip()
+
+
+
 def gourdsMovement(indexOfGourd, xGourdClicked, yGourdClicked, xCell, yCell):
 
     # identify the clicked and linked parts of gourd
@@ -160,8 +184,9 @@ def gourdsMovement(indexOfGourd, xGourdClicked, yGourdClicked, xCell, yCell):
         yGourdLinked = gourdsLocation[indexOfGourd][1]
 
     # move gourd
-    distanceSquare = (xGourdLinked - xCell)**2 + (yGourdLinked - yCell)**2
-    if distanceSquare <= 4:  # pivot
+
+    distanceSquare = ((xGourdLinked - xCell) ** 2) + (((yGourdLinked - yCell)*1.732) ** 2)
+    if distanceSquare < 4.3:  # pivot
         xGourdClicked = xCell
         yGourdClicked = yCell
     else:  # slide or turn
@@ -172,11 +197,17 @@ def gourdsMovement(indexOfGourd, xGourdClicked, yGourdClicked, xCell, yCell):
 
     # identify the clicked and linked parts and save
     if gourdsLocation[indexOfGourd][0] == xGourdClicked and gourdsLocation[indexOfGourd][1] == yGourdClicked:
+        # animation
+        gourdsMovementAnimation((gourdsLocation[indexOfGourd][0], gourdsLocation[indexOfGourd][1], gourdsLocation[indexOfGourd][2], gourdsLocation[indexOfGourd][3]),
+                                (xGourdClicked, yGourdClicked, xGourdLinked, yGourdLinked))
         gourdsLocation[indexOfGourd][0] = xGourdClicked
         gourdsLocation[indexOfGourd][1] = yGourdClicked
         gourdsLocation[indexOfGourd][2] = xGourdLinked
         gourdsLocation[indexOfGourd][3] = yGourdLinked
     else:
+        # animation
+        gourdsMovementAnimation((gourdsLocation[indexOfGourd][0], gourdsLocation[indexOfGourd][1], gourdsLocation[indexOfGourd][2], gourdsLocation[indexOfGourd][3]),
+                                (xGourdLinked, yGourdLinked, xGourdClicked, yGourdClicked))
         gourdsLocation[indexOfGourd][0] = xGourdLinked
         gourdsLocation[indexOfGourd][1] = yGourdLinked
         gourdsLocation[indexOfGourd][2] = xGourdClicked
@@ -187,7 +218,7 @@ def mouseClicked(pos):
     # search Gourds From Coordinate
     indexOfGourd, xGourd, yGourd = searchGourdsByCoordinate(pos)
     if indexOfGourd == -1: return -1;
-    print(xGourd, yGourd)
+    # print(xGourd, yGourd)
     # search An Empty Cell Around
     xCell, yCell = searchAnEmptyCellAround(xGourd, yGourd)
     if xCell == -1: return -1
