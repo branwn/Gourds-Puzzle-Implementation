@@ -155,21 +155,27 @@ def gourdsMovementAnimation(before, after):
         after[2] - before[2],
         after[3] - before[3]
     ]
-    # print(distance)
-    # for i in range(1,100):
-    #     pygame.draw.circle(screen, (100, 0, 0), (
-    #         int(offset + gourdsLocation[i][0] * widthOfHexCell), int(offset + gourdsLocation[i][1] * widthOfHexCell * 1.732)),
-    #                        gourdSize, 1)
-    #     pygame.draw.circle(screen, (100, 0, 0), (
-    #         int(offset + gourdsLocation[i][2] * widthOfHexCell), int(offset + gourdsLocation[i][3] * widthOfHexCell * 1.732)),
-    #                        gourdSize, 1)
-    #     pygame.draw.line(screen, (100, 0, 0), (
-    #         offset + gourdsLocation[i][0] * widthOfHexCell, int(offset + gourdsLocation[i][1] * widthOfHexCell * 1.732)), (
-    #                          offset + gourdsLocation[i][2] * widthOfHexCell,
-    #                          int(offset + gourdsLocation[i][3] * widthOfHexCell * 1.732)), width=2)
-    #     # refresh the window
-    #     pygame.display.flip()
-
+    print(distance)
+    persentageMoveStep = 0.1
+    for i in range(1,10):
+        pygame.time.delay(10)
+        pygame.draw.circle(screen, (100, 0, 0), (
+            int(offset + (before[0]+distance[0]*i*persentageMoveStep) * widthOfHexCell), int(offset + (before[1]+distance[1]*i*persentageMoveStep) * widthOfHexCell * 1.732)),
+                           gourdSize, 1)
+        pygame.draw.circle(screen, (100, 0, 0), (
+            int(offset + (before[2]+distance[2]*i*persentageMoveStep) * widthOfHexCell), int(offset + (before[3]+distance[3]*i*persentageMoveStep) * widthOfHexCell * 1.732)),
+                           gourdSize, 1)
+        pygame.draw.line(screen, (100, 0, 0),
+                         (
+                            int(offset + (before[0]+distance[0]*i*persentageMoveStep) * widthOfHexCell),
+                            int(offset + (before[1]+distance[1]*i*persentageMoveStep) * widthOfHexCell * 1.732)
+                         ),
+                         (  int(offset + (before[2]+distance[2]*i*persentageMoveStep) * widthOfHexCell),
+                            int(offset + (before[3]+distance[3]*i*persentageMoveStep) * widthOfHexCell * 1.732)
+                         ),width=2)
+        # refresh the window
+        pygame.time.delay(10)
+        pygame.display.flip()
 
 
 def gourdsMovement(indexOfGourd, xGourdClicked, yGourdClicked, xCell, yCell):
