@@ -128,22 +128,22 @@ def searchAnEmptyCellAround(x, y):
 
     # search an empty cell around x, y
     if x - 1 >= 0 and y - 1 >= 0:
-        if (matrixOfBoard[y - 1][x - 1] == 1) and (searchGourdsByIndex(x - 1, y - 1) == (-1, -1, -1)):  # upper left
+        if (matrixOfBoard[y - 1][x - 1] == 1) and (searchGourdsByIndex(x - 1, y - 1)[0] == -1):  # upper left
             return x - 1, y - 1
     if x - 1 >= 0 and y + 1 <= maxOfY:
-        if (matrixOfBoard[y + 1][x - 1] == 1) and (searchGourdsByIndex(x - 1, y + 1) == (-1, -1, -1)):  # lower left
+        if (matrixOfBoard[y + 1][x - 1] == 1) and (searchGourdsByIndex(x - 1, y + 1)[0] == -1):  # lower left
             return x - 1, y + 1
     if x + 1 <= maxOfX and y + 1 <= maxOfY:
-        if (matrixOfBoard[y + 1][x + 1] == 1) and (searchGourdsByIndex(x + 1, y + 1) == (-1, -1, -1)):  # lower right
+        if (matrixOfBoard[y + 1][x + 1] == 1) and (searchGourdsByIndex(x + 1, y + 1)[0] == -1):  # lower right
             return x + 1, y + 1
     if x + 1 <= maxOfX and y - 1 >= 0:
-        if (matrixOfBoard[y - 1][x + 1] == 1) and (searchGourdsByIndex(x + 1, y - 1) == (-1, -1, -1)):  # upper right
+        if (matrixOfBoard[y - 1][x + 1] == 1) and (searchGourdsByIndex(x + 1, y - 1)[0] == -1):  # upper right
             return x + 1, y - 1
     if x - 2 >= 0:
-        if (matrixOfBoard[y][x - 2] == 1) and (searchGourdsByIndex(x - 2, y) == (-1, -1, -1)):  # left
+        if (matrixOfBoard[y][x - 2] == 1) and (searchGourdsByIndex(x - 2, y)[0] == -1):  # left
             return x - 2, y
     if x + 2 <= maxOfX:
-        if (matrixOfBoard[y][x + 2] == 1) and (searchGourdsByIndex(x + 2, y) == (-1, -1, -1)):  # right
+        if (matrixOfBoard[y][x + 2] == 1) and (searchGourdsByIndex(x + 2, y)[0] == -1):  # right
             return x + 2, y
     return -1, -1
 
