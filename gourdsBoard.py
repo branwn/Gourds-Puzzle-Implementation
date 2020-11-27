@@ -5,26 +5,28 @@ import numpy as np  # for matrix
 displayMatrix = False
 board = np.array([
    # 0, 1, 2, 3, 4, 5, 6, 7, 8
-    [0, 3, 0, 1, 0, 0],  #0
-    [1, 0, 2, 0, 3, 0],  #1
-    [0, 3, 0, 1, 0, 0]   #2
+    [0, 4, 0, 4, 0, 0],  #0
+    [2, 0, 2, 0, 3, 0],  #1
+    [0, 1, 0, 1, 0, 0]   #2
     ])
 
 # set a initial gourds placement
 gourdsList = np.array([
    # x, y, x, y, colourDict_1, colourDict_2
-    [1, 0, 0, 1, 1, 3],
-    [2, 1, 4, 1, 2, 3],
-    [1, 2, 3, 2, 1, 3]
+    [1, 0, 0, 1, 4, 2],
+    [2, 1, 4, 1, 4, 3],
+    [1, 2, 3, 2, 1, 2]
 ])
 
 # colour dictionary
 colourDictionary = {
     'backGround':(242,242,242),
     'black':(0,0,0),
-    1:(0,100,0),
-    2:(0,0,100),
-    3:(100,0,0)
+    1:(91,231,196),
+    2:(80,193,233),
+    3:(122,87,209),
+    4:(237,84,133),
+    5:(255,232,105)
 }
 
 pygame.init()
@@ -38,25 +40,25 @@ screen.fill(colourDictionary['backGround'])
 widthOfHexCell = 50;
 offset = widthOfHexCell*1.5
 # gourd size
-gourdSize = int(widthOfHexCell * 0.6)
+gourdSize = int(widthOfHexCell * 0.3)
 
 
 def gourdPainter(firstPart, secondPart):
-    pygame.draw.circle(screen, colourDictionary[firstPart[2]], (firstPart[0],firstPart[1]), gourdSize, 4)
-    pygame.draw.circle(screen, colourDictionary[secondPart[2]], (secondPart[0], secondPart[1]), gourdSize, 4)
+    pygame.draw.circle(screen, colourDictionary[firstPart[2]], (firstPart[0],firstPart[1]), gourdSize, 0)
+    pygame.draw.circle(screen, colourDictionary[secondPart[2]], (secondPart[0], secondPart[1]), gourdSize, 0)
     pygame.draw.line(screen, colourDictionary[firstPart[2]],
                      (firstPart[0],firstPart[1]),
-                     ((firstPart[0]+secondPart[0])/2,(firstPart[1]+secondPart[1])/2),
-                     width=3)
+                     (int((firstPart[0]+secondPart[0])/2),int((firstPart[1]+secondPart[1])/2)),
+                     width=7)
     pygame.draw.line(screen, colourDictionary[secondPart[2]],
-                     ((firstPart[0]+secondPart[0])/2,(firstPart[1]+secondPart[1])/2),
+                     (int((firstPart[0]+secondPart[0])/2),int((firstPart[1]+secondPart[1])/2)),
                      (secondPart[0],secondPart[1]),
-                     width=3)
+                     width=7)
 
 
 def cellPainter(x, y):
     widthOfBlackFrameLine = -1
-    widthOfColourCell = widthOfHexCell - 3
+    widthOfColourCell = widthOfHexCell - 8
 
     # draw colour
     pygame.draw.polygon(screen, colourDictionary[board[y][x]],
@@ -85,7 +87,7 @@ def cellPainter(x, y):
                                 int(offset + x * widthOfHexCell - widthOfColourCell),
                                 int(offset + y * widthOfHexCell * 1.732 + widthOfColourCell * 0.57735)
                             )
-                        ], 4)
+                        ], 5)
 
     # draw a frame
     pygame.draw.polygon(screen, colourDictionary['black'],
