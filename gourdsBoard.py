@@ -74,7 +74,7 @@ def boardConstructor():
                                     ], 1)
 
     # refresh the window
-    pygame.display.flip()
+    # pygame.display.update()
 
 
 def gourdsConstructor():
@@ -90,7 +90,7 @@ def gourdsConstructor():
                              offset + gourdsLocation[i][2] * widthOfHexCell,
                              int(offset + gourdsLocation[i][3] * widthOfHexCell * 1.732)), width=3)
     # refresh the window
-    pygame.display.flip()
+    pygame.display.update()
 
 
 def searchGourdsByCoordinate(pos):
@@ -156,9 +156,9 @@ def gourdsMovementAnimation(before, after):
         after[2] - before[2],
         after[3] - before[3]
     ]
-    persentageMoveStep = 0.08
-    for i in range(0,13):
-        pygame.time.delay(20)
+    persentageMoveStep = 0.05
+    for i in range(0,20):
+        pygame.time.delay(5)
         pygame.draw.circle(screen, (100, 0, 0), (
             int(offset + (before[0]+distance[0]*i*persentageMoveStep) * widthOfHexCell), int(offset + (before[1]+distance[1]*i*persentageMoveStep) * widthOfHexCell * 1.732)),
                            gourdSize, 4)
@@ -174,7 +174,7 @@ def gourdsMovementAnimation(before, after):
                             int(offset + (before[3]+distance[3]*i*persentageMoveStep) * widthOfHexCell * 1.732)
                          ),width=3)
         # refresh the window
-        pygame.display.flip()
+        pygame.display.update()
         pygame.time.delay(20)
         pygame.draw.circle(screen, backgroundColour, (
             int(offset + (before[0] + distance[0] * i * persentageMoveStep) * widthOfHexCell),
@@ -193,7 +193,7 @@ def gourdsMovementAnimation(before, after):
                           int(offset + (before[3] + distance[3] * i * persentageMoveStep) * widthOfHexCell * 1.732)
                           ), width=3)
         # refresh the window
-        # pygame.display.flip()
+        # pygame.display.update()
 
 
 def gourdsMovement(indexOfGourd, xGourdClicked, yGourdClicked, xCell, yCell):
@@ -255,11 +255,9 @@ def mouseClicked(pos):
     # move gourds
     gourdsMovement(indexOfGourd, xGourd, yGourd, xCell, yCell)
     # refresh screen
-    screen.fill((242, 242, 242))
+    # screen.fill((242, 242, 242))
     boardConstructor()
     gourdsConstructor()
-    pygame.display.flip()
-
 
 def main():
     # main loop
