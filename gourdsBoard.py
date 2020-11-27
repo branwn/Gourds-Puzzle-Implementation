@@ -1,49 +1,62 @@
 import pygame
 import numpy as np  # for matrix
 
-pygame.init()
-# size of the window
-screen = pygame.display.set_mode((500, 400))
-# caption setting
-pygame.display.set_caption('Gourds')
-# background colour setting
-backgroundColour = (242, 242, 242)
-screen.fill(backgroundColour)
-# set width of the hexagonal cell
-widthOfHexCell = 50;
-offset = widthOfHexCell*1.5
-# gourd size
-gourdSize = widthOfHexCell * 0.6
 
 # set a matrix of board
 displayMatrix = False
-matrixOfBoard = np.array([ # 0, 1, 2, 3, 4, 5, 6, 7, 8
+board = np.array([ # 0, 1, 2, 3, 4, 5, 6, 7, 8
                             [0, 1, 0, 1, 0, 0],  #0
                             [1, 0, 1, 0, 1, 0],  #1
                             [0, 1, 0, 1, 0, 0]   #2
                             ])
 
 # set a initial gourds placement
-gourdsLocation = np.array([# x, y, x, y
-                            [1, 0, 0, 1],
-                            [2, 1, 4, 1],
-                            [1, 2, 3, 2]
-                          ])
+gourds = np.array([
+   # x, y, x, y, colourDict_1, colourDict_2
+    [1, 0, 0, 1, 3, 3],
+    [2, 1, 4, 1, 3, 3],
+    [1, 2, 3, 2, 3, 3]
+])
+# colour dictionary
+colourDictionary = {
+    1:(242,242,242),
+    2:(100,100,200),
+    3:(100,0,0)
+}
+
+pygame.init()
+# size of the window
+screen = pygame.display.set_mode((500, 400))
+# caption setting
+pygame.display.set_caption('Gourds')
+# background colour setting
+screen.fill(colourDictionary[1])
+# set width of the hexagonal cell
+widthOfHexCell = 50;
+offset = widthOfHexCell*1.5
+# gourd size
+gourdSize = widthOfHexCell * 0.6
+
+
+def gourdPainter(firstPart, secondPart):
+    pygame.draw.circle(screen, colourDictionary[firstPart[2]], (firstPart[0],firstPart[1]), gourdSize, 4)
+    pygame.draw.circle(screen, colourDictionary[secondPart[2]], (secondPart[0], secondPart[1]), gourdSize, 4)
+    pygame.draw.line(screen, colourDictionary[firstPart[2]],(firstPart[0],firstPart[1]),(secondPart[0],secondPart[1]), width=3)
 
 
 def boardConstructor():
     font = pygame.font.Font('OpenSans-Light.ttf', 16)
 
 
-    for i in range(len(matrixOfBoard)):
-        for j in range(len(matrixOfBoard[0])):
+    for i in range(len(board)):
+        for j in range(len(board[0])):
             # display matrix
-            text = font.render(str(matrixOfBoard[i][j]), True, (0, 0, 255))
+            text = font.render(str(board[i][j]), True, (0, 0, 255))
             if displayMatrix:
                 screen.blit(text, (-4 + offset + j * widthOfHexCell, int(-12 + offset + i * widthOfHexCell * 1.732)))
             # pygame.draw.circle(screen,(0,0,0),(offset + j * widthOfHexCell, offset + i * widthOfHexCell * 1.732) ,6,1)
 
-            if (matrixOfBoard[i][j]):
+            if (board[i][j]):
                 # draw a hexagonal cell
                 pygame.draw.polygon(screen, (100, 100, 200,),
                                     [
@@ -78,17 +91,17 @@ def boardConstructor():
 
 
 def gourdsConstructor():
-    for i in range(len(gourdsLocation)):
-        pygame.draw.circle(screen, (100, 0, 0), (
-            int(offset + gourdsLocation[i][0] * widthOfHexCell), int(offset + gourdsLocation[i][1] * widthOfHexCell * 1.732)),
-                           gourdSize, 4)
-        pygame.draw.circle(screen, (100, 0, 0), (
-            int(offset + gourdsLocation[i][2] * widthOfHexCell), int(offset + gourdsLocation[i][3] * widthOfHexCell * 1.732)),
-                           gourdSize, 4)
-        pygame.draw.line(screen, (100, 0, 0), (
-            offset + gourdsLocation[i][0] * widthOfHexCell, int(offset + gourdsLocation[i][1] * widthOfHexCell * 1.732)), (
-                             offset + gourdsLocation[i][2] * widthOfHexCell,
-                             int(offset + gourdsLocation[i][3] * widthOfHexCell * 1.732)), width=3)
+    firstPart = (-1, -1, -1)
+    secondPart = (-1, -1, -1)
+
+    for i in range(len(gourds)):
+        firstPart = (int(offset + gourds[i][0] * widthOfHexCell),
+                     int(offset + gourds[i][1] * widthOfHexCell * 1.732),
+                     gourds[i][4])
+        secondPart = (int(offset + gourds[i][2] * widthOfHexCell),
+                      int(offset + gourds[i][3] * widthOfHexCell * 1.732),
+                      gourds[i][4])
+        gourdPainter(firstPart,secondPart)
     # refresh the window
     pygame.display.update()
 
@@ -106,50 +119,44 @@ def searchGourdsByCoordinate(pos):
     return searchGourdsByIndex(x, y)
 
 
-def searchGourdsByIndex(x, y, xDestination = -1, yDestination = -1):
+def searchGourdsByIndex(x, y):
     # search if there is a gourd on (x, y)
-    for i in range(len(gourdsLocation)):
-        if (x == gourdsLocation[i][0] and y == gourdsLocation[i][1]):
-            if xDestination != -1:
-                gourdsLocation[i][0] = xDestination
-                gourdsLocation[i][1] = yDestination
+    for i in range(len(gourds)):
+        if (x == gourds[i][0] and y == gourds[i][1]):
             return i, x, y
-        if (x == gourdsLocation[i][2] and y == gourdsLocation[i][3]):
-            if xDestination != -1:
-                gourdsLocation[i][2] = xDestination
-                gourdsLocation[i][3] = yDestination
+        if (x == gourds[i][2] and y == gourds[i][3]):
             return i, x, y
     return -1, -1, -1
 
 
 def searchAnEmptyCellAround(x, y):
     # obtain the size of the boardMatrix
-    maxOfX = len(matrixOfBoard[0]) - 1
-    maxOfY = len(matrixOfBoard) - 1
+    maxOfX = len(board[0]) - 1
+    maxOfY = len(board) - 1
 
     # search an empty cell around x, y
     if x - 1 >= 0 and y - 1 >= 0:
-        if (matrixOfBoard[y - 1][x - 1] == 1) and (searchGourdsByIndex(x - 1, y - 1)[0] == -1):  # upper left
+        if (board[y - 1][x - 1] == 1) and (searchGourdsByIndex(x - 1, y - 1)[0] == -1):  # upper left
             return x - 1, y - 1
     if x - 1 >= 0 and y + 1 <= maxOfY:
-        if (matrixOfBoard[y + 1][x - 1] == 1) and (searchGourdsByIndex(x - 1, y + 1)[0] == -1):  # lower left
+        if (board[y + 1][x - 1] == 1) and (searchGourdsByIndex(x - 1, y + 1)[0] == -1):  # lower left
             return x - 1, y + 1
     if x + 1 <= maxOfX and y + 1 <= maxOfY:
-        if (matrixOfBoard[y + 1][x + 1] == 1) and (searchGourdsByIndex(x + 1, y + 1)[0] == -1):  # lower right
+        if (board[y + 1][x + 1] == 1) and (searchGourdsByIndex(x + 1, y + 1)[0] == -1):  # lower right
             return x + 1, y + 1
     if x + 1 <= maxOfX and y - 1 >= 0:
-        if (matrixOfBoard[y - 1][x + 1] == 1) and (searchGourdsByIndex(x + 1, y - 1)[0] == -1):  # upper right
+        if (board[y - 1][x + 1] == 1) and (searchGourdsByIndex(x + 1, y - 1)[0] == -1):  # upper right
             return x + 1, y - 1
     if x - 2 >= 0:
-        if (matrixOfBoard[y][x - 2] == 1) and (searchGourdsByIndex(x - 2, y)[0] == -1):  # left
+        if (board[y][x - 2] == 1) and (searchGourdsByIndex(x - 2, y)[0] == -1):  # left
             return x - 2, y
     if x + 2 <= maxOfX:
-        if (matrixOfBoard[y][x + 2] == 1) and (searchGourdsByIndex(x + 2, y)[0] == -1):  # right
+        if (board[y][x + 2] == 1) and (searchGourdsByIndex(x + 2, y)[0] == -1):  # right
             return x + 2, y
     return -1, -1
 
 
-def gourdsMovementAnimation(before, after):
+def gourdsMovementAnimation(before, after, indexOfGourd):
     distance = [
         after[0] - before[0],
         after[1] - before[1],
@@ -157,41 +164,32 @@ def gourdsMovementAnimation(before, after):
         after[3] - before[3]
     ]
     persentageMoveStep = 0.05
+
+    firstPart = (-1, -1, -1)
+    secondPart = (-1, -1, -1)
     for i in range(0,20):
-        pygame.time.delay(5)
-        pygame.draw.circle(screen, (100, 0, 0), (
-            int(offset + (before[0]+distance[0]*i*persentageMoveStep) * widthOfHexCell), int(offset + (before[1]+distance[1]*i*persentageMoveStep) * widthOfHexCell * 1.732)),
-                           gourdSize, 4)
-        pygame.draw.circle(screen, (100, 0, 0), (
-            int(offset + (before[2]+distance[2]*i*persentageMoveStep) * widthOfHexCell), int(offset + (before[3]+distance[3]*i*persentageMoveStep) * widthOfHexCell * 1.732)),
-                           gourdSize, 4)
-        pygame.draw.line(screen, (100, 0, 0),
-                         (
-                            int(offset + (before[0]+distance[0]*i*persentageMoveStep) * widthOfHexCell),
-                            int(offset + (before[1]+distance[1]*i*persentageMoveStep) * widthOfHexCell * 1.732)
-                         ),
-                         (  int(offset + (before[2]+distance[2]*i*persentageMoveStep) * widthOfHexCell),
-                            int(offset + (before[3]+distance[3]*i*persentageMoveStep) * widthOfHexCell * 1.732)
-                         ),width=3)
+        pygame.time.delay(10)
+        # draw a gourd
+        firstPart = (int(offset + (before[0]+distance[0]*i*persentageMoveStep) * widthOfHexCell),
+                     int(offset + (before[1]+distance[1]*i*persentageMoveStep) * widthOfHexCell * 1.732),
+                     gourds[indexOfGourd][4])
+        secondPart = (int(offset + (before[2]+distance[2]*i*persentageMoveStep) * widthOfHexCell),
+                      int(offset + (before[3]+distance[3]*i*persentageMoveStep) * widthOfHexCell * 1.732),
+                      gourds[indexOfGourd][5])
+        gourdPainter(firstPart, secondPart)
+
         # refresh the window
         pygame.display.update()
-        pygame.time.delay(20)
-        pygame.draw.circle(screen, backgroundColour, (
-            int(offset + (before[0] + distance[0] * i * persentageMoveStep) * widthOfHexCell),
-            int(offset + (before[1] + distance[1] * i * persentageMoveStep) * widthOfHexCell * 1.732)),
-                           gourdSize, 4)
-        pygame.draw.circle(screen, backgroundColour, (
-            int(offset + (before[2] + distance[2] * i * persentageMoveStep) * widthOfHexCell),
-            int(offset + (before[3] + distance[3] * i * persentageMoveStep) * widthOfHexCell * 1.732)),
-                           gourdSize, 4)
-        pygame.draw.line(screen, backgroundColour,
-                         (
-                             int(offset + (before[0] + distance[0] * i * persentageMoveStep) * widthOfHexCell),
-                             int(offset + (before[1] + distance[1] * i * persentageMoveStep) * widthOfHexCell * 1.732)
-                         ),
-                         (int(offset + (before[2] + distance[2] * i * persentageMoveStep) * widthOfHexCell),
-                          int(offset + (before[3] + distance[3] * i * persentageMoveStep) * widthOfHexCell * 1.732)
-                          ), width=3)
+
+        # cover the gourds by background
+        firstPart = (int(offset + (before[0] + distance[0] * i * persentageMoveStep) * widthOfHexCell),
+                     int(offset + (before[1] + distance[1] * i * persentageMoveStep) * widthOfHexCell * 1.732),
+                     1)
+        secondPart = (int(offset + (before[2] + distance[2] * i * persentageMoveStep) * widthOfHexCell),
+                      int(offset + (before[3] + distance[3] * i * persentageMoveStep) * widthOfHexCell * 1.732),
+                      1)
+        gourdPainter(firstPart, secondPart)
+
         # refresh the window
         # pygame.display.update()
 
@@ -199,14 +197,14 @@ def gourdsMovementAnimation(before, after):
 def gourdsMovement(indexOfGourd, xGourdClicked, yGourdClicked, xCell, yCell):
 
     # identify the clicked and linked parts of gourd
-    if gourdsLocation[indexOfGourd][0] == xGourdClicked and gourdsLocation[indexOfGourd][1] == yGourdClicked:
+    if gourds[indexOfGourd][0] == xGourdClicked and gourds[indexOfGourd][1] == yGourdClicked:
         firstPartClicked = True
-        xGourdLinked = gourdsLocation[indexOfGourd][2]
-        yGourdLinked = gourdsLocation[indexOfGourd][3]
-    elif gourdsLocation[indexOfGourd][2] == xGourdClicked and gourdsLocation[indexOfGourd][3] == yGourdClicked:
+        xGourdLinked = gourds[indexOfGourd][2]
+        yGourdLinked = gourds[indexOfGourd][3]
+    elif gourds[indexOfGourd][2] == xGourdClicked and gourds[indexOfGourd][3] == yGourdClicked:
         firstPartClicked = False
-        xGourdLinked = gourdsLocation[indexOfGourd][0]
-        yGourdLinked = gourdsLocation[indexOfGourd][1]
+        xGourdLinked = gourds[indexOfGourd][0]
+        yGourdLinked = gourds[indexOfGourd][1]
     else:
         print("Something went wrong in gourdsMovement")
         return -1
@@ -225,21 +223,23 @@ def gourdsMovement(indexOfGourd, xGourdClicked, yGourdClicked, xCell, yCell):
     # identify the clicked and linked parts and save
     if firstPartClicked:
         # animation
-        gourdsMovementAnimation((gourdsLocation[indexOfGourd][0], gourdsLocation[indexOfGourd][1], gourdsLocation[indexOfGourd][2], gourdsLocation[indexOfGourd][3]),
-                                (xGourdClicked, yGourdClicked, xGourdLinked, yGourdLinked))
-        gourdsLocation[indexOfGourd][0] = xGourdClicked
-        gourdsLocation[indexOfGourd][1] = yGourdClicked
-        gourdsLocation[indexOfGourd][2] = xGourdLinked
-        gourdsLocation[indexOfGourd][3] = yGourdLinked
+        gourdsMovementAnimation((gourds[indexOfGourd][0], gourds[indexOfGourd][1], gourds[indexOfGourd][2], gourds[indexOfGourd][3]),
+                                (xGourdClicked, yGourdClicked, xGourdLinked, yGourdLinked),
+                                indexOfGourd)
+        gourds[indexOfGourd][0] = xGourdClicked
+        gourds[indexOfGourd][1] = yGourdClicked
+        gourds[indexOfGourd][2] = xGourdLinked
+        gourds[indexOfGourd][3] = yGourdLinked
 
     else:
         # animation
-        gourdsMovementAnimation((gourdsLocation[indexOfGourd][0], gourdsLocation[indexOfGourd][1], gourdsLocation[indexOfGourd][2], gourdsLocation[indexOfGourd][3]),
-                                (xGourdLinked, yGourdLinked, xGourdClicked, yGourdClicked))
-        gourdsLocation[indexOfGourd][0] = xGourdLinked
-        gourdsLocation[indexOfGourd][1] = yGourdLinked
-        gourdsLocation[indexOfGourd][2] = xGourdClicked
-        gourdsLocation[indexOfGourd][3] = yGourdClicked
+        gourdsMovementAnimation((gourds[indexOfGourd][0], gourds[indexOfGourd][1], gourds[indexOfGourd][2], gourds[indexOfGourd][3]),
+                                (xGourdLinked, yGourdLinked, xGourdClicked, yGourdClicked),
+                                indexOfGourd)
+        gourds[indexOfGourd][0] = xGourdLinked
+        gourds[indexOfGourd][1] = yGourdLinked
+        gourds[indexOfGourd][2] = xGourdClicked
+        gourds[indexOfGourd][3] = yGourdClicked
 
     return 0
 
