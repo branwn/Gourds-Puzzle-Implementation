@@ -5,10 +5,10 @@ import numpy as np  # for matrix
 displayMatrix = False
 board = np.array([
    # 0, 1, 2, 3, 4, 5, 6, 7, 8
-    [0, 4, 0, 4, 0, 0],  #0
-    [2, 0, 2, 0, 3, 0],  #1
-    [0, 1, 0, 1, 0, 0]   #2
-    ])
+    [0, 4, 0, 4, 0],  # 0
+    [2, 0, 2, 0, 3],  # 1
+    [0, 1, 0, 1, 0],  # 2
+])
 
 # set a initial gourds placement
 gourdsList = np.array([
@@ -29,19 +29,25 @@ colourDictionary = {
     5:(255,232,105)
 }
 
-pygame.init()
 # size of the window
-screen = pygame.display.set_mode((500, 400))
-# caption setting
-pygame.display.set_caption('Gourds')
-# background colour setting
-screen.fill(colourDictionary['backGround'])
+sizeOfTheWindow = (500,400)
 # set width of the hexagonal cell
-widthOfHexCell = 50;
+if sizeOfTheWindow[0] / (len(board[0])) <= sizeOfTheWindow[1] / 1.732 / (len(board)):
+    widthOfHexCell = int(sizeOfTheWindow[0] / (len(board[0])+1))
+else:
+    widthOfHexCell = int(sizeOfTheWindow[1] / 1.732 / (len(board)+1))
 offset = widthOfHexCell*1.5
 # gourd size
 gourdSize = int(widthOfHexCell * 0.3)
 
+
+pygame.init()
+# size of the window
+screen = pygame.display.set_mode(sizeOfTheWindow)
+# caption setting
+pygame.display.set_caption('Gourds')
+# background colour setting
+screen.fill(colourDictionary['backGround'])
 
 def gourdPainter(firstPart, secondPart):
     pygame.draw.circle(screen, colourDictionary[firstPart[2]], (firstPart[0],firstPart[1]), gourdSize, 0)
