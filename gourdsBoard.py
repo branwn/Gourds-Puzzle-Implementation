@@ -49,16 +49,16 @@ def gourdPainter(firstPart, secondPart):
     pygame.draw.line(screen, colourDictionary[firstPart[2]],
                      (firstPart[0],firstPart[1]),
                      (int((firstPart[0]+secondPart[0])/2),int((firstPart[1]+secondPart[1])/2)),
-                     width=7)
+                     width=int(widthOfHexCell*0.1+2))
     pygame.draw.line(screen, colourDictionary[secondPart[2]],
                      (int((firstPart[0]+secondPart[0])/2),int((firstPart[1]+secondPart[1])/2)),
                      (secondPart[0],secondPart[1]),
-                     width=7)
+                     width=int(widthOfHexCell*0.1+2))
 
 
 def cellPainter(x, y):
     widthOfBlackFrameLine = -1
-    widthOfColourCell = widthOfHexCell - 8
+    widthOfColourCell = (widthOfHexCell*0.9)
 
     # draw colour
     pygame.draw.polygon(screen, colourDictionary[board[y][x]],
@@ -87,7 +87,7 @@ def cellPainter(x, y):
                                 int(offset + x * widthOfHexCell - widthOfColourCell),
                                 int(offset + y * widthOfHexCell * 1.732 + widthOfColourCell * 0.57735)
                             )
-                        ], 5)
+                        ], int(widthOfHexCell /10))
 
     # draw a frame
     pygame.draw.polygon(screen, colourDictionary['black'],
