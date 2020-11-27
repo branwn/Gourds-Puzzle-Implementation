@@ -339,9 +339,10 @@ def main():
 
             # MOUSE BUTTON DOWN
             if event.type == pygame.MOUSEBUTTONDOWN:
-                mouseClicked(event.pos)
+                pass
             # MOUSE BUTTON UP
             if event.type == pygame.MOUSEBUTTONUP:
+                mouseClicked(event.pos)
                 pass
 
 
