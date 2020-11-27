@@ -5,24 +5,25 @@ import numpy as np  # for matrix
 displayMatrix = False
 board = np.array([
    # 0, 1, 2, 3, 4, 5, 6, 7, 8
-    [0, 1, 0, 1, 0, 0],  #0
-    [1, 0, 1, 0, 1, 0],  #1
-    [0, 1, 0, 1, 0, 0]   #2
+    [0, 3, 0, 1, 0, 0],  #0
+    [1, 0, 2, 0, 3, 0],  #1
+    [0, 3, 0, 1, 0, 0]   #2
     ])
 
 # set a initial gourds placement
 gourdsList = np.array([
    # x, y, x, y, colourDict_1, colourDict_2
-    [1, 0, 0, 1, 3, 3],
-    [2, 1, 4, 1, 3, 3],
-    [1, 2, 3, 2, 3, 3]
+    [1, 0, 0, 1, 1, 3],
+    [2, 1, 4, 1, 2, 3],
+    [1, 2, 3, 2, 1, 3]
 ])
 
 # colour dictionary
 colourDictionary = {
     'backGround':(242,242,242),
-    1:(0,0,100),
-    2:(100,0,0),
+    'black':(0,0,0),
+    1:(0,100,0),
+    2:(0,0,100),
     3:(100,0,0)
 }
 
@@ -43,38 +44,77 @@ gourdSize = int(widthOfHexCell * 0.6)
 def gourdPainter(firstPart, secondPart):
     pygame.draw.circle(screen, colourDictionary[firstPart[2]], (firstPart[0],firstPart[1]), gourdSize, 4)
     pygame.draw.circle(screen, colourDictionary[secondPart[2]], (secondPart[0], secondPart[1]), gourdSize, 4)
-    pygame.draw.line(screen, colourDictionary[firstPart[2]],(firstPart[0],firstPart[1]),(secondPart[0],secondPart[1]), width=3)
+    pygame.draw.line(screen, colourDictionary[firstPart[2]],
+                     (firstPart[0],firstPart[1]),
+                     ((firstPart[0]+secondPart[0])/2,(firstPart[1]+secondPart[1])/2),
+                     width=3)
+    pygame.draw.line(screen, colourDictionary[secondPart[2]],
+                     ((firstPart[0]+secondPart[0])/2,(firstPart[1]+secondPart[1])/2),
+                     (secondPart[0],secondPart[1]),
+                     width=3)
 
 
 def cellPainter(x, y):
-    # draw a hexagonal cell
+    widthOfBlackFrameLine = -1
+    widthOfColourCell = widthOfHexCell - 3
+
+    # draw colour
     pygame.draw.polygon(screen, colourDictionary[board[y][x]],
                         [
+                            (  # down corner
+                                int(offset + x * widthOfHexCell),
+                                int(offset + y * widthOfHexCell * 1.732 + widthOfColourCell * 1.1547)
+                            ),
+                            (  # down-right corner
+                                int(offset + x * widthOfHexCell + widthOfColourCell),
+                                int(offset + y * widthOfHexCell * 1.732 + widthOfColourCell * 0.57735)
+                            ),
+                            (  # up-right corner
+                                int(offset + x * widthOfHexCell + widthOfColourCell),
+                                int(offset + y * widthOfHexCell * 1.732 - widthOfColourCell * 0.57735)
+                            ),
                             (  # up corner
+                                int(offset + x * widthOfHexCell),
+                                int(offset + y * widthOfHexCell * 1.732 - widthOfColourCell * 1.1547)
+                            ),
+                            (  # up-left corner
+                                int(offset + x * widthOfHexCell - widthOfColourCell),
+                                int(offset + y * widthOfHexCell * 1.732 - widthOfColourCell * 0.57735)
+                            ),
+                            (  # down-left corner
+                                int(offset + x * widthOfHexCell - widthOfColourCell),
+                                int(offset + y * widthOfHexCell * 1.732 + widthOfColourCell * 0.57735)
+                            )
+                        ], 4)
+
+    # draw a frame
+    pygame.draw.polygon(screen, colourDictionary['black'],
+                        [
+                            (  # down corner
                                 int(offset + x * widthOfHexCell),
                                 int(offset + y * widthOfHexCell * 1.732 + widthOfHexCell * 1.1547)
                             ),
-                            (  # up-right corner
+                            (  # down-right corner
                                 int(offset + x * widthOfHexCell + widthOfHexCell),
                                 int(offset + y * widthOfHexCell * 1.732 + widthOfHexCell * 0.57735)
                             ),
-                            (  # down-right corner
+                            (  # up-right corner
                                 int(offset + x * widthOfHexCell + widthOfHexCell),
                                 int(offset + y * widthOfHexCell * 1.732 - widthOfHexCell * 0.57735)
                             ),
-                            (  # down corner
+                            (  # up corner
                                 int(offset + x * widthOfHexCell),
                                 int(offset + y * widthOfHexCell * 1.732 - widthOfHexCell * 1.1547)
                             ),
-                            (  # down-left corner
+                            (  # up-left corner
                                 int(offset + x * widthOfHexCell - widthOfHexCell),
                                 int(offset + y * widthOfHexCell * 1.732 - widthOfHexCell * 0.57735)
                             ),
-                            (  # up-left corner
+                            (  # down-left corner
                                 int(offset + x * widthOfHexCell - widthOfHexCell),
                                 int(offset + y * widthOfHexCell * 1.732 + widthOfHexCell * 0.57735)
                             )
-                        ], 1)
+                        ], widthOfBlackFrameLine)
 
 
 def boardConstructor():
@@ -106,7 +146,7 @@ def gourdsConstructor():
                      gourdsList[i][4])
         secondPart = (int(offset + gourdsList[i][2] * widthOfHexCell),
                       int(offset + gourdsList[i][3] * widthOfHexCell * 1.732),
-                      gourdsList[i][4])
+                      gourdsList[i][5])
         gourdPainter(firstPart,secondPart)
     # refresh the window
     pygame.display.update()
@@ -142,22 +182,22 @@ def searchAnEmptyCellAround(x, y):
 
     # search an empty cell around x, y
     if x - 1 >= 0 and y - 1 >= 0:
-        if (board[y - 1][x - 1] == 1) and (searchGourdsByIndex(x - 1, y - 1)[0] == -1):  # upper left
+        if (board[y - 1][x - 1] != 0) and (searchGourdsByIndex(x - 1, y - 1)[0] == -1):  # upper left
             return x - 1, y - 1
     if x - 1 >= 0 and y + 1 <= maxOfY:
-        if (board[y + 1][x - 1] == 1) and (searchGourdsByIndex(x - 1, y + 1)[0] == -1):  # lower left
+        if (board[y + 1][x - 1] != 0) and (searchGourdsByIndex(x - 1, y + 1)[0] == -1):  # lower left
             return x - 1, y + 1
     if x + 1 <= maxOfX and y + 1 <= maxOfY:
-        if (board[y + 1][x + 1] == 1) and (searchGourdsByIndex(x + 1, y + 1)[0] == -1):  # lower right
+        if (board[y + 1][x + 1] != 0) and (searchGourdsByIndex(x + 1, y + 1)[0] == -1):  # lower right
             return x + 1, y + 1
     if x + 1 <= maxOfX and y - 1 >= 0:
-        if (board[y - 1][x + 1] == 1) and (searchGourdsByIndex(x + 1, y - 1)[0] == -1):  # upper right
+        if (board[y - 1][x + 1] != 0) and (searchGourdsByIndex(x + 1, y - 1)[0] == -1):  # upper right
             return x + 1, y - 1
     if x - 2 >= 0:
-        if (board[y][x - 2] == 1) and (searchGourdsByIndex(x - 2, y)[0] == -1):  # left
+        if (board[y][x - 2] != 0) and (searchGourdsByIndex(x - 2, y)[0] == -1):  # left
             return x - 2, y
     if x + 2 <= maxOfX:
-        if (board[y][x + 2] == 1) and (searchGourdsByIndex(x + 2, y)[0] == -1):  # right
+        if (board[y][x + 2] != 0) and (searchGourdsByIndex(x + 2, y)[0] == -1):  # right
             return x + 2, y
     return -1, -1
 
