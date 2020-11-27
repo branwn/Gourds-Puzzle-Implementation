@@ -37,7 +37,7 @@ screen.fill(colourDictionary['backGround'])
 widthOfHexCell = 50;
 offset = widthOfHexCell*1.5
 # gourd size
-gourdSize = widthOfHexCell * 0.6
+gourdSize = int(widthOfHexCell * 0.6)
 
 
 def gourdPainter(firstPart, secondPart):
@@ -59,7 +59,7 @@ def cellPainter(x, y):
                                 int(offset + y * widthOfHexCell * 1.732 + widthOfHexCell * 0.57735)
                             ),
                             (  # down-right corner
-                                offset + x * widthOfHexCell + widthOfHexCell,
+                                int(offset + x * widthOfHexCell + widthOfHexCell),
                                 int(offset + y * widthOfHexCell * 1.732 - widthOfHexCell * 0.57735)
                             ),
                             (  # down corner
@@ -169,18 +169,20 @@ def gourdsMovementAnimation(before, after, indexOfGourd):
         after[2] - before[2],
         after[3] - before[3]
     ]
-    persentageMoveStep = 0.05
+
+    eachPaceInAnimation = 0.05
+    rangeMax = int(1/eachPaceInAnimation)+1
 
     firstPart = (-1, -1, -1)
     secondPart = (-1, -1, -1)
-    for i in range(0,20):
+    for i in range(0,rangeMax):
         pygame.time.delay(10)
         # draw a gourd
-        firstPart = (int(offset + (before[0]+distance[0]*i*persentageMoveStep) * widthOfHexCell),
-                     int(offset + (before[1]+distance[1]*i*persentageMoveStep) * widthOfHexCell * 1.732),
+        firstPart = (int(offset + (before[0]+distance[0]*i*eachPaceInAnimation) * widthOfHexCell),
+                     int(offset + (before[1]+distance[1]*i*eachPaceInAnimation) * widthOfHexCell * 1.732),
                      gourdsList[indexOfGourd][4])
-        secondPart = (int(offset + (before[2]+distance[2]*i*persentageMoveStep) * widthOfHexCell),
-                      int(offset + (before[3]+distance[3]*i*persentageMoveStep) * widthOfHexCell * 1.732),
+        secondPart = (int(offset + (before[2]+distance[2]*i*eachPaceInAnimation) * widthOfHexCell),
+                      int(offset + (before[3]+distance[3]*i*eachPaceInAnimation) * widthOfHexCell * 1.732),
                       gourdsList[indexOfGourd][5])
         gourdPainter(firstPart, secondPart)
 
@@ -188,13 +190,31 @@ def gourdsMovementAnimation(before, after, indexOfGourd):
         pygame.display.update()
 
         # cover the gourds by background
-        firstPart = (int(offset + (before[0] + distance[0] * i * persentageMoveStep) * widthOfHexCell),
-                     int(offset + (before[1] + distance[1] * i * persentageMoveStep) * widthOfHexCell * 1.732),
+        firstPart = (int(offset + (before[0] + distance[0] * i * eachPaceInAnimation) * widthOfHexCell),
+                     int(offset + (before[1] + distance[1] * i * eachPaceInAnimation) * widthOfHexCell * 1.732),
                      'backGround')
-        secondPart = (int(offset + (before[2] + distance[2] * i * persentageMoveStep) * widthOfHexCell),
-                      int(offset + (before[3] + distance[3] * i * persentageMoveStep) * widthOfHexCell * 1.732),
+        secondPart = (int(offset + (before[2] + distance[2] * i * eachPaceInAnimation) * widthOfHexCell),
+                      int(offset + (before[3] + distance[3] * i * eachPaceInAnimation) * widthOfHexCell * 1.732),
                       'backGround')
         gourdPainter(firstPart, secondPart)
+
+        # redraw relative cells
+        cellPainter(before[0],before[1])
+        cellPainter(before[2],before[3])
+        cellPainter(after[0],after[1])
+        cellPainter(after[2],after[3])
+
+    # draw a gourd
+    firstPart = (int(offset + (before[0] + distance[0] * i * eachPaceInAnimation) * widthOfHexCell),
+                 int(offset + (before[1] + distance[1] * i * eachPaceInAnimation) * widthOfHexCell * 1.732),
+                 gourdsList[indexOfGourd][4])
+    secondPart = (int(offset + (before[2] + distance[2] * i * eachPaceInAnimation) * widthOfHexCell),
+                  int(offset + (before[3] + distance[3] * i * eachPaceInAnimation) * widthOfHexCell * 1.732),
+                  gourdsList[indexOfGourd][5])
+    gourdPainter(firstPart, secondPart)
+
+    # refresh the window
+    pygame.display.update()
 
         # refresh the window
         # pygame.display.update()
@@ -262,8 +282,9 @@ def mouseClicked(pos):
     gourdsMovement(indexOfGourd, xGourd, yGourd, xCell, yCell)
     # refresh screen
     # screen.fill((242, 242, 242))
-    boardConstructor()
-    gourdsConstructor()
+    # boardConstructor()
+    # gourdsConstructor()
+
 
 def main():
     # main loop
