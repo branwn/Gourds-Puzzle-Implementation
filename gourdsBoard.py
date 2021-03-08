@@ -64,7 +64,7 @@ def gourdPainter(firstPart, secondPart):
 
 def cellPainter(x, y):
     widthOfBlackFrameLine = -1
-    widthOfColourCell = (widthOfHexCell*0.9)
+    widthOfColourCell = (widthOfHexCell*0.8)
 
     # draw colour
     pygame.draw.polygon(screen, colourDictionary[board[y][x]],

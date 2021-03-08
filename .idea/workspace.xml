@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="d31618f6-21a8-480c-bbe7-b9a2933e5757" name="Default Changelist" comment="" />
+    <list default="true" id="d31618f6-21a8-480c-bbe7-b9a2933e5757" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gourdsBoard.py" beforeDir="false" afterPath="$PROJECT_DIR$/gourdsBoard.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -83,7 +86,7 @@
       <workItem from="1615165837712" duration="4798000" />
       <workItem from="1615192455419" duration="1387000" />
       <workItem from="1615195095977" duration="831000" />
-      <workItem from="1615196994790" duration="675000" />
+      <workItem from="1615196994790" duration="1254000" />
     </task>
     <servers />
   </component>
