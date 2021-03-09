@@ -20,17 +20,22 @@ gourdsList = np.array([
 
 # colour dictionary
 colourDictionary = {
-    'backGround':(242,242,242),
-    'black':(0,0,0),
-    1:(91,231,196),
-    2:(80,193,233),
-    3:(122,87,209),
-    4:(237,84,133),
-    5:(255,232,105)
+    'backGround': (242,242,242),
+    'black': (0,0,0),
+    1: (91,231,196),
+    2: (80,193,233),
+    3: (122,87,209),
+    4: (237,84,133),
+    5: (255,232,105)
 }
 
+
+# button states
+buttonStates = [0,0,0,0,0,0,0]
+
+
 # size of the window
-sizeOfTheWindow = (500,400)
+sizeOfTheWindow = (600,400)
 # set width of the hexagonal cell
 if sizeOfTheWindow[0] / (len(board[0])) <= sizeOfTheWindow[1] / 1.732 / (len(board)):
     widthOfHexCell = int(sizeOfTheWindow[0] / (len(board[0])+1))
@@ -39,7 +44,8 @@ else:
 offset = widthOfHexCell*1.5
 # gourd size
 gourdSize = int(widthOfHexCell * 0.3)
-
+# button size
+buttonSize = 150, 30
 
 pygame.init()
 # size of the window
@@ -49,8 +55,70 @@ pygame.display.set_caption('Gourds')
 # background colour setting
 screen.fill(colourDictionary['backGround'])
 
+def buttonPainter():
+    pygame.draw.rect(screen, colourDictionary['backGround'],
+                     (sizeOfTheWindow[0] - buttonSize[0] - 10, 0, buttonSize[0], sizeOfTheWindow[1]), 0)
+
+    # the first button
+    if buttonStates[1] == 1:
+        pygame.draw.rect(screen, colourDictionary[1], (sizeOfTheWindow[0]-buttonSize[0]-10, 10, buttonSize[0], buttonSize[1]), 0)
+    else:
+        pygame.draw.rect(screen, colourDictionary[1],
+                         (sizeOfTheWindow[0] - buttonSize[0] - 10, 10, buttonSize[0], buttonSize[1]), 4)
+    theFont = pygame.font.Font('OpenSans-Light.ttf', 20)
+    theText = theFont.render("the 1st btn", True, colourDictionary['black'])
+    screen.blit(theText, (sizeOfTheWindow[0]-buttonSize[0]+5, 10))
+
+
+    # the second button
+    if buttonStates[2] == 1:
+        pygame.draw.rect(screen, colourDictionary[1], (sizeOfTheWindow[0]-buttonSize[0]-10, buttonSize[1]+20, buttonSize[0], buttonSize[1]), 0)
+    else:
+        pygame.draw.rect(screen, colourDictionary[1], (sizeOfTheWindow[0]-buttonSize[0]-10, buttonSize[1]+20, buttonSize[0], buttonSize[1]), 4)
+    theFont = pygame.font.Font('OpenSans-Light.ttf', 20)
+    theText = theFont.render("the 2nd btn", True, colourDictionary['black'])
+    screen.blit(theText, (sizeOfTheWindow[0]-buttonSize[0]+5, buttonSize[1]+20))
+
+
+    # the third button
+    if buttonStates[3] == 1:
+        pygame.draw.rect(screen, colourDictionary[1], (sizeOfTheWindow[0]-buttonSize[0]-10, buttonSize[1]*2+30, buttonSize[0], buttonSize[1]), 0)
+    else:
+        pygame.draw.rect(screen, colourDictionary[1], (
+        sizeOfTheWindow[0] - buttonSize[0] - 10, buttonSize[1] * 2 + 30, buttonSize[0], buttonSize[1]), 4)
+    theFont = pygame.font.Font('OpenSans-Light.ttf', 20)
+    theText = theFont.render("the 3rd btn", True, colourDictionary['black'])
+    screen.blit(theText, (sizeOfTheWindow[0]-buttonSize[0]+5, buttonSize[1]*2+30))
+
+
+    # refresh the window
+    pygame.display.update()
+
+def searchButtonsByCoordinate(pos):
+    if pos[0] > sizeOfTheWindow[0] - buttonSize[0]:
+        if pos[1] < buttonSize[1] + 10: return 1;
+        if pos[1] < buttonSize[1]*2 + 20: return 2;
+        if pos[1] < buttonSize[1]*3 + 30: return 3;
+
+    return -1
+
+def buttonOneClicked():
+    buttonStates[1] = 1 - buttonStates[1]
+    buttonPainter()
+
+
+def buttonTwoClicked():
+    buttonStates[2] = 1 - buttonStates[2]
+    buttonPainter()
+
+
+def buttonThreeClicked():
+    buttonStates[3] = 1 - buttonStates[3]
+    buttonPainter()
+
+
 def gourdPainter(firstPart, secondPart):
-    pygame.draw.circle(screen, colourDictionary[firstPart[2]], (firstPart[0],firstPart[1]), gourdSize, 0)
+    pygame.draw.circle(screen, colourDictionary[firstPart[2]], (firstPart[0], firstPart[1]), gourdSize, 0)
     pygame.draw.circle(screen, colourDictionary[secondPart[2]], (secondPart[0], secondPart[1]), gourdSize, 0)
     pygame.draw.line(screen, colourDictionary[firstPart[2]],
                      (firstPart[0],firstPart[1]),
@@ -64,7 +132,7 @@ def gourdPainter(firstPart, secondPart):
 
 def cellPainter(x, y):
     widthOfBlackFrameLine = -1
-    widthOfColourCell = (widthOfHexCell*0.8)
+    widthOfColourCell = (widthOfHexCell * 0.8)
 
     # draw colour
     pygame.draw.polygon(screen, colourDictionary[board[y][x]],
@@ -126,15 +194,14 @@ def cellPainter(x, y):
 
 
 def boardConstructor():
-    font = pygame.font.Font('OpenSans-Light.ttf', 16)
-
+    theFont = pygame.font.Font('OpenSans-Light.ttf', 16)
 
     for i in range(len(board)):
         for j in range(len(board[0])):
             # display matrix
-            text = font.render(str(board[i][j]), True, (0, 0, 255))
+            theText = theFont.render(str(board[i][j]), True, (0, 0, 255))
             if displayMatrix:
-                screen.blit(text, (-4 + offset + j * widthOfHexCell, int(-12 + offset + i * widthOfHexCell * 1.732)))
+                screen.blit(theText, (-4 + offset + j * widthOfHexCell, int(-12 + offset + i * widthOfHexCell * 1.732)))
             # pygame.draw.circle(screen,(0,0,0),(offset + j * widthOfHexCell, offset + i * widthOfHexCell * 1.732) ,6,1)
 
             if (board[i][j]):
@@ -280,7 +347,7 @@ def gourdsMovement(indexOfGourd, xGourdClicked, yGourdClicked, xCell, yCell):
         xGourdLinked = gourdsList[indexOfGourd][0]
         yGourdLinked = gourdsList[indexOfGourd][1]
     else:
-        print("Something went wrong in gourdsMovement")
+        print("Something went wrong in gourdsMovement()")
         return -1
     # move gourd
 
@@ -319,27 +386,48 @@ def gourdsMovement(indexOfGourd, xGourdClicked, yGourdClicked, xCell, yCell):
 
 
 def mouseClicked(pos):
-    # search Gourds From Coordinate
+    # search Gourds by the given Coordinate
     indexOfGourd, xGourd, yGourd = searchGourdsByCoordinate(pos)
-    if indexOfGourd == -1: return -1;
-    # print(xGourd, yGourd)
-    # search An Empty Cell Around
-    xCell, yCell = searchAnEmptyCellAround(xGourd, yGourd)
-    if xCell == -1: return -1
-    # move gourds
-    gourdsMovement(indexOfGourd, xGourd, yGourd, xCell, yCell)
-    # refresh screen
-    # screen.fill((242, 242, 242))
-    # boardConstructor()
-    # gourdsConstructor()
+    if indexOfGourd != -1:
+        # print(xGourd, yGourd)
+        # search if there is an Empty Cell Around
+        xCell, yCell = searchAnEmptyCellAround(xGourd, yGourd)
+        if xCell != -1:
+            # move gourd to the empty cell
+            gourdsMovement(indexOfGourd, xGourd, yGourd, xCell, yCell)
+            return 0
+        # refresh screen
+        # screen.fill((242, 242, 242))
+        # boardConstructor()
+        # gourdsConstructor()
+        return 0
+
+
+
+    # search button by the given coordinate
+    indexOfButton = searchButtonsByCoordinate(pos)
+    if indexOfButton == -1: return -1
+    if indexOfButton == 1:
+        buttonOneClicked()
+        return 0
+    if indexOfButton == 2:
+        buttonTwoClicked()
+        return 0
+    if indexOfButton == 3:
+        buttonThreeClicked()
+        return 0
+
+
+
+    return -1;
 
 
 def main():
     # main loop
     running = True
     while running:
-
         for event in pygame.event.get():
+
             if event.type == pygame.QUIT:
                 running = False
                 pass
@@ -347,6 +435,7 @@ def main():
             # MOUSE BUTTON DOWN
             if event.type == pygame.MOUSEBUTTONDOWN:
                 pass
+
             # MOUSE BUTTON UP
             if event.type == pygame.MOUSEBUTTONUP:
                 mouseClicked(event.pos)
@@ -355,6 +444,7 @@ def main():
 
 
 if __name__ == '__main__':
+    buttonPainter()
     boardConstructor()
     gourdsConstructor()
     main()
