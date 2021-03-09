@@ -4,10 +4,11 @@ import numpy as np  # for matrix
 # set a matrix of board
 displayMatrix = False
 board = np.array([
-   # 0, 1, 2, 3, 4, 5, 6, 7, 8
-    [0, 4, 0, 4, 0],  # 0
-    [2, 0, 2, 0, 3],  # 1
-    [0, 1, 0, 1, 0],  # 2
+# x  0, 1, 2, 3, 4, 5, 6, 7, 8
+    [0, 4, 0, 4, 0, 1, 0],  # 0
+    [2, 0, 2, 0, 3, 0, 2],  # 1
+    [0, 1, 0, 1, 0, 1, 0],  # 2
+    [2, 0, 2, 0, 3, 0, 0],  # 3
 ])
 
 # set a initial gourds placement
@@ -15,7 +16,10 @@ gourdsList = np.array([
    # x, y, x, y, colourDict_1, colourDict_2
     [1, 0, 0, 1, 4, 2],
     [2, 1, 4, 1, 4, 3],
-    [1, 2, 3, 2, 1, 2]
+    [1, 2, 3, 2, 1, 2],
+    [0, 3, 2, 3, 3, 1],
+    [4, 3, 5, 2, 2, 1],
+    [5, 0, 6, 1, 2, 2]
 ])
 
 # colour dictionary
@@ -34,18 +38,20 @@ colourDictionary = {
 buttonStates = [0,0,0,0,0,0,0]
 
 
+
 # size of the window
 sizeOfTheWindow = (600,400)
+# button size
+buttonSize = 150, 30
 # set width of the hexagonal cell
-if sizeOfTheWindow[0] / (len(board[0])) <= sizeOfTheWindow[1] / 1.732 / (len(board)):
-    widthOfHexCell = int(sizeOfTheWindow[0] / (len(board[0])+1))
+if (sizeOfTheWindow[0]-buttonSize[0]) / (len(board[0])) <= sizeOfTheWindow[1] / 1.732 / (len(board)):
+    widthOfHexCell = int((sizeOfTheWindow[0]-buttonSize[0]) / (len(board[0])+2))
 else:
     widthOfHexCell = int(sizeOfTheWindow[1] / 1.732 / (len(board)+1))
 offset = widthOfHexCell*1.5
 # gourd size
 gourdSize = int(widthOfHexCell * 0.3)
-# button size
-buttonSize = 150, 30
+
 
 pygame.init()
 # size of the window
@@ -55,6 +61,9 @@ pygame.display.set_caption('Gourds')
 # background colour setting
 screen.fill(colourDictionary['backGround'])
 
+
+
+# for buttons
 def buttonPainter():
     pygame.draw.rect(screen, colourDictionary['backGround'],
                      (sizeOfTheWindow[0] - buttonSize[0] - 10, 0, buttonSize[0], sizeOfTheWindow[1]), 0)
@@ -94,6 +103,7 @@ def buttonPainter():
     # refresh the window
     pygame.display.update()
 
+
 def searchButtonsByCoordinate(pos):
     if pos[0] > sizeOfTheWindow[0] - buttonSize[0]:
         if pos[1] < buttonSize[1] + 10: return 1;
@@ -101,6 +111,7 @@ def searchButtonsByCoordinate(pos):
         if pos[1] < buttonSize[1]*3 + 30: return 3;
 
     return -1
+
 
 def buttonOneClicked():
     buttonStates[1] = 1 - buttonStates[1]
@@ -117,18 +128,8 @@ def buttonThreeClicked():
     buttonPainter()
 
 
-def gourdPainter(firstPart, secondPart):
-    pygame.draw.circle(screen, colourDictionary[firstPart[2]], (firstPart[0], firstPart[1]), gourdSize, 0)
-    pygame.draw.circle(screen, colourDictionary[secondPart[2]], (secondPart[0], secondPart[1]), gourdSize, 0)
-    pygame.draw.line(screen, colourDictionary[firstPart[2]],
-                     (firstPart[0],firstPart[1]),
-                     (int((firstPart[0]+secondPart[0])/2),int((firstPart[1]+secondPart[1])/2)),
-                     width=int(widthOfHexCell*0.1+2))
-    pygame.draw.line(screen, colourDictionary[secondPart[2]],
-                     (int((firstPart[0]+secondPart[0])/2),int((firstPart[1]+secondPart[1])/2)),
-                     (secondPart[0],secondPart[1]),
-                     width=int(widthOfHexCell*0.1+2))
 
+# for cells
 
 def cellPainter(x, y):
     widthOfBlackFrameLine = -1
@@ -193,7 +194,7 @@ def cellPainter(x, y):
                         ], widthOfBlackFrameLine)
 
 
-def boardConstructor():
+def cellsConstructor():
     theFont = pygame.font.Font('OpenSans-Light.ttf', 16)
 
     for i in range(len(board)):
@@ -209,6 +210,21 @@ def boardConstructor():
                 cellPainter(j, i)
     # refresh the window
     # pygame.display.update()
+
+
+# for gourds
+
+def gourdPainter(firstPart, secondPart):
+    pygame.draw.circle(screen, colourDictionary[firstPart[2]], (firstPart[0], firstPart[1]), gourdSize, 0)
+    pygame.draw.circle(screen, colourDictionary[secondPart[2]], (secondPart[0], secondPart[1]), gourdSize, 0)
+    pygame.draw.line(screen, colourDictionary[firstPart[2]],
+                     (firstPart[0],firstPart[1]),
+                     (int((firstPart[0]+secondPart[0])/2),int((firstPart[1]+secondPart[1])/2)),
+                     width=int(widthOfHexCell*0.1+2))
+    pygame.draw.line(screen, colourDictionary[secondPart[2]],
+                     (int((firstPart[0]+secondPart[0])/2),int((firstPart[1]+secondPart[1])/2)),
+                     (secondPart[0],secondPart[1]),
+                     width=int(widthOfHexCell*0.1+2))
 
 
 def gourdsConstructor():
@@ -319,7 +335,7 @@ def gourdsMovementAnimation(before, after, indexOfGourd):
         cellPainter(after[0],after[1])
         cellPainter(after[2],after[3])
 
-    # draw a gourd
+    # draw a final gourd place
     firstPart = (int(offset + (before[0] + distance[0] * i * eachPaceInAnimation) * widthOfHexCell),
                  int(offset + (before[1] + distance[1] * i * eachPaceInAnimation) * widthOfHexCell * 1.732),
                  gourdsList[indexOfGourd][4])
@@ -330,9 +346,6 @@ def gourdsMovementAnimation(before, after, indexOfGourd):
 
     # refresh the window
     pygame.display.update()
-
-        # refresh the window
-        # pygame.display.update()
 
 
 def gourdsMovement(indexOfGourd, xGourdClicked, yGourdClicked, xCell, yCell):
@@ -381,6 +394,10 @@ def gourdsMovement(indexOfGourd, xGourdClicked, yGourdClicked, xCell, yCell):
         gourdsList[indexOfGourd][1] = yGourdLinked
         gourdsList[indexOfGourd][2] = xGourdClicked
         gourdsList[indexOfGourd][3] = yGourdClicked
+
+    # finally refresh the whole board
+    cellsConstructor()
+    gourdsConstructor()
 
     return 0
 
@@ -445,6 +462,6 @@ def main():
 
 if __name__ == '__main__':
     buttonPainter()
-    boardConstructor()
+    cellsConstructor()
     gourdsConstructor()
     main()
