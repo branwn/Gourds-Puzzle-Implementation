@@ -342,6 +342,7 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+                exit()
                 pass
 
             # MOUSE BUTTON DOWN
@@ -351,7 +352,6 @@ def main():
             if event.type == pygame.MOUSEBUTTONUP:
                 mouseClicked(event.pos)
                 pass
-    exit()
 
 
 if __name__ == '__main__':
