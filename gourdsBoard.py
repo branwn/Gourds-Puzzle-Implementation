@@ -13,7 +13,7 @@ board = numpy.array([
 
 # set a initial gourds placement
 gourdsList = numpy.array([
-   # x, y, x, y, colourDict_1, colourDict_2
+   # x, y, x, y, colourLib_1, colourLib_2
     [1, 0, 0, 1, 4, 2],
     [2, 1, 4, 1, 4, 3],
     [1, 2, 3, 2, 1, 2],
@@ -257,7 +257,7 @@ def gourdsConstructor():
     pygame.display.update()
 
 
-def searchGourdsByCoordinate(pos):
+def gourdsSearchingByCoordinate(pos):
     x, y = pos
     # shrink the searching area
     x = x - offset
@@ -267,10 +267,10 @@ def searchGourdsByCoordinate(pos):
     x = int(x + 0.5)
     y = int(y + 0.5)
 
-    return searchGourdsByIndex(x, y)
+    return gourdsSearchingByIndex(x, y)
 
 
-def searchGourdsByIndex(x, y):
+def gourdsSearchingByIndex(x, y):
     # search if there is a gourd on (x, y)
     for i in range(len(gourdsList)):
         if (x == gourdsList[i][0] and y == gourdsList[i][1]):
@@ -280,29 +280,29 @@ def searchGourdsByIndex(x, y):
     return -1, -1, -1
 
 
-def searchAnEmptyCellAround(x, y):
+def emptyCellSearchingAroundAGourd(x, y):
     # obtain the size of the boardMatrix
     maxOfX = len(board[0]) - 1
     maxOfY = len(board) - 1
 
     # search an empty cell around x, y
     if x - 1 >= 0 and y - 1 >= 0:
-        if (board[y - 1][x - 1] != 0) and (searchGourdsByIndex(x - 1, y - 1)[0] == -1):  # upper left
+        if (board[y - 1][x - 1] != 0) and (gourdsSearchingByIndex(x - 1, y - 1)[0] == -1):  # upper left
             return x - 1, y - 1
     if x - 1 >= 0 and y + 1 <= maxOfY:
-        if (board[y + 1][x - 1] != 0) and (searchGourdsByIndex(x - 1, y + 1)[0] == -1):  # lower left
+        if (board[y + 1][x - 1] != 0) and (gourdsSearchingByIndex(x - 1, y + 1)[0] == -1):  # lower left
             return x - 1, y + 1
     if x + 1 <= maxOfX and y + 1 <= maxOfY:
-        if (board[y + 1][x + 1] != 0) and (searchGourdsByIndex(x + 1, y + 1)[0] == -1):  # lower right
+        if (board[y + 1][x + 1] != 0) and (gourdsSearchingByIndex(x + 1, y + 1)[0] == -1):  # lower right
             return x + 1, y + 1
     if x + 1 <= maxOfX and y - 1 >= 0:
-        if (board[y - 1][x + 1] != 0) and (searchGourdsByIndex(x + 1, y - 1)[0] == -1):  # upper right
+        if (board[y - 1][x + 1] != 0) and (gourdsSearchingByIndex(x + 1, y - 1)[0] == -1):  # upper right
             return x + 1, y - 1
     if x - 2 >= 0:
-        if (board[y][x - 2] != 0) and (searchGourdsByIndex(x - 2, y)[0] == -1):  # left
+        if (board[y][x - 2] != 0) and (gourdsSearchingByIndex(x - 2, y)[0] == -1):  # left
             return x - 2, y
     if x + 2 <= maxOfX:
-        if (board[y][x + 2] != 0) and (searchGourdsByIndex(x + 2, y)[0] == -1):  # right
+        if (board[y][x + 2] != 0) and (gourdsSearchingByIndex(x + 2, y)[0] == -1):  # right
             return x + 2, y
     return -1, -1
 
@@ -419,11 +419,11 @@ def gourdsMovement(indexOfGourd, xGourdClicked, yGourdClicked, xCell, yCell):
 
 def mouseClicked(pos):
     # search Gourds by the given Coordinate
-    indexOfGourd, xGourd, yGourd = searchGourdsByCoordinate(pos)
+    indexOfGourd, xGourd, yGourd = gourdsSearchingByCoordinate(pos)
     if indexOfGourd != -1:
         # print(xGourd, yGourd)
         # search if there is an Empty Cell Around
-        xCell, yCell = searchAnEmptyCellAround(xGourd, yGourd)
+        xCell, yCell = emptyCellSearchingAroundAGourd(xGourd, yGourd)
         if xCell != -1:
             # move gourd to the empty cell
             gourdsMovement(indexOfGourd, xGourd, yGourd, xCell, yCell)
