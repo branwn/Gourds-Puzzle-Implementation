@@ -48,6 +48,9 @@ else:
 offset = widthOfHexCell * 1.5
 # gourd size
 gourdSize = int(widthOfHexCell * 0.3)
+# first run flag
+runFirstTimeFlag = True
+
 
 pygame.init()
 # size of the window
@@ -190,19 +193,33 @@ def cellPainter(x, y):
 
 
 def cellsConstructor():
-    theFont = pygame.font.Font('OpenSans-Light.ttf', 20)
+    theFont = pygame.font.Font('OpenSans-Light.ttf', 16)
 
-    for i in range(len(board)):
-        for j in range(len(board[0])):
-            # display matrix
-            if displayMatrix and board[i][j]:
-                theText = theFont.render(str(board[i][j]), True, colourDictionary[board[i][j]])
-                screen.blit(theText, (-30 + offset + j * widthOfHexCell, int(-12 + offset + i * widthOfHexCell * 1.732)))
+    # draw the axis
+    if runFirstTimeFlag:
+        for y in range(len(board[0])):
+            theText = theFont.render(str(y), True, colourDictionary['black'])
+            screen.blit(theText, (-6 + offset + y * widthOfHexCell, 0))
+        for x in range(len(board)):
+            theText = theFont.render(str(x), True, colourDictionary['black'])
+            screen.blit(theText, (8, int(-14 + offset + x * widthOfHexCell * 1.732)))
+
+
+    # draw the cells
+    theFont = pygame.font.Font('OpenSans-Light.ttf', 22)
+    for y in range(len(board)):
+        for x in range(len(board[0])):
+            # display matrix numbers on screen
+            if displayMatrix:
+                if board[y][x]:
+                    # display if not board[i][j] is not 0
+                    theText = theFont.render(str(board[y][x]), True, colourDictionary[board[y][x]])
+                    screen.blit(theText, (-30 + offset + x * widthOfHexCell, int(-16 + offset + y * widthOfHexCell * 1.732)))
             # pygame.draw.circle(screen,(0,0,0),(offset + j * widthOfHexCell, offset + i * widthOfHexCell * 1.732) ,6,1)
 
-            if (board[i][j]):
+            if (board[y][x]):
                 # draw a hexagonal cell
-                cellPainter(j, i)
+                cellPainter(x, y)
     # refresh the window
     # pygame.display.update()
 
@@ -432,6 +449,13 @@ def mouseClicked(pos):
 
 
 def main():
+    # initialization
+    buttonPainter()
+    cellsConstructor()
+    gourdsConstructor()
+    global runFirstTimeFlag
+    runFirstTimeFlag = False
+
     # main loop
     running = True
     while running:
@@ -453,7 +477,7 @@ def main():
 
 
 if __name__ == '__main__':
-    buttonPainter()
-    cellsConstructor()
-    gourdsConstructor()
     main()
+
+
+
