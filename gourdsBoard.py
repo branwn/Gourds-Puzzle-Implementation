@@ -1,12 +1,11 @@
 import pygame
 import numpy  # for matrix
 
-
 displayIndexOnTheScreen = True
 
 # set a matrix of board
 board = numpy.array([
-   # x  0, 1, 2, 3, 4, 5, 6, 7, 8
+    # x  0, 1, 2, 3, 4, 5, 6, 7, 8
     [0, 4, 0, 4, 0, 1, 0],  # 0
     [2, 0, 2, 0, 3, 0, 2],  # 1
     [0, 1, 0, 1, 0, 1, 0],  # 2
@@ -15,7 +14,7 @@ board = numpy.array([
 
 # set a initial gourds placement
 gourdsList = numpy.array([
-   # x, y, x, y, colourLib_1, colourLib_2
+    # x, y, x, y, colourLib_1, colourLib_2
     [1, 0, 0, 1, 4, 2],
     [2, 1, 4, 1, 4, 3],
     [1, 2, 3, 2, 1, 2],
@@ -28,7 +27,7 @@ gourdsList = numpy.array([
 coloursLibrary = {
     'backGround': (242, 242, 242),
     'black': (0, 0, 0),
-    'white': (255,255,255),
+    'white': (255, 255, 255),
     1: (190, 127, 73),
     2: (80, 193, 233),
     3: (122, 87, 209),
@@ -43,7 +42,7 @@ buttonStates = [0, 0, 0, 0, 0, 0, 0]
 # size of the window
 sizeOfTheWindow = (600, 400)
 # button size
-buttonSize = 150, 30
+buttonSize = 180, 30
 # set width of the hexagonal cell
 if (sizeOfTheWindow[0] - buttonSize[0]) / (len(board[0])) <= sizeOfTheWindow[1] / 1.732 / (len(board)):
     widthOfHexCell = int((sizeOfTheWindow[0] - buttonSize[0]) / (len(board[0]) + 2))
@@ -55,7 +54,6 @@ gourdSize = int(widthOfHexCell * 0.3)
 # first run flag
 runFirstTimeFlag = True
 
-
 pygame.init()
 # size of the window
 screen = pygame.display.set_mode(sizeOfTheWindow)
@@ -66,20 +64,23 @@ screen.fill(coloursLibrary['backGround'])
 
 
 # for buttons
-def buttonPainter():
+def buttonConstructorAndPainter():
     pygame.draw.rect(screen, coloursLibrary['backGround'],
                      (sizeOfTheWindow[0] - buttonSize[0] - 10, 0, buttonSize[0], sizeOfTheWindow[1]), 0)
 
+    theFont = pygame.font.Font('OpenSans-Light.ttf', 20)
     # the first button
     if buttonStates[1] == 1:
         pygame.draw.rect(screen, coloursLibrary[2],
                          (sizeOfTheWindow[0] - buttonSize[0] - 10, 10, buttonSize[0], buttonSize[1]), 0)
+        theText = theFont.render("Index Hidden", True, coloursLibrary['black'])
+        screen.blit(theText, (sizeOfTheWindow[0] - buttonSize[0] + 5, 10))
+
     else:
         pygame.draw.rect(screen, coloursLibrary[2],
                          (sizeOfTheWindow[0] - buttonSize[0] - 10, 10, buttonSize[0], buttonSize[1]), 4)
-    theFont = pygame.font.Font('OpenSans-Light.ttf', 20)
-    theText = theFont.render("the 1st btn", True, coloursLibrary['black'])
-    screen.blit(theText, (sizeOfTheWindow[0] - buttonSize[0] + 5, 10))
+        theText = theFont.render("Index Displayed", True, coloursLibrary['black'])
+        screen.blit(theText, (sizeOfTheWindow[0] - buttonSize[0] + 5, 10))
 
     # the second button
     if buttonStates[2] == 1:
@@ -95,7 +96,7 @@ def buttonPainter():
     # the third button
     if buttonStates[3] == 1:
         pygame.draw.rect(screen, coloursLibrary[2], (
-        sizeOfTheWindow[0] - buttonSize[0] - 10, buttonSize[1] * 2 + 30, buttonSize[0], buttonSize[1]), 0)
+            sizeOfTheWindow[0] - buttonSize[0] - 10, buttonSize[1] * 2 + 30, buttonSize[0], buttonSize[1]), 0)
     else:
         pygame.draw.rect(screen, coloursLibrary[2], (
             sizeOfTheWindow[0] - buttonSize[0] - 10, buttonSize[1] * 2 + 30, buttonSize[0], buttonSize[1]), 4)
@@ -103,8 +104,8 @@ def buttonPainter():
     theText = theFont.render("the 3rd btn", True, coloursLibrary['black'])
     screen.blit(theText, (sizeOfTheWindow[0] - buttonSize[0] + 5, buttonSize[1] * 2 + 30))
 
-    # refresh the window
-    pygame.display.update()
+    # # refresh the window
+    # pygame.display.update()
 
 
 def buttonsSearchingByCoordinate(pos):
@@ -117,18 +118,34 @@ def buttonsSearchingByCoordinate(pos):
 
 
 def buttonOneClicked():
+    # switcher
     buttonStates[1] = 1 - buttonStates[1]
-    buttonPainter()
+
+    global displayIndexOnTheScreen
+    if buttonStates[1] == 1:
+        displayIndexOnTheScreen = False
+    else:
+        displayIndexOnTheScreen = True
+
+    # refresh the whole window
+    screen.fill(coloursLibrary['backGround'])
+    buttonConstructorAndPainter()
+    cellsAndAxisConstructor()
+    gourdsConstructor()
+    pygame.display.update()
 
 
 def buttonTwoClicked():
     buttonStates[2] = 1 - buttonStates[2]
-    buttonPainter()
+    buttonConstructorAndPainter()
+    pygame.display.update()
 
 
 def buttonThreeClicked():
     buttonStates[3] = 1 - buttonStates[3]
-    buttonPainter()
+    buttonConstructorAndPainter()
+    pygame.display.update()
+
 
 
 # for cells
@@ -200,15 +217,13 @@ def cellsAndAxisConstructor():
     theFont = pygame.font.Font('OpenSans-Light.ttf', 16)
 
     # draw the axis
-    if runFirstTimeFlag:
-        print("widthOfHexCell = ", widthOfHexCell)
-        for y in range(len(board[0])):
-            theText = theFont.render(str(y), True, coloursLibrary['black'])
-            screen.blit(theText, (-6 + offset + y * widthOfHexCell, 0))
-        for x in range(len(board)):
-            theText = theFont.render(str(x), True, coloursLibrary['black'])
-            screen.blit(theText, (8, int(-14 + offset + x * widthOfHexCell * 1.732)))
-
+    print("widthOfHexCell = ", widthOfHexCell)
+    for y in range(len(board[0])):
+        theText = theFont.render(str(y), True, coloursLibrary['black'])
+        screen.blit(theText, (-6 + offset + y * widthOfHexCell, 0))
+    for x in range(len(board)):
+        theText = theFont.render(str(x), True, coloursLibrary['black'])
+        screen.blit(theText, (8, int(-14 + offset + x * widthOfHexCell * 1.732)))
 
     # draw the cells
     theFont = pygame.font.Font('OpenSans-Light.ttf', 22)
@@ -219,7 +234,8 @@ def cellsAndAxisConstructor():
                 if board[y][x]:
                     # display if not board[i][j] is not 0
                     theText = theFont.render(str(board[y][x]), True, coloursLibrary[board[y][x]])
-                    screen.blit(theText, (int(-widthOfHexCell/1.6) + offset + x * widthOfHexCell, int(-16 + offset + y * widthOfHexCell * 1.732)))
+                    screen.blit(theText, (int(-widthOfHexCell / 1.6) + offset + x * widthOfHexCell,
+                                          int(-16 + offset + y * widthOfHexCell * 1.732)))
             # pygame.draw.circle(screen,(0,0,0),(offset + j * widthOfHexCell, offset + i * widthOfHexCell * 1.732) ,6,1)
 
             if (board[y][x]):
@@ -453,8 +469,6 @@ def mouseClicked(pos):
 
             return 0
 
-
-
         return 0
 
     # search button by the given coordinate
@@ -475,7 +489,7 @@ def mouseClicked(pos):
 
 def main():
     # initialization
-    buttonPainter()
+    buttonConstructorAndPainter()
     cellsAndAxisConstructor()
     gourdsConstructor()
     global runFirstTimeFlag
@@ -505,6 +519,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
-
-
