@@ -23,7 +23,7 @@ gourdsList = numpy.array([
 ])
 
 # colour dictionary
-colourDictionary = {
+coloursLibrary = {
     'backGround': (242, 242, 242),
     'black': (0, 0, 0),
     1: (190, 127, 73),
@@ -59,45 +59,45 @@ screen = pygame.display.set_mode(sizeOfTheWindow)
 # caption setting
 pygame.display.set_caption('Gourds')
 # background colour setting
-screen.fill(colourDictionary['backGround'])
+screen.fill(coloursLibrary['backGround'])
 
 
 # for buttons
 def buttonPainter():
-    pygame.draw.rect(screen, colourDictionary['backGround'],
+    pygame.draw.rect(screen, coloursLibrary['backGround'],
                      (sizeOfTheWindow[0] - buttonSize[0] - 10, 0, buttonSize[0], sizeOfTheWindow[1]), 0)
 
     # the first button
     if buttonStates[1] == 1:
-        pygame.draw.rect(screen, colourDictionary[2],
+        pygame.draw.rect(screen, coloursLibrary[2],
                          (sizeOfTheWindow[0] - buttonSize[0] - 10, 10, buttonSize[0], buttonSize[1]), 0)
     else:
-        pygame.draw.rect(screen, colourDictionary[2],
+        pygame.draw.rect(screen, coloursLibrary[2],
                          (sizeOfTheWindow[0] - buttonSize[0] - 10, 10, buttonSize[0], buttonSize[1]), 4)
     theFont = pygame.font.Font('OpenSans-Light.ttf', 20)
-    theText = theFont.render("the 1st btn", True, colourDictionary['black'])
+    theText = theFont.render("the 1st btn", True, coloursLibrary['black'])
     screen.blit(theText, (sizeOfTheWindow[0] - buttonSize[0] + 5, 10))
 
     # the second button
     if buttonStates[2] == 1:
-        pygame.draw.rect(screen, colourDictionary[2],
+        pygame.draw.rect(screen, coloursLibrary[2],
                          (sizeOfTheWindow[0] - buttonSize[0] - 10, buttonSize[1] + 20, buttonSize[0], buttonSize[1]), 0)
     else:
-        pygame.draw.rect(screen, colourDictionary[2],
+        pygame.draw.rect(screen, coloursLibrary[2],
                          (sizeOfTheWindow[0] - buttonSize[0] - 10, buttonSize[1] + 20, buttonSize[0], buttonSize[1]), 4)
     theFont = pygame.font.Font('OpenSans-Light.ttf', 20)
-    theText = theFont.render("the 2nd btn", True, colourDictionary['black'])
+    theText = theFont.render("the 2nd btn", True, coloursLibrary['black'])
     screen.blit(theText, (sizeOfTheWindow[0] - buttonSize[0] + 5, buttonSize[1] + 20))
 
     # the third button
     if buttonStates[3] == 1:
-        pygame.draw.rect(screen, colourDictionary[2], (
+        pygame.draw.rect(screen, coloursLibrary[2], (
         sizeOfTheWindow[0] - buttonSize[0] - 10, buttonSize[1] * 2 + 30, buttonSize[0], buttonSize[1]), 0)
     else:
-        pygame.draw.rect(screen, colourDictionary[2], (
+        pygame.draw.rect(screen, coloursLibrary[2], (
             sizeOfTheWindow[0] - buttonSize[0] - 10, buttonSize[1] * 2 + 30, buttonSize[0], buttonSize[1]), 4)
     theFont = pygame.font.Font('OpenSans-Light.ttf', 20)
-    theText = theFont.render("the 3rd btn", True, colourDictionary['black'])
+    theText = theFont.render("the 3rd btn", True, coloursLibrary['black'])
     screen.blit(theText, (sizeOfTheWindow[0] - buttonSize[0] + 5, buttonSize[1] * 2 + 30))
 
     # refresh the window
@@ -135,7 +135,7 @@ def cellPainter(x, y):
     widthOfColourCell = (widthOfHexCell * 0.8)
 
     # draw colour
-    pygame.draw.polygon(screen, colourDictionary[board[y][x]],
+    pygame.draw.polygon(screen, coloursLibrary[board[y][x]],
                         [
                             (  # down corner
                                 int(offset + x * widthOfHexCell),
@@ -164,7 +164,7 @@ def cellPainter(x, y):
                         ], int(widthOfHexCell / 10))
 
     # draw a frame
-    pygame.draw.polygon(screen, colourDictionary['black'],
+    pygame.draw.polygon(screen, coloursLibrary['black'],
                         [
                             (  # down corner
                                 int(offset + x * widthOfHexCell),
@@ -200,10 +200,10 @@ def cellsAndAxisConstructor():
     if runFirstTimeFlag:
         print(widthOfHexCell)
         for y in range(len(board[0])):
-            theText = theFont.render(str(y), True, colourDictionary['black'])
+            theText = theFont.render(str(y), True, coloursLibrary['black'])
             screen.blit(theText, (-6 + offset + y * widthOfHexCell, 0))
         for x in range(len(board)):
-            theText = theFont.render(str(x), True, colourDictionary['black'])
+            theText = theFont.render(str(x), True, coloursLibrary['black'])
             screen.blit(theText, (8, int(-14 + offset + x * widthOfHexCell * 1.732)))
 
 
@@ -215,7 +215,7 @@ def cellsAndAxisConstructor():
             if displayMatrix:
                 if board[y][x]:
                     # display if not board[i][j] is not 0
-                    theText = theFont.render(str(board[y][x]), True, colourDictionary[board[y][x]])
+                    theText = theFont.render(str(board[y][x]), True, coloursLibrary[board[y][x]])
                     screen.blit(theText, (int(-widthOfHexCell/1.6) + offset + x * widthOfHexCell, int(-16 + offset + y * widthOfHexCell * 1.732)))
             # pygame.draw.circle(screen,(0,0,0),(offset + j * widthOfHexCell, offset + i * widthOfHexCell * 1.732) ,6,1)
 
@@ -229,13 +229,13 @@ def cellsAndAxisConstructor():
 # for gourds
 
 def gourdPainter(firstPart, secondPart):
-    pygame.draw.circle(screen, colourDictionary[firstPart[2]], (firstPart[0], firstPart[1]), gourdSize, 0)
-    pygame.draw.circle(screen, colourDictionary[secondPart[2]], (secondPart[0], secondPart[1]), gourdSize, 0)
-    pygame.draw.line(screen, colourDictionary[firstPart[2]],
+    pygame.draw.circle(screen, coloursLibrary[firstPart[2]], (firstPart[0], firstPart[1]), gourdSize, 0)
+    pygame.draw.circle(screen, coloursLibrary[secondPart[2]], (secondPart[0], secondPart[1]), gourdSize, 0)
+    pygame.draw.line(screen, coloursLibrary[firstPart[2]],
                      (firstPart[0], firstPart[1]),
                      (int((firstPart[0] + secondPart[0]) / 2), int((firstPart[1] + secondPart[1]) / 2)),
                      width=int(widthOfHexCell * 0.1 + 2))
-    pygame.draw.line(screen, colourDictionary[secondPart[2]],
+    pygame.draw.line(screen, coloursLibrary[secondPart[2]],
                      (int((firstPart[0] + secondPart[0]) / 2), int((firstPart[1] + secondPart[1]) / 2)),
                      (secondPart[0], secondPart[1]),
                      width=int(widthOfHexCell * 0.1 + 2))
