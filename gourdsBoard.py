@@ -26,11 +26,12 @@ gourdsList = numpy.array([
 colourDictionary = {
     'backGround': (242, 242, 242),
     'black': (0, 0, 0),
-    1: (91, 231, 196),
+    1: (190, 127, 73),
     2: (80, 193, 233),
     3: (122, 87, 209),
     4: (237, 84, 133),
-    5: (255, 232, 105)
+    5: (255, 232, 105),
+    6: (91, 231, 196),
 }
 
 # button states
@@ -68,10 +69,10 @@ def buttonPainter():
 
     # the first button
     if buttonStates[1] == 1:
-        pygame.draw.rect(screen, colourDictionary[1],
+        pygame.draw.rect(screen, colourDictionary[2],
                          (sizeOfTheWindow[0] - buttonSize[0] - 10, 10, buttonSize[0], buttonSize[1]), 0)
     else:
-        pygame.draw.rect(screen, colourDictionary[1],
+        pygame.draw.rect(screen, colourDictionary[2],
                          (sizeOfTheWindow[0] - buttonSize[0] - 10, 10, buttonSize[0], buttonSize[1]), 4)
     theFont = pygame.font.Font('OpenSans-Light.ttf', 20)
     theText = theFont.render("the 1st btn", True, colourDictionary['black'])
@@ -79,10 +80,10 @@ def buttonPainter():
 
     # the second button
     if buttonStates[2] == 1:
-        pygame.draw.rect(screen, colourDictionary[1],
+        pygame.draw.rect(screen, colourDictionary[2],
                          (sizeOfTheWindow[0] - buttonSize[0] - 10, buttonSize[1] + 20, buttonSize[0], buttonSize[1]), 0)
     else:
-        pygame.draw.rect(screen, colourDictionary[1],
+        pygame.draw.rect(screen, colourDictionary[2],
                          (sizeOfTheWindow[0] - buttonSize[0] - 10, buttonSize[1] + 20, buttonSize[0], buttonSize[1]), 4)
     theFont = pygame.font.Font('OpenSans-Light.ttf', 20)
     theText = theFont.render("the 2nd btn", True, colourDictionary['black'])
@@ -90,10 +91,10 @@ def buttonPainter():
 
     # the third button
     if buttonStates[3] == 1:
-        pygame.draw.rect(screen, colourDictionary[1], (
+        pygame.draw.rect(screen, colourDictionary[2], (
         sizeOfTheWindow[0] - buttonSize[0] - 10, buttonSize[1] * 2 + 30, buttonSize[0], buttonSize[1]), 0)
     else:
-        pygame.draw.rect(screen, colourDictionary[1], (
+        pygame.draw.rect(screen, colourDictionary[2], (
             sizeOfTheWindow[0] - buttonSize[0] - 10, buttonSize[1] * 2 + 30, buttonSize[0], buttonSize[1]), 4)
     theFont = pygame.font.Font('OpenSans-Light.ttf', 20)
     theText = theFont.render("the 3rd btn", True, colourDictionary['black'])
