@@ -1,8 +1,10 @@
 import pygame
 import numpy  # for matrix
 
+
+displayIndexOnTheScreen = True
+
 # set a matrix of board
-displayMatrix = True
 board = numpy.array([
    # x  0, 1, 2, 3, 4, 5, 6, 7, 8
     [0, 4, 0, 4, 0, 1, 0],  # 0
@@ -26,6 +28,7 @@ gourdsList = numpy.array([
 coloursLibrary = {
     'backGround': (242, 242, 242),
     'black': (0, 0, 0),
+    'white': (255,255,255),
     1: (190, 127, 73),
     2: (80, 193, 233),
     3: (122, 87, 209),
@@ -104,7 +107,7 @@ def buttonPainter():
     pygame.display.update()
 
 
-def searchButtonsByCoordinate(pos):
+def buttonsSearchingByCoordinate(pos):
     if pos[0] > sizeOfTheWindow[0] - buttonSize[0]:
         if pos[1] < buttonSize[1] + 10: return 1;
         if pos[1] < buttonSize[1] * 2 + 20: return 2;
@@ -198,7 +201,7 @@ def cellsAndAxisConstructor():
 
     # draw the axis
     if runFirstTimeFlag:
-        print(widthOfHexCell)
+        print("widthOfHexCell = ", widthOfHexCell)
         for y in range(len(board[0])):
             theText = theFont.render(str(y), True, coloursLibrary['black'])
             screen.blit(theText, (-6 + offset + y * widthOfHexCell, 0))
@@ -212,7 +215,7 @@ def cellsAndAxisConstructor():
     for y in range(len(board)):
         for x in range(len(board[0])):
             # display matrix numbers on screen
-            if displayMatrix:
+            if displayIndexOnTheScreen:
                 if board[y][x]:
                     # display if not board[i][j] is not 0
                     theText = theFont.render(str(board[y][x]), True, coloursLibrary[board[y][x]])
@@ -229,6 +232,7 @@ def cellsAndAxisConstructor():
 # for gourds
 
 def gourdPainter(firstPart, secondPart):
+    # draw a gourd
     pygame.draw.circle(screen, coloursLibrary[firstPart[2]], (firstPart[0], firstPart[1]), gourdSize, 0)
     pygame.draw.circle(screen, coloursLibrary[secondPart[2]], (secondPart[0], secondPart[1]), gourdSize, 0)
     pygame.draw.line(screen, coloursLibrary[firstPart[2]],
@@ -242,6 +246,7 @@ def gourdPainter(firstPart, secondPart):
 
 
 def gourdsConstructor():
+    # (x of the window, y of the window, index of the gourds)
     firstPart = (-1, -1, -1)
     secondPart = (-1, -1, -1)
 
@@ -253,8 +258,22 @@ def gourdsConstructor():
                       int(offset + gourdsList[i][3] * widthOfHexCell * 1.732),
                       gourdsList[i][5])
         gourdPainter(firstPart, secondPart)
+
+        # display the numbers / indexes on the gourds
+        if displayIndexOnTheScreen:
+            # first part
+            numberSize = widthOfHexCell / 2
+            theFont = pygame.font.Font('OpenSans-Light.ttf', int(numberSize))
+            theText = theFont.render(str(firstPart[2]), True, coloursLibrary['backGround'])
+            screen.blit(theText, (firstPart[0] - int(numberSize * 0.25), firstPart[1] - int(numberSize * 0.75)))
+            # second part
+            numberSize = widthOfHexCell / 2
+            theFont = pygame.font.Font('OpenSans-Light.ttf', int(numberSize))
+            theText = theFont.render(str(secondPart[2]), True, coloursLibrary['backGround'])
+            screen.blit(theText, (secondPart[0] - int(numberSize * 0.25), secondPart[1] - int(numberSize * 0.75)))
+
     # refresh the window
-    pygame.display.update()
+    # pygame.display.update()
 
 
 def gourdsSearchingByCoordinate(pos):
@@ -362,7 +381,7 @@ def gourdsMovementAnimation(before, after, indexOfGourd):
     pygame.display.update()
 
 
-def gourdsMovement(indexOfGourd, xGourdClicked, yGourdClicked, xCell, yCell):
+def gourdsMovementController(indexOfGourd, xGourdClicked, yGourdClicked, xCell, yCell):
     # identify the clicked and linked parts of gourd
     if gourdsList[indexOfGourd][0] == xGourdClicked and gourdsList[indexOfGourd][1] == yGourdClicked:
         firstPartClicked = True
@@ -411,8 +430,8 @@ def gourdsMovement(indexOfGourd, xGourdClicked, yGourdClicked, xCell, yCell):
         gourdsList[indexOfGourd][3] = yGourdClicked
 
     # finally refresh the whole board
-    cellsAndAxisConstructor()
-    gourdsConstructor()
+    # cellsAndAxisConstructor()
+    # gourdsConstructor()
 
     return 0
 
@@ -426,16 +445,20 @@ def mouseClicked(pos):
         xCell, yCell = emptyCellSearchingAroundAGourd(xGourd, yGourd)
         if xCell != -1:
             # move gourd to the empty cell
-            gourdsMovement(indexOfGourd, xGourd, yGourd, xCell, yCell)
+            gourdsMovementController(indexOfGourd, xGourd, yGourd, xCell, yCell)
+            # finally refresh the whole board
+            cellsAndAxisConstructor()
+            gourdsConstructor()
+            pygame.display.update()
+
             return 0
-        # refresh screen
-        # screen.fill((242, 242, 242))
-        # boardConstructor()
-        # gourdsConstructor()
+
+
+
         return 0
 
     # search button by the given coordinate
-    indexOfButton = searchButtonsByCoordinate(pos)
+    indexOfButton = buttonsSearchingByCoordinate(pos)
     if indexOfButton == -1: return -1
     if indexOfButton == 1:
         buttonOneClicked()
@@ -457,6 +480,8 @@ def main():
     gourdsConstructor()
     global runFirstTimeFlag
     runFirstTimeFlag = False
+
+    pygame.display.update()
 
     # main loop
     running = True
