@@ -1,7 +1,7 @@
 import pygame
 import numpy  # for matrix
 
-displayIndexOnTheScreen = True
+displayIndexOnTheScreen = False
 
 # set a matrix of board
 board = numpy.array([
@@ -73,13 +73,13 @@ def buttonConstructorAndPainter():
     if buttonStates[1] == 1:
         pygame.draw.rect(screen, coloursLibrary[2],
                          (sizeOfTheWindow[0] - buttonSize[0] - 10, 10, buttonSize[0], buttonSize[1]), 0)
-        theText = theFont.render("Index Hidden", True, coloursLibrary['black'])
+        theText = theFont.render("Index Displayed", True, coloursLibrary['black'])
         screen.blit(theText, (sizeOfTheWindow[0] - buttonSize[0] + 5, 10))
 
     else:
         pygame.draw.rect(screen, coloursLibrary[2],
                          (sizeOfTheWindow[0] - buttonSize[0] - 10, 10, buttonSize[0], buttonSize[1]), 4)
-        theText = theFont.render("Index Displayed", True, coloursLibrary['black'])
+        theText = theFont.render("Index Hidden", True, coloursLibrary['black'])
         screen.blit(theText, (sizeOfTheWindow[0] - buttonSize[0] + 5, 10))
 
     # the second button
@@ -122,7 +122,7 @@ def buttonOneClicked():
     buttonStates[1] = 1 - buttonStates[1]
 
     global displayIndexOnTheScreen
-    if buttonStates[1] == 1:
+    if buttonStates[1] == 0:
         displayIndexOnTheScreen = False
     else:
         displayIndexOnTheScreen = True
@@ -217,7 +217,7 @@ def cellsAndAxisConstructor():
     theFont = pygame.font.Font('OpenSans-Light.ttf', 16)
 
     # draw the axis
-    print("widthOfHexCell = ", widthOfHexCell)
+    # print("widthOfHexCell = ", widthOfHexCell)
     for y in range(len(board[0])):
         theText = theFont.render(str(y), True, coloursLibrary['black'])
         screen.blit(theText, (-6 + offset + y * widthOfHexCell, 0))
