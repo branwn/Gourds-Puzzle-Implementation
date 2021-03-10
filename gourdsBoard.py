@@ -192,11 +192,12 @@ def cellPainter(x, y):
                         ], widthOfBlackFrameLine)
 
 
-def cellsConstructor():
+def cellsAndAxisConstructor():
     theFont = pygame.font.Font('OpenSans-Light.ttf', 16)
 
     # draw the axis
     if runFirstTimeFlag:
+        print(widthOfHexCell)
         for y in range(len(board[0])):
             theText = theFont.render(str(y), True, colourDictionary['black'])
             screen.blit(theText, (-6 + offset + y * widthOfHexCell, 0))
@@ -214,7 +215,7 @@ def cellsConstructor():
                 if board[y][x]:
                     # display if not board[i][j] is not 0
                     theText = theFont.render(str(board[y][x]), True, colourDictionary[board[y][x]])
-                    screen.blit(theText, (-30 + offset + x * widthOfHexCell, int(-16 + offset + y * widthOfHexCell * 1.732)))
+                    screen.blit(theText, (int(-widthOfHexCell/1.6) + offset + x * widthOfHexCell, int(-16 + offset + y * widthOfHexCell * 1.732)))
             # pygame.draw.circle(screen,(0,0,0),(offset + j * widthOfHexCell, offset + i * widthOfHexCell * 1.732) ,6,1)
 
             if (board[y][x]):
@@ -409,7 +410,7 @@ def gourdsMovement(indexOfGourd, xGourdClicked, yGourdClicked, xCell, yCell):
         gourdsList[indexOfGourd][3] = yGourdClicked
 
     # finally refresh the whole board
-    cellsConstructor()
+    cellsAndAxisConstructor()
     gourdsConstructor()
 
     return 0
@@ -451,7 +452,7 @@ def mouseClicked(pos):
 def main():
     # initialization
     buttonPainter()
-    cellsConstructor()
+    cellsAndAxisConstructor()
     gourdsConstructor()
     global runFirstTimeFlag
     runFirstTimeFlag = False
