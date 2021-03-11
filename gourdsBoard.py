@@ -37,7 +37,10 @@ coloursLibrary = {
 }
 
 # button states
-buttonStates = [0, 0, 0, 0, 0, 0, 0]
+buttonStates = [0, 0, 0, 0, 0, 0, 0]  # 0 by default
+
+# Hamiltonian Cycle Storage
+hamiltonianCycle = []
 
 # size of the window
 sizeOfTheWindow = (600, 400)
@@ -63,12 +66,36 @@ pygame.display.set_caption('Gourds')
 screen.fill(coloursLibrary['backGround'])
 
 
+# for algorithm Hamiltonian Cycle seeking
+def hamiltonianCycleSeeking():
+    # auto-choose a root of the tree
+    existARootFlag = False
+    for row in board:
+        if existARootFlag: break
+        for index in row:
+            if existARootFlag: break
+            if not index:
+                continue  # skip 0
+            # find three hex-cells connected to each other
+            print("index = ", index)
+            
+
+
+
+
+
+
+
+
+def hamiltonianCycleDisplay():
+    pass
+
+
 # for buttons
 def buttonConstructorAndPainter():
     pygame.draw.rect(screen, coloursLibrary['backGround'],
                      (sizeOfTheWindow[0] - buttonSize[0] - 10, 0, buttonSize[0], sizeOfTheWindow[1]), 0)
     theFont = pygame.font.Font('OpenSans-Light.ttf', 20)
-
 
     # the first button
     if buttonStates[1] == 0:
@@ -81,10 +108,7 @@ def buttonConstructorAndPainter():
                          (sizeOfTheWindow[0] - buttonSize[0] - 10, 10, buttonSize[0], buttonSize[1]), 0)
         theText = theFont.render("Index Displayed", True, coloursLibrary['black'])
 
-
     screen.blit(theText, (sizeOfTheWindow[0] - buttonSize[0] + 5, 10))
-
-
 
     # the second button
     if buttonStates[2] == 0:
@@ -96,10 +120,7 @@ def buttonConstructorAndPainter():
                          (sizeOfTheWindow[0] - buttonSize[0] - 10, buttonSize[1] + 20, buttonSize[0], buttonSize[1]), 0)
         theText = theFont.render("Hamiltonian Cycle!", True, coloursLibrary['black'])
 
-
     screen.blit(theText, (sizeOfTheWindow[0] - buttonSize[0] + 5, buttonSize[1] + 20))
-
-
 
     # the third button
     if buttonStates[3] == 0:
@@ -111,7 +132,6 @@ def buttonConstructorAndPainter():
         pygame.draw.rect(screen, coloursLibrary[2], (
             sizeOfTheWindow[0] - buttonSize[0] - 10, buttonSize[1] * 2 + 30, buttonSize[0], buttonSize[1]), 0)
         theText = theFont.render("in state 1", True, coloursLibrary['black'])
-
 
     screen.blit(theText, (sizeOfTheWindow[0] - buttonSize[0] + 5, buttonSize[1] * 2 + 30))
 
@@ -147,16 +167,19 @@ def buttonOneClicked():
 
 
 def buttonTwoClicked():
+    # switcher
     buttonStates[2] = 1 - buttonStates[2]
+    # update button
     buttonConstructorAndPainter()
     pygame.display.update()
+    hamiltonianCycleSeeking()
+    hamiltonianCycleDisplay()
 
 
 def buttonThreeClicked():
     buttonStates[3] = 1 - buttonStates[3]
     buttonConstructorAndPainter()
     pygame.display.update()
-
 
 
 # for cells
