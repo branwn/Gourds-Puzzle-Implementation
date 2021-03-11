@@ -41,7 +41,7 @@ buttonStates = [0, 0, 0, 0, 0, 0, 0]  # 0 by default
 
 # Hamiltonian Cycle Storage
 rootOfHamiltonianCycle = -1, -1
-hamiltonianCycle = [] # 1 for right hand side, and count in clockwise
+hamiltonianCycleList = [] # 1 for right hand side, and count in clockwise
 hamiltonianCycleMap = numpy.zeros_like(board) # 1 for right hand side, and count in clockwise
 
 
@@ -111,28 +111,42 @@ def findTheRootCell():
     return None
 
 def hamiltonianCycleGenerator():
+    if findTheRootCell() is None: return None
     # DFS
     global rootOfHamiltonianCycle
-    global hamiltonianCycle
+    global hamiltonianCycleList
     global hamiltonianCycleMap
 
-    if findTheRootCell() is None: return None
+
     # print(rootOfHamiltonianCycle)
     # print(hamiltonianCycleMap)
-    
-    x, y = rootOfHamiltonianCycle
-    while(True):
-        neighberList = searchNeighberCells(x, y)
-        if len(neighberList) == 0:
-            return
-        # for neighber in neighberList:
-        #
-        #
-        #
-        #
-        # x = neighberList[0]
-        # y = neighberList[1]
-        # hamiltonianCycle.append(neighberList)
+
+    # x, y = rootOfHamiltonianCycle
+    # while(True):
+    #     neighberList = searchNeighberCells(x, y)
+    #     if len(neighberList) == 0:
+    #         return
+    #
+    #
+    #     x, y = -1, -1
+    #     for neighbor in neighberList:
+    #         # search for next step
+    #         # there's a neighbor
+    #         if hamiltonianCycleMap[x, y] >= neighbor[2]:
+    #             # not the first time here
+    #             # is rolling back
+    #             continue
+    #         if hamiltonianCycleMap[neighbor[0], neighbor[1]] == 0:
+    #             # neighbor is free
+    #             x = neighbor[0]
+    #             y = neighbor[1]
+    #             hamiltonianCycleMap[neighbor[0], neighbor[1]] = neighbor[2]
+    #             hamiltonianCycleList.append([neighbor])
+    #             break
+    #     if x == -1: # there's no next step
+    #         # roll back start
+    #         hamiltonianCycleMap.
+
 
 
 
