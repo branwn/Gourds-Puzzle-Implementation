@@ -42,7 +42,7 @@ buttonStates = [0, 0, 0, 0, 0, 0, 0]
 # size of the window
 sizeOfTheWindow = (600, 400)
 # button size
-buttonSize = 180, 30
+buttonSize = 200, 30
 # set width of the hexagonal cell
 if (sizeOfTheWindow[0] - buttonSize[0]) / (len(board[0])) <= sizeOfTheWindow[1] / 1.732 / (len(board)):
     widthOfHexCell = int((sizeOfTheWindow[0] - buttonSize[0]) / (len(board[0]) + 2))
@@ -67,41 +67,52 @@ screen.fill(coloursLibrary['backGround'])
 def buttonConstructorAndPainter():
     pygame.draw.rect(screen, coloursLibrary['backGround'],
                      (sizeOfTheWindow[0] - buttonSize[0] - 10, 0, buttonSize[0], sizeOfTheWindow[1]), 0)
-
     theFont = pygame.font.Font('OpenSans-Light.ttf', 20)
-    # the first button
-    if buttonStates[1] == 1:
-        pygame.draw.rect(screen, coloursLibrary[2],
-                         (sizeOfTheWindow[0] - buttonSize[0] - 10, 10, buttonSize[0], buttonSize[1]), 0)
-        theText = theFont.render("Index Displayed", True, coloursLibrary['black'])
-        screen.blit(theText, (sizeOfTheWindow[0] - buttonSize[0] + 5, 10))
 
-    else:
+
+    # the first button
+    if buttonStates[1] == 0:
         pygame.draw.rect(screen, coloursLibrary[2],
                          (sizeOfTheWindow[0] - buttonSize[0] - 10, 10, buttonSize[0], buttonSize[1]), 4)
         theText = theFont.render("Index Hidden", True, coloursLibrary['black'])
-        screen.blit(theText, (sizeOfTheWindow[0] - buttonSize[0] + 5, 10))
+
+    else:
+        pygame.draw.rect(screen, coloursLibrary[2],
+                         (sizeOfTheWindow[0] - buttonSize[0] - 10, 10, buttonSize[0], buttonSize[1]), 0)
+        theText = theFont.render("Index Displayed", True, coloursLibrary['black'])
+
+
+    screen.blit(theText, (sizeOfTheWindow[0] - buttonSize[0] + 5, 10))
+
+
 
     # the second button
-    if buttonStates[2] == 1:
-        pygame.draw.rect(screen, coloursLibrary[2],
-                         (sizeOfTheWindow[0] - buttonSize[0] - 10, buttonSize[1] + 20, buttonSize[0], buttonSize[1]), 0)
-    else:
+    if buttonStates[2] == 0:
         pygame.draw.rect(screen, coloursLibrary[2],
                          (sizeOfTheWindow[0] - buttonSize[0] - 10, buttonSize[1] + 20, buttonSize[0], buttonSize[1]), 4)
-    theFont = pygame.font.Font('OpenSans-Light.ttf', 20)
-    theText = theFont.render("the 2nd btn", True, coloursLibrary['black'])
+        theText = theFont.render("Hamiltonian Cycle?", True, coloursLibrary['black'])
+    else:
+        pygame.draw.rect(screen, coloursLibrary[2],
+                         (sizeOfTheWindow[0] - buttonSize[0] - 10, buttonSize[1] + 20, buttonSize[0], buttonSize[1]), 0)
+        theText = theFont.render("Hamiltonian Cycle!", True, coloursLibrary['black'])
+
+
     screen.blit(theText, (sizeOfTheWindow[0] - buttonSize[0] + 5, buttonSize[1] + 20))
 
+
+
     # the third button
-    if buttonStates[3] == 1:
-        pygame.draw.rect(screen, coloursLibrary[2], (
-            sizeOfTheWindow[0] - buttonSize[0] - 10, buttonSize[1] * 2 + 30, buttonSize[0], buttonSize[1]), 0)
-    else:
+    if buttonStates[3] == 0:
         pygame.draw.rect(screen, coloursLibrary[2], (
             sizeOfTheWindow[0] - buttonSize[0] - 10, buttonSize[1] * 2 + 30, buttonSize[0], buttonSize[1]), 4)
-    theFont = pygame.font.Font('OpenSans-Light.ttf', 20)
-    theText = theFont.render("the 3rd btn", True, coloursLibrary['black'])
+        theText = theFont.render("in state 0", True, coloursLibrary['black'])
+
+    else:
+        pygame.draw.rect(screen, coloursLibrary[2], (
+            sizeOfTheWindow[0] - buttonSize[0] - 10, buttonSize[1] * 2 + 30, buttonSize[0], buttonSize[1]), 0)
+        theText = theFont.render("in state 1", True, coloursLibrary['black'])
+
+
     screen.blit(theText, (sizeOfTheWindow[0] - buttonSize[0] + 5, buttonSize[1] * 2 + 30))
 
     # # refresh the window
