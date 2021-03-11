@@ -40,7 +40,7 @@ coloursLibrary = {
 buttonStates = [0, 0, 0, 0, 0, 0, 0]  # 0 by default
 
 # Hamiltonian Cycle Storage
-hamiltonianCycle = []
+hamiltonianCycleVerticesList = []
 
 # size of the window
 sizeOfTheWindow = (600, 400)
@@ -103,33 +103,41 @@ def threeCellsConnectionsSeeking(shape, baseCellIndex, x, y):
 
     return None
 
-def hamiltonianCycleSeeking():
+def treeSeeking():
     # auto-choose a root of the tree
-    root = None
-    existARootFlag = False
+    vertices = None
     for y in range(len(board)):
-        if existARootFlag: break
         for x in range(len(board[y])):
-            if existARootFlag: break
             # find three hex-cells connected to each other in Y shape
-            root = threeCellsConnectionsSeeking('A', 3, x, y)
-            if root is not None:
-                existARootFlag = True
+            temp = threeCellsConnectionsSeeking('A', 3, x, y)
+            if temp is not None:
+                vertices = temp
+                # print(vertices)
+                hamiltonianCycleVerticesList.append(temp)
+            temp = threeCellsConnectionsSeeking('T', 3, x, y)
+            if temp is not None:
+                vertices = temp
+                # print(vertices)
+                hamiltonianCycleVerticesList.append(temp)
 
-    if root is None:
+    for i in hamiltonianCycleVerticesList: print(i)
+
+    if vertices is None:
         print("Fail to find vertices")
         return None
 
-
     # extend from the root
-    
 
 
 
 
 
 
+def treeDisplay():
+    pass
 
+def hamiltonianCycleGeneratorFromATree():
+    pass
 
 
 def hamiltonianCycleDisplay():
@@ -217,7 +225,9 @@ def buttonTwoClicked():
     # update button
     buttonConstructorAndPainter()
     pygame.display.update()
-    hamiltonianCycleSeeking()
+    treeSeeking()
+    treeDisplay()
+    hamiltonianCycleGeneratorFromATree()
     hamiltonianCycleDisplay()
 
 
