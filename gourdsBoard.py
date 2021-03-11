@@ -103,7 +103,7 @@ def threeCellsConnectionsSeeking(shape, baseCellIndex, x, y):
 
     return None
 
-def treeSeeking():
+def verticesSeeking():
     # auto-choose a root of the tree
     vertices = None
     for y in range(len(board)):
@@ -124,7 +124,7 @@ def treeSeeking():
                 # print(vertices)
                 hamiltonianCycleVerticesList.append(temp)
 
-    for i in hamiltonianCycleVerticesList: print(i)
+    # for i in hamiltonianCycleVerticesList: print(i)
 
     if vertices is None:
         print("Fail to find vertices")
@@ -132,19 +132,14 @@ def treeSeeking():
 
     # extend from the root
 
-
-
-
-
-
-def treeDisplay():
+def verticesDisplay():
     for i in hamiltonianCycleVerticesList:
         if i[0] == 'A':
-            pygame.draw.circle(screen, coloursLibrary[6], (int(offset + i[2] * widthOfHexCell),
-                     int(offset + widthOfHexCell * 1.1547 + i[3] * widthOfHexCell * 1.732)), 5, 2)
+            pygame.draw.circle(screen, coloursLibrary["black"], (int(offset + i[2] * widthOfHexCell),
+                     int(offset + widthOfHexCell * 1.1547 + i[3] * widthOfHexCell * 1.732)), 5, 1)
         else:
-            pygame.draw.circle(screen, coloursLibrary[6], (int(offset + i[2] * widthOfHexCell),
-                     int(offset - widthOfHexCell * 1.1547 + i[3] * widthOfHexCell * 1.732)), 5, 2)
+            pygame.draw.circle(screen, coloursLibrary["black"], (int(offset + i[2] * widthOfHexCell),
+                     int(offset - widthOfHexCell * 1.1547 + i[3] * widthOfHexCell * 1.732)), 5, 1)
     pygame.display.update()
 
 
@@ -234,13 +229,19 @@ def buttonOneClicked():
 def buttonTwoClicked():
     # switcher
     buttonStates[2] = 1 - buttonStates[2]
-    # update button
-    buttonConstructorAndPainter()
-    pygame.display.update()
-    treeSeeking()
-    treeDisplay()
-    hamiltonianCycleGeneratorFromATree()
-    hamiltonianCycleDisplay()
+
+    if buttonStates[2]:
+        # update button
+        buttonConstructorAndPainter()
+        pygame.display.update()
+        verticesSeeking()
+        verticesDisplay()
+        hamiltonianCycleGeneratorFromATree()
+        hamiltonianCycleDisplay()
+        pygame.display.update()
+    else:
+        redrawTheScreen()
+
 
 
 def buttonThreeClicked():
@@ -563,7 +564,7 @@ def mouseClicked(pos):
         if xCell != -1:
             # move gourd to the empty cell
             gourdsMovementController(indexOfGourd, xGourd, yGourd, xCell, yCell)
-            # finally refresh the whole board
+            # finally refresh the cells and gourds
             cellsAndAxisConstructor()
             gourdsConstructor()
             pygame.display.update()
@@ -587,6 +588,13 @@ def mouseClicked(pos):
 
     return -1;
 
+
+def redrawTheScreen():
+    screen.fill(coloursLibrary['backGround'])
+    buttonConstructorAndPainter()
+    cellsAndAxisConstructor()
+    gourdsConstructor()
+    pygame.display.update()
 
 def main():
     # initialization
