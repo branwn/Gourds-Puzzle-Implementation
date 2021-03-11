@@ -40,7 +40,7 @@ coloursLibrary = {
 buttonStates = [0, 0, 0, 0, 0, 0, 0]  # 0 by default
 
 # Hamiltonian Cycle Storage
-hamiltonianCycleVerticesList = []
+hamiltonianCycleSteps = []
 
 # size of the window
 sizeOfTheWindow = (600, 400)
@@ -69,105 +69,9 @@ screen.fill(coloursLibrary['backGround'])
 # for algorithm Hamiltonian Cycle seeking
 
 
-def threeCellsConnectionsSeeking(shape, baseCellIndex, x, y):
-    if not board[y][x]:
-        return None# skip 0
-
-    if shape == 'T':
-        if baseCellIndex == 1: # top left
-            if x + 2 < len(board[y]) and y + 1 < len(board):
-                if board[y][x + 2] and board[y + 1][x + 1]:
-                    return 'T', baseCellIndex, x, y
-        if baseCellIndex == 2: # top right
-            if x >= 2 and y + 1 < len(board):
-                if board[y][x - 2] and board[y + 1][x - 1]:
-                    return 'T', baseCellIndex, x, y
-        if baseCellIndex == 3: # down
-            if x >= 1 and y >= 1 and x + 1 < len(board[y]):
-                if board[y - 1][x - 1] and board[y - 1][x + 1]:
-                    return 'T', baseCellIndex, x, y
-
-    if shape == 'A':
-        if baseCellIndex == 3:# top
-            if x >= 1 and y + 1 < len(board) and x + 1 < len(board[y]):
-                if board[y + 1][x - 1] and board[y + 1][x + 1]:
-                    return 'A', baseCellIndex, x, y
-        if baseCellIndex == 4:# down left
-            if x + 2 < len(board[y]) and y >= 1:
-                if board[y][x + 2] and board[y + 1][x + 1]:
-                    return 'A', baseCellIndex, x, y
-        if baseCellIndex == 5:# down right
-            if x >= 2 and y >= 1:
-                if board[y][x - 2] and board[y - 1][x - 1]:
-                    return 'A', baseCellIndex, x, y
-
-    return None
 
 
-def verticesSeeking():
-    # find the vertices
-    verticesList = []
-    for y in range(len(board)):
-        for x in range(len(board[y])):
-            # find three hex-cells connected to each other in Y shape
-            temp = threeCellsConnectionsSeeking('A', 3, x, y)
-            if temp is not None:
-                # vertices = temp
-                # print(vertices)
-                verticesList.append(temp)
-
-            temp = threeCellsConnectionsSeeking('T', 3, x, y)
-            if temp is not None:
-                # vertices = temp
-                # print(vertices)
-                verticesList.append(temp)
-
-    # for i in verticesList: print(i)
-    if len(verticesList) == 0:
-        print("WARN: No Vertices Founded")
-        return None
-
-    # connect the vertices
-    for vertex in verticesList:
-        # search if a cell is surrounded by vertices
-        temp = []
-        if vertex[0] == 'A':
-            # top
-            temp.append(threeCellsConnectionsSeeking('T', 3, vertex[2], vertex[3]))
-            # left
-            temp.append(threeCellsConnectionsSeeking('T', 2, vertex[2], vertex[3]))
-            # right
-            temp.append(threeCellsConnectionsSeeking('T', 1, vertex[2], vertex[3]))
-
-
-
-
-            pass
-        if vertex[0] == 'T':
-
-
-
-
-
-            pass
-
-
-def verticesDisplay():
-    if len(hamiltonianCycleVerticesList) == 0:
-        print("WARN: No Vertices Founded" )
-        return
-
-    for i in hamiltonianCycleVerticesList:
-        if i[0] == 'A':
-            pygame.draw.circle(screen, coloursLibrary["black"], (int(offset + i[2] * widthOfHexCell),
-                     int(offset + widthOfHexCell * 1.1547 + i[3] * widthOfHexCell * 1.732)), 5, 1)
-        if i[0] == 'T':
-            pygame.draw.circle(screen, coloursLibrary["black"], (int(offset + i[2] * widthOfHexCell),
-                     int(offset - widthOfHexCell * 1.1547 + i[3] * widthOfHexCell * 1.732)), 5, 1)
-    pygame.display.update()
-
-
-def hamiltonianCycleGeneratorFromATree():
+def hamiltonianCycleGenerator():
     pass
 
 
@@ -258,9 +162,8 @@ def buttonTwoClicked():
         # update button
         buttonConstructorAndPainter()
         pygame.display.update()
-        verticesSeeking()
-        verticesDisplay()
-        hamiltonianCycleGeneratorFromATree()
+
+        hamiltonianCycleGenerator()
         hamiltonianCycleDisplay()
         pygame.display.update()
     else:
@@ -619,6 +522,7 @@ def redrawTheScreen():
     cellsAndAxisConstructor()
     gourdsConstructor()
     pygame.display.update()
+
 
 def main():
     # initialization
