@@ -67,17 +67,39 @@ screen.fill(coloursLibrary['backGround'])
 
 
 # for algorithm Hamiltonian Cycle seeking
+def threeCellsConnectionsSeeking(shape, baseCellIndex, x, y):
+    if not board[y][x]:
+        return None# skip 0
+
+    if shape == 'Y' or 'T':
+        if baseCellIndex == 1:
+            if x + 2 < len(board[y]) and y + 1 < len(board):
+                if board[y][x + 2] and board[y + 1][x + 1]:
+                    return x, y
+
+
+    if shape == 'A':
+        return x, y
+
+    return None
+
 def hamiltonianCycleSeeking():
     # auto-choose a root of the tree
+    root = None
     existARootFlag = False
     for y in range(len(board)):
         if existARootFlag: break
         for x in range(len(board[y])):
             if existARootFlag: break
-            if not board[y][x]:
-                continue  # skip 0
-            # find three hex-cells connected to each other
-            print("index = ", board[y][x])
+            # find three hex-cells connected to each other in Y shape
+            root = threeCellsConnectionsSeeking('T', 1, x, y)
+            if root is not None:
+                existARootFlag = True
+                print("root is not none")
+                print("index = ", board[y][x])
+
+    print(root)
+
 
 
 
