@@ -71,15 +71,33 @@ def threeCellsConnectionsSeeking(shape, baseCellIndex, x, y):
     if not board[y][x]:
         return None# skip 0
 
-    if shape == 'Y' or 'T':
-        if baseCellIndex == 1:
+    if shape == 'T':
+        if baseCellIndex == 1: # top left
             if x + 2 < len(board[y]) and y + 1 < len(board):
                 if board[y][x + 2] and board[y + 1][x + 1]:
-                    return x, y
-
+                    return 'T', baseCellIndex, x, y
+        if baseCellIndex == 2: # top right
+            if x >= 2 and y + 1 < len(board):
+                if board[y][x - 2] and board[y + 1][x - 1]:
+                    return 'T', baseCellIndex, x, y
+        if baseCellIndex == 3: # down
+            if x >= 1 and y >= 1 and x + 1 < len(board[y]):
+                if board[y - 1][x - 1] and board[y - 1][x + 1]:
+                    return 'T', baseCellIndex, x, y
 
     if shape == 'A':
-        return x, y
+        if baseCellIndex == 3:# top
+            if x >= 1 and y + 1 < len(board) and x + 1 < len(board[y]):
+                if board[y + 1][x - 1] and board[y + 1][x + 1]:
+                    return 'A', baseCellIndex, x, y
+        if baseCellIndex == 4:# down left
+            if x + 2 < len(board[y]) and y >= 1:
+                if board[y][x + 2] and board[y + 1][x + 1]:
+                    return 'A', baseCellIndex, x, y
+        if baseCellIndex == 5:# down right
+            if x >= 2 and y >= 1:
+                if board[y][x - 2] and board[y - 1][x - 1]:
+                    return 'A', baseCellIndex, x, y
 
     return None
 
@@ -92,7 +110,7 @@ def hamiltonianCycleSeeking():
         for x in range(len(board[y])):
             if existARootFlag: break
             # find three hex-cells connected to each other in Y shape
-            root = threeCellsConnectionsSeeking('T', 1, x, y)
+            root = threeCellsConnectionsSeeking('A', 5, x, y)
             if root is not None:
                 existARootFlag = True
                 print("root is not none")
