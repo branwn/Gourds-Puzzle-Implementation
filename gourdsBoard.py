@@ -104,40 +104,69 @@ def threeCellsConnectionsSeeking(shape, baseCellIndex, x, y):
     return None
 
 def verticesSeeking():
-    # auto-choose a root of the tree
-    vertices = None
+    # find the vertices
+    verticesList = []
     for y in range(len(board)):
         for x in range(len(board[y])):
             # find three hex-cells connected to each other in Y shape
             temp = threeCellsConnectionsSeeking('A', 3, x, y)
             if temp is not None:
-                vertices = temp
+                # vertices = temp
                 # print(vertices)
-                hamiltonianCycleVerticesList.append(temp)
-
-
-
+                verticesList.append(temp)
 
             temp = threeCellsConnectionsSeeking('T', 3, x, y)
             if temp is not None:
-                vertices = temp
+                # vertices = temp
                 # print(vertices)
-                hamiltonianCycleVerticesList.append(temp)
+                verticesList.append(temp)
 
-    # for i in hamiltonianCycleVerticesList: print(i)
-
-    if vertices is None:
-        print("Fail to find vertices")
+    # for i in verticesList: print(i)
+    if len(verticesList) == 0:
+        print("WARN: No Vertices Founded")
         return None
 
-    # extend from the root
+    # connect the vertices
+    for vertex in verticesList:
+        # search if a cell is surrounded by vertices
+        temp = []
+        if vertex[0] == 'A':
+            # top
+            temp.append(threeCellsConnectionsSeeking('T', 3, vertex[2], vertex[3]))
+            # left
+            temp.append(threeCellsConnectionsSeeking('T', 2, vertex[2], vertex[3]))
+            # right
+            temp.append(threeCellsConnectionsSeeking('T', 1, vertex[2], vertex[3]))
+
+
+
+
+            pass
+        if vertex[0] == 'T':
+
+
+
+
+
+            pass
+
+
+
+
+
+
+
 
 def verticesDisplay():
+    if len(hamiltonianCycleVerticesList) == 0:
+        print("WARN: No Vertices Founded" )
+        return
+
     for i in hamiltonianCycleVerticesList:
         if i[0] == 'A':
             pygame.draw.circle(screen, coloursLibrary["black"], (int(offset + i[2] * widthOfHexCell),
                      int(offset + widthOfHexCell * 1.1547 + i[3] * widthOfHexCell * 1.732)), 5, 1)
-        else:
+        if i[0] == 'T':
             pygame.draw.circle(screen, coloursLibrary["black"], (int(offset + i[2] * widthOfHexCell),
                      int(offset - widthOfHexCell * 1.1547 + i[3] * widthOfHexCell * 1.732)), 5, 1)
     pygame.display.update()
