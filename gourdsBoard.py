@@ -70,15 +70,15 @@ screen.fill(coloursLibrary['backGround'])
 def hamiltonianCycleSeeking():
     # auto-choose a root of the tree
     existARootFlag = False
-    for row in board:
+    for y in range(len(board)):
         if existARootFlag: break
-        for index in row:
+        for x in range(len(board[y])):
             if existARootFlag: break
-            if not index:
+            if not board[y][x]:
                 continue  # skip 0
             # find three hex-cells connected to each other
-            print("index = ", index)
-            
+            print("index = ", board[y][x])
+
 
 
 
