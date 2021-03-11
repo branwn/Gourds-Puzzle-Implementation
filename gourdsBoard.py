@@ -40,7 +40,11 @@ coloursLibrary = {
 buttonStates = [0, 0, 0, 0, 0, 0, 0]  # 0 by default
 
 # Hamiltonian Cycle Storage
-hamiltonianCycleSteps = []
+rootOfHamiltonianCycle = -1, -1
+hamiltonianCycle = [] # 1 for right hand side, and count in clockwise
+hamiltonianCycleMap = numpy.zeros_like(board) # 1 for right hand side, and count in clockwise
+
+
 
 # size of the window
 sizeOfTheWindow = (600, 400)
@@ -69,10 +73,73 @@ screen.fill(coloursLibrary['backGround'])
 # for algorithm Hamiltonian Cycle seeking
 
 
+def searchNeighberCells(x, y):
+    # obtain the size of the boardMatrix
+    maxOfX = len(board[0]) - 1
+    maxOfY = len(board) - 1
 
+    results = []
+    # search an empty cell around x, y
+    if x + 2 <= maxOfX:
+        if (board[y][x + 2] != 0):  # right 1
+            results.append([x + 2, y, 1])
+    if x + 1 <= maxOfX and y + 1 <= maxOfY:
+        if (board[y + 1][x + 1] != 0):  # lower right 2
+            results.append([x + 1, y + 1, 2])
+    if x - 1 >= 0 and y + 1 <= maxOfY:
+        if (board[y + 1][x - 1] != 0):  # lower left 3
+            results.append([x - 1, y + 1, 3])
+    if x - 2 >= 0:
+        if (board[y][x - 2] != 0):  # left 4
+            results.append  ([x - 2, y, 4])
+    if x - 1 >= 0 and y - 1 >= 0:
+        if (board[y - 1][x - 1] != 0):  # upper left 5
+            results.append  ([x - 1, y - 1, 5])
+    if x + 1 <= maxOfX and y - 1 >= 0:
+        if (board[y - 1][x + 1] != 0):  # upper right 6
+            results.append ([x + 1, y - 1, 6])
+
+    return results
+
+def findTheRootCell():
+    global rootOfHamiltonianCycle
+    for y in range(len(board)):
+        for x in range(len(board[y])):
+            if board[y][x] != 0:
+                rootOfHamiltonianCycle = x, y
+                return 0
+    return None
 
 def hamiltonianCycleGenerator():
-    pass
+    # DFS
+    global rootOfHamiltonianCycle
+    global hamiltonianCycle
+    global hamiltonianCycleMap
+
+    if findTheRootCell() is None: return None
+    # print(rootOfHamiltonianCycle)
+    # print(hamiltonianCycleMap)
+    
+    x, y = rootOfHamiltonianCycle
+    while(True):
+        neighberList = searchNeighberCells(x, y)
+        if len(neighberList) == 0:
+            return
+        # for neighber in neighberList:
+        #
+        #
+        #
+        #
+        # x = neighberList[0]
+        # y = neighberList[1]
+        # hamiltonianCycle.append(neighberList)
+
+
+
+
+
+
+
 
 
 def hamiltonianCycleDisplay():
