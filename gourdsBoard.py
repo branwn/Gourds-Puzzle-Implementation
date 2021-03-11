@@ -114,6 +114,10 @@ def treeSeeking():
                 vertices = temp
                 # print(vertices)
                 hamiltonianCycleVerticesList.append(temp)
+
+
+
+
             temp = threeCellsConnectionsSeeking('T', 3, x, y)
             if temp is not None:
                 vertices = temp
@@ -134,7 +138,15 @@ def treeSeeking():
 
 
 def treeDisplay():
-    pass
+    for i in hamiltonianCycleVerticesList:
+        if i[0] == 'A':
+            pygame.draw.circle(screen, coloursLibrary[6], (int(offset + i[2] * widthOfHexCell),
+                     int(offset + widthOfHexCell * 1.1547 + i[3] * widthOfHexCell * 1.732)), 5, 2)
+        else:
+            pygame.draw.circle(screen, coloursLibrary[6], (int(offset + i[2] * widthOfHexCell),
+                     int(offset - widthOfHexCell * 1.1547 + i[3] * widthOfHexCell * 1.732)), 5, 2)
+    pygame.display.update()
+
 
 def hamiltonianCycleGeneratorFromATree():
     pass
