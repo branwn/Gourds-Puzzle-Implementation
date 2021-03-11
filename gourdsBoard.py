@@ -103,6 +103,7 @@ def threeCellsConnectionsSeeking(shape, baseCellIndex, x, y):
 
     return None
 
+
 def verticesSeeking():
     # find the vertices
     verticesList = []
@@ -149,12 +150,6 @@ def verticesSeeking():
 
 
             pass
-
-
-
-
-
-
 
 
 def verticesDisplay():
