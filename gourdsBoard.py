@@ -40,7 +40,8 @@ coloursLibrary = {
 buttonStates = [0, 0, 0, 0, 0, 0, 0]  # 0 by default
 
 # Hamiltonian Cycle Storage
-rootOfHamiltonianCycle = -1, -1
+totalNumberOfCells = 0
+hamiltonianCycleRoot = -1, -1
 hamiltonianCycleList = [] # 1 for right hand side, and count in clockwise
 hamiltonianCycleMap = numpy.zeros_like(board) # 1 for right hand side, and count in clockwise
 
@@ -101,58 +102,46 @@ def searchNeighberCells(x, y):
 
     return results
 
-def findTheRootCell():
-    global rootOfHamiltonianCycle
+def hamiltonianCycleInitialization():
+    global hamiltonianCycleRoot
+    global totalNumberOfCells
+    totalNumberOfCells = 0
+
     for y in range(len(board)):
         for x in range(len(board[y])):
             if board[y][x] != 0:
-                rootOfHamiltonianCycle = x, y
-                return 0
-    return None
+                totalNumberOfCells = totalNumberOfCells + 1
+                hamiltonianCycleRoot = x, y
+    return
 
-def hamiltonianCycleGenerator():
-    if findTheRootCell() is None: return None
+def hamiltonianCycleGenerator(x, y, stepsRecord):
     # DFS
-    global rootOfHamiltonianCycle
     global hamiltonianCycleList
     global hamiltonianCycleMap
+    global hamiltonianCycleRoot
 
+    stepsRecord.append(x, y)
+    neighbourList = searchNeighberCells(x, y)
+    availableNeighbourList = []
+    for neighbour in neighbourList:
+        if (neighbour[0], neighbour[1]) not in stepsRecord:
+            # avoid cycle
+            availableNeighbourList.append(neighbour)
+        else:
+            # check if it is root
+            if len(stepsRecord) == 20:
+                if neighbour[0] == hamiltonianCycleRoot[0]:
+                    if neighbour[1] == hamiltonianCycleRoot[1]:
+                        hamiltonianCycleList = stepsRecord
+                        return True
 
-    # print(rootOfHamiltonianCycle)
-    # print(hamiltonianCycleMap)
+    if len(availableNeighbourList) == 0:
+        # no ways to go
+        return None
 
-    # x, y = rootOfHamiltonianCycle
-    # while(True):
-    #     neighberList = searchNeighberCells(x, y)
-    #     if len(neighberList) == 0:
-    #         return
-    #
-    #
-    #     x, y = -1, -1
-    #     for neighbor in neighberList:
-    #         # search for next step
-    #         # there's a neighbor
-    #         if hamiltonianCycleMap[x, y] >= neighbor[2]:
-    #             # not the first time here
-    #             # is rolling back
-    #             continue
-    #         if hamiltonianCycleMap[neighbor[0], neighbor[1]] == 0:
-    #             # neighbor is free
-    #             x = neighbor[0]
-    #             y = neighbor[1]
-    #             hamiltonianCycleMap[neighbor[0], neighbor[1]] = neighbor[2]
-    #             hamiltonianCycleList.append([neighbor])
-    #             break
-    #     if x == -1: # there's no next step
-    #         # roll back start
-    #         hamiltonianCycleMap.
-
-
-
-
-
-
-
+    for neighbour in availableNeighbourList:
+        if hamiltonianCycleGenerator(neighbour[0], neighbour[1], stepsRecord):
+            pass
 
 
 
@@ -243,8 +232,9 @@ def buttonTwoClicked():
         # update button
         buttonConstructorAndPainter()
         pygame.display.update()
-
-        hamiltonianCycleGenerator()
+        hamiltonianCycleInitialization()
+        stepsRecord = []
+        hamiltonianCycleGenerator(hamiltonianCycleRoot[0], hamiltonianCycleRoot[1], stepsRecord)
         hamiltonianCycleDisplay()
         pygame.display.update()
     else:
