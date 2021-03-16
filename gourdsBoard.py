@@ -130,6 +130,9 @@ def hamiltonianCycleGenerator():
     if hamiltonianCycleGeneratedFlag: return
     hamiltonianCycleGeneratedFlag = True
 
+    # initialize
+    hamiltonianCycleInitialization()
+
     thisCell = (hamiltonianCycleRoot[0], hamiltonianCycleRoot[1], -1)
     completeFlag = False
     hamiltonianCycleStack.append([thisCell[0], thisCell[1]])
@@ -177,7 +180,6 @@ def hamiltonianCycleDrawer():
     if not buttonStates[2]: return
 
     if not hamiltonianCycleGeneratedFlag:
-        hamiltonianCycleInitialization()
         hamiltonianCycleGenerator()
 
     for i in range(len(hamiltonianCycleStack) - 1):
@@ -372,9 +374,6 @@ def cellsAndAxisConstructor():
 
 
 # for gourds
-
-
-
 def gourdPainter(firstPart, secondPart):
     # draw a gourd
     pygame.draw.circle(screen, coloursLibrary[firstPart[2]], (firstPart[0], firstPart[1]), gourdSize, 0)
