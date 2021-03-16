@@ -43,7 +43,7 @@ buttonStates = [0, 0, 0, 0, 0, 0, 0]  # 0 by default
 totalNumberOfCells = 0
 hamiltonianCycleRoot = -1, -1
 hamiltonianCycleMap = numpy.zeros_like(board) # 1 for right hand side, and count in clockwise
-
+hamiltonianCycleGeneratedFlag = False
 
 
 # size of the window
@@ -124,6 +124,11 @@ def hamiltonianCycleGenerator():
     # DFS
     global hamiltonianCycleMap
     global hamiltonianCycleRoot
+    global hamiltonianCycleGeneratedFlag
+
+    if hamiltonianCycleGeneratedFlag: return
+    hamiltonianCycleGeneratedFlag = True
+
 
     footPrintsStack = []
     thisCell = (hamiltonianCycleRoot[0], hamiltonianCycleRoot[1], -1)
@@ -167,9 +172,6 @@ def hamiltonianCycleGenerator():
                 footPrintsStack.append([thisCell[0], thisCell[1]])
                 hamiltonianCycleMap[lastCell[1]][lastCell[0]] = thisCell[2]
                 # print("goto: ", thisCell)
-
-
-
 
 def hamiltonianCycleDisplay():
     print(hamiltonianCycleMap)
