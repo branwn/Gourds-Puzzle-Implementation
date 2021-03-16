@@ -155,22 +155,19 @@ def hamiltonianCycleGenerator():
                     pass
 
         # go to next step
-        print("available: ",availableNextCellList)
-        print("map on this cell: ",footPrintsMap[thisCell[1]][thisCell[0]])
         if not completeFlag:
-
+            lastCell = footPrintsStack[len(footPrintsStack) - 1]
             if len(availableNextCellList) == 0: # no next step
                 footPrintsStack.pop()
                 footPrintsMap[thisCell[1]][thisCell[0]] = 0
-                thisCell = footPrintsStack[len(footPrintsStack)-1]
-
+                thisCell = lastCell
                 print("go back")
 
             else:# there is next step
                 # record the footprint
                 thisCell = availableNextCellList[0]
                 footPrintsStack.append([thisCell[0], thisCell[1]])
-                footPrintsMap[thisCell[1]][thisCell[0]] = thisCell[2]
+                footPrintsMap[lastCell[1]][lastCell[0]] = thisCell[2]
                 print("goto: ", thisCell)
 
 
