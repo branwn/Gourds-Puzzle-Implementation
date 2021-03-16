@@ -175,10 +175,12 @@ def hamiltonianCycleGenerator():
 
 def hamiltonianCycleDisplay():
     global hamiltonianCycleGeneratedFlag
-
     if not buttonStates[2]: return
 
-    
+    if not hamiltonianCycleGeneratedFlag:
+        hamiltonianCycleInitialization()
+        hamiltonianCycleGenerator()
+
     for i in range(len(hamiltonianCycleStack)-1):
         pygame.draw.line(screen, coloursLibrary['hamiltonianCycle'],
                          (int(offset + hamiltonianCycleStack[i][0] * widthOfHexCell),
@@ -266,16 +268,7 @@ def buttonTwoClicked():
     # switcher
     buttonStates[2] = 1 - buttonStates[2]
 
-    if buttonStates[2]:
-        # update button
-        buttonConstructorAndPainter()
-        pygame.display.update()
-        hamiltonianCycleInitialization()
-        hamiltonianCycleGenerator()
-        hamiltonianCycleDisplay()
-        pygame.display.update()
-    else:
-        redrawTheScreen()
+    redrawTheScreen()
 
 
 def buttonThreeClicked():
@@ -599,10 +592,7 @@ def mouseClicked(pos):
             # move gourd to the empty cell
             gourdsMovementController(indexOfGourd, xGourd, yGourd, xCell, yCell)
             # finally refresh the cells and gourds
-            cellsAndAxisConstructor()
-            gourdsConstructor()
-            pygame.display.update()
-
+            redrawTheScreen()
             return 0
 
         return 0
@@ -628,6 +618,7 @@ def redrawTheScreen():
     buttonConstructorAndPainter()
     cellsAndAxisConstructor()
     gourdsConstructor()
+    hamiltonianCycleDisplay()
     pygame.display.update()
 
 
