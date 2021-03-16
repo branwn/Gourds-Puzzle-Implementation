@@ -28,6 +28,7 @@ coloursLibrary = {
     'backGround': (242, 242, 242),
     'black': (0, 0, 0),
     'white': (255, 255, 255),
+    'hamiltonianCycle': (0, 0, 0),
     1: (190, 127, 73),
     2: (80, 193, 233),
     3: (122, 87, 209),
@@ -43,6 +44,7 @@ buttonStates = [0, 0, 0, 0, 0, 0, 0]  # 0 by default
 totalNumberOfCells = 0
 hamiltonianCycleRoot = -1, -1
 hamiltonianCycleMap = numpy.zeros_like(board) # 1 for right hand side, and count in clockwise
+hamiltonianCycleStack = []
 hamiltonianCycleGeneratedFlag = False
 
 
@@ -70,9 +72,8 @@ pygame.display.set_caption('Gourds')
 screen.fill(coloursLibrary['backGround'])
 
 
+
 # for algorithm Hamiltonian Cycle seeking
-
-
 def searchNeighbourCells(cellIn):
     x = cellIn[0]
     y = cellIn[1]
@@ -123,17 +124,16 @@ def hamiltonianCycleInitialization():
 def hamiltonianCycleGenerator():
     # DFS
     global hamiltonianCycleMap
+    global hamiltonianCycleStack
     global hamiltonianCycleRoot
     global hamiltonianCycleGeneratedFlag
 
     if hamiltonianCycleGeneratedFlag: return
     hamiltonianCycleGeneratedFlag = True
 
-
-    footPrintsStack = []
     thisCell = (hamiltonianCycleRoot[0], hamiltonianCycleRoot[1], -1)
     completeFlag = False
-    footPrintsStack.append([thisCell[0], thisCell[1]])
+    hamiltonianCycleStack.append([thisCell[0], thisCell[1]])
 
     while (not completeFlag):
 
@@ -145,12 +145,12 @@ def hamiltonianCycleGenerator():
 
         # filter
         for neighbour in neighbourList:
-            if [neighbour[0], neighbour[1]] not in footPrintsStack:# not visit yet
+            if [neighbour[0], neighbour[1]] not in hamiltonianCycleStack:# not visit yet
                 if neighbour[2] > hamiltonianCycleMap[thisCell[1]][thisCell[0]]:# next.from >= this.to
                     availableNextCellList.append(neighbour)
             if neighbour[0] == hamiltonianCycleRoot[0] and neighbour[1] == hamiltonianCycleRoot[1]:#is the root
-                if len(footPrintsStack) == totalNumberOfCells:
-                    footPrintsStack.append([thisCell[0], thisCell[1]])
+                if len(hamiltonianCycleStack) == totalNumberOfCells:
+                    hamiltonianCycleStack.append(hamiltonianCycleStack[0])
                     hamiltonianCycleMap[thisCell[1]][thisCell[0]] = neighbour[2]
                     completeFlag = True
                     break
@@ -158,23 +158,33 @@ def hamiltonianCycleGenerator():
 
         # go to next step
         if not completeFlag:
-            lastCell = footPrintsStack[len(footPrintsStack) - 1]
+            lastCell = hamiltonianCycleStack[len(hamiltonianCycleStack) - 1]
             if len(availableNextCellList) == 0: # no next step
-                footPrintsStack.pop()
+                hamiltonianCycleStack.pop()
                 hamiltonianCycleMap[thisCell[1]][thisCell[0]] = 0
-                thisCell = footPrintsStack[len(footPrintsStack) - 1]
+                thisCell = hamiltonianCycleStack[len(hamiltonianCycleStack) - 1]
 
                 # print("go back")
 
             else:# there is next step
                 # record the footprint
                 thisCell = availableNextCellList[0]
-                footPrintsStack.append([thisCell[0], thisCell[1]])
+                hamiltonianCycleStack.append([thisCell[0], thisCell[1]])
                 hamiltonianCycleMap[lastCell[1]][lastCell[0]] = thisCell[2]
                 # print("goto: ", thisCell)
 
 def hamiltonianCycleDisplay():
-    print(hamiltonianCycleMap)
+    global hamiltonianCycleGeneratedFlag
+
+    if not buttonStates[2]: return
+
+    
+    for i in range(len(hamiltonianCycleStack)-1):
+        pygame.draw.line(screen, coloursLibrary['hamiltonianCycle'],
+                         (int(offset + hamiltonianCycleStack[i][0] * widthOfHexCell),
+                     int(offset + hamiltonianCycleStack[i][1] * widthOfHexCell * 1.732)),
+                         (int(offset + hamiltonianCycleStack[i+1][0] * widthOfHexCell),
+                   int(offset + hamiltonianCycleStack[i+1][1] * widthOfHexCell * 1.732)), int(widthOfHexCell * 0.1))
 
 
 # for buttons
@@ -266,7 +276,6 @@ def buttonTwoClicked():
         pygame.display.update()
     else:
         redrawTheScreen()
-
 
 
 def buttonThreeClicked():
