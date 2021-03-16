@@ -126,7 +126,6 @@ def hamiltonianCycleGenerator():
     global hamiltonianCycleRoot
 
     footPrintsStack = []
-    footPrintsMap = numpy.zeros_like(board)
     thisCell = (hamiltonianCycleRoot[0], hamiltonianCycleRoot[1], -1)
     completeFlag = False
     footPrintsStack.append([thisCell[0], thisCell[1]])
@@ -142,12 +141,12 @@ def hamiltonianCycleGenerator():
         # filter
         for neighbour in neighbourList:
             if [neighbour[0], neighbour[1]] not in footPrintsStack:# not visit yet
-                if neighbour[2] > footPrintsMap[thisCell[1]][thisCell[0]]:# next.from >= this.to
+                if neighbour[2] > hamiltonianCycleMap[thisCell[1]][thisCell[0]]:# next.from >= this.to
                     availableNextCellList.append(neighbour)
             if neighbour[0] == hamiltonianCycleRoot[0] and neighbour[1] == hamiltonianCycleRoot[1]:#is the root
                 if len(footPrintsStack) == totalNumberOfCells:
                     footPrintsStack.append([thisCell[0], thisCell[1]])
-                    footPrintsMap[thisCell[1]][thisCell[0]] = neighbour[2]
+                    hamiltonianCycleMap[thisCell[1]][thisCell[0]] = neighbour[2]
                     completeFlag = True
                     break
 
@@ -157,22 +156,23 @@ def hamiltonianCycleGenerator():
             lastCell = footPrintsStack[len(footPrintsStack) - 1]
             if len(availableNextCellList) == 0: # no next step
                 footPrintsStack.pop()
-                footPrintsMap[thisCell[1]][thisCell[0]] = 0
+                hamiltonianCycleMap[thisCell[1]][thisCell[0]] = 0
                 thisCell = footPrintsStack[len(footPrintsStack) - 1]
 
-                print("go back")
+                # print("go back")
 
             else:# there is next step
                 # record the footprint
                 thisCell = availableNextCellList[0]
                 footPrintsStack.append([thisCell[0], thisCell[1]])
-                footPrintsMap[lastCell[1]][lastCell[0]] = thisCell[2]
-                print("goto: ", thisCell)
+                hamiltonianCycleMap[lastCell[1]][lastCell[0]] = thisCell[2]
+                # print("goto: ", thisCell)
+
 
 
 
 def hamiltonianCycleDisplay():
-    pass
+    print(hamiltonianCycleMap)
 
 
 # for buttons
