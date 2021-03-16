@@ -1,7 +1,7 @@
 import pygame
 import numpy  # for matrix
 
-displayIndexOnTheScreen = False
+
 
 # set a matrix of board
 board = numpy.array([
@@ -23,7 +23,7 @@ gourdsList = numpy.array([
     [5, 0, 6, 1, 2, 2]
 ])
 
-# colour dictionary
+# colour library
 coloursLibrary = {
     'backGround': (242, 242, 242),
     'black': (0, 0, 0),
@@ -39,6 +39,8 @@ coloursLibrary = {
 
 # button states
 buttonStates = [0, 0, 0, 0, 0, 0, 0]  # 0 by default
+
+displayIndexOnTheScreen = False
 
 # Hamiltonian Cycle Storage
 totalNumberOfCells = 0
