@@ -66,7 +66,7 @@ else:
     widthOfHexCell = int(sizeOfTheWindow[1] / 1.732 / (len(board) + 1))
 offset = widthOfHexCell * 1.5
 # gourd size
-gourdSize = int(widthOfHexCell * 0.3)
+gourdSize = int(widthOfHexCell * 0.35)
 # first run flag
 runFirstTimeFlag = True
 
@@ -191,6 +191,12 @@ def hamiltonianCycleDrawer():
         hamiltonianCycleGenerator()
 
     for i in range(len(hamiltonianCycleStack) - 1):
+        pygame.draw.line(screen, coloursLibrary['backGround'],
+                         (int(offset + hamiltonianCycleStack[i][0] * widthOfHexCell),
+                          int(offset + hamiltonianCycleStack[i][1] * widthOfHexCell * 1.732)),
+                         (int(offset + hamiltonianCycleStack[i + 1][0] * widthOfHexCell),
+                          int(offset + hamiltonianCycleStack[i + 1][1] * widthOfHexCell * 1.732)),
+                         4)
         pygame.draw.line(screen, coloursLibrary['hamiltonianCycle'],
                          (int(offset + hamiltonianCycleStack[i][0] * widthOfHexCell),
                           int(offset + hamiltonianCycleStack[i][1] * widthOfHexCell * 1.732)),
@@ -389,11 +395,11 @@ def gourdPainter(firstPart, secondPart):
     pygame.draw.line(screen, coloursLibrary[firstPart[2]],
                      (firstPart[0], firstPart[1]),
                      (int((firstPart[0] + secondPart[0]) / 2), int((firstPart[1] + secondPart[1]) / 2)),
-                     width=int(widthOfHexCell * 0.1 + 4))
+                     width=int(widthOfHexCell * 0.1 + 6))
     pygame.draw.line(screen, coloursLibrary[secondPart[2]],
                      (int((firstPart[0] + secondPart[0]) / 2), int((firstPart[1] + secondPart[1]) / 2)),
                      (secondPart[0], secondPart[1]),
-                     width=int(widthOfHexCell * 0.1 + 4))
+                     width=int(widthOfHexCell * 0.1 + 6))
 
 
 def gourdsConstructor():
