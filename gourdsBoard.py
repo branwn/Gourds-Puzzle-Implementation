@@ -28,7 +28,7 @@ coloursLibrary = {
     'backGround': (242, 242, 242),
     'black': (0, 0, 0),
     'white': (255, 255, 255),
-    'hamiltonianCycle': (0, 0, 0),
+    'hamiltonianCycle': (39, 98, 184),
     1: (190, 127, 73),
     2: (80, 193, 233),
     3: (122, 87, 209),
@@ -43,10 +43,9 @@ buttonStates = [0, 0, 0, 0, 0, 0, 0]  # 0 by default
 # Hamiltonian Cycle Storage
 totalNumberOfCells = 0
 hamiltonianCycleRoot = -1, -1
-hamiltonianCycleMap = numpy.zeros_like(board) # 1 for right hand side, and count in clockwise
+hamiltonianCycleMap = numpy.zeros_like(board)  # 1 for right hand side, and count in clockwise
 hamiltonianCycleStack = []
 hamiltonianCycleGeneratedFlag = False
-
 
 # size of the window
 sizeOfTheWindow = (600, 400)
@@ -72,7 +71,6 @@ pygame.display.set_caption('Gourds')
 screen.fill(coloursLibrary['backGround'])
 
 
-
 # for algorithm Hamiltonian Cycle seeking
 def searchNeighbourCells(cellIn):
     x = cellIn[0]
@@ -81,7 +79,7 @@ def searchNeighbourCells(cellIn):
     maxOfX = len(board[0]) - 1
     maxOfY = len(board) - 1
 
-    results = []# (x, y, from, to)
+    results = []  # (x, y, from, to)
     # search neighbour cells around the cellIn
     # know the neighbour x, y, from but not know where to go(set as default 0)
     if x + 2 <= maxOfX:
@@ -95,15 +93,16 @@ def searchNeighbourCells(cellIn):
             results.append([x - 1, y + 1, 3, 0])
     if x - 2 >= 0:
         if (board[y][x - 2] != 0):  # from right 4 to left 1
-            results.append  ([x - 2, y, 4, 0])
+            results.append([x - 2, y, 4, 0])
     if x - 1 >= 0 and y - 1 >= 0:
         if (board[y - 1][x - 1] != 0):  # from lower right 5 to upper left 2
-            results.append  ([x - 1, y - 1, 5, 0])
+            results.append([x - 1, y - 1, 5, 0])
     if x + 1 <= maxOfX and y - 1 >= 0:
         if (board[y - 1][x + 1] != 0):  # from lower left 6 to upper right 3
-            results.append ([x + 1, y - 1, 6, 0])
+            results.append([x + 1, y - 1, 6, 0])
 
     return results
+
 
 def hamiltonianCycleInitialization():
     # to generate a root and count the #cells
@@ -112,14 +111,14 @@ def hamiltonianCycleInitialization():
     global totalNumberOfCells
     totalNumberOfCells = 0
 
-
     for y in range(len(board)):
         for x in range(len(board[y])):
             if board[y][x] != 0:
                 totalNumberOfCells = totalNumberOfCells + 1
-                if(hamiltonianCycleRoot[0] == -1):
+                if (hamiltonianCycleRoot[0] == -1):
                     hamiltonianCycleRoot = x, y
     return
+
 
 def hamiltonianCycleGenerator():
     # DFS
@@ -145,35 +144,35 @@ def hamiltonianCycleGenerator():
 
         # filter
         for neighbour in neighbourList:
-            if [neighbour[0], neighbour[1]] not in hamiltonianCycleStack:# not visit yet
-                if neighbour[2] > hamiltonianCycleMap[thisCell[1]][thisCell[0]]:# next.from >= this.to
+            if [neighbour[0], neighbour[1]] not in hamiltonianCycleStack:  # not visit yet
+                if neighbour[2] > hamiltonianCycleMap[thisCell[1]][thisCell[0]]:  # next.from >= this.to
                     availableNextCellList.append(neighbour)
-            if neighbour[0] == hamiltonianCycleRoot[0] and neighbour[1] == hamiltonianCycleRoot[1]:#is the root
+            if neighbour[0] == hamiltonianCycleRoot[0] and neighbour[1] == hamiltonianCycleRoot[1]:  # is the root
                 if len(hamiltonianCycleStack) == totalNumberOfCells:
                     hamiltonianCycleStack.append(hamiltonianCycleStack[0])
                     hamiltonianCycleMap[thisCell[1]][thisCell[0]] = neighbour[2]
                     completeFlag = True
                     break
 
-
         # go to next step
         if not completeFlag:
             lastCell = hamiltonianCycleStack[len(hamiltonianCycleStack) - 1]
-            if len(availableNextCellList) == 0: # no next step
+            if len(availableNextCellList) == 0:  # no next step
                 hamiltonianCycleStack.pop()
                 hamiltonianCycleMap[thisCell[1]][thisCell[0]] = 0
                 thisCell = hamiltonianCycleStack[len(hamiltonianCycleStack) - 1]
 
                 # print("go back")
 
-            else:# there is next step
+            else:  # there is next step
                 # record the footprint
                 thisCell = availableNextCellList[0]
                 hamiltonianCycleStack.append([thisCell[0], thisCell[1]])
                 hamiltonianCycleMap[lastCell[1]][lastCell[0]] = thisCell[2]
                 # print("goto: ", thisCell)
 
-def hamiltonianCycleDisplay():
+
+def hamiltonianCycleDrawer():
     global hamiltonianCycleGeneratedFlag
     if not buttonStates[2]: return
 
@@ -181,12 +180,13 @@ def hamiltonianCycleDisplay():
         hamiltonianCycleInitialization()
         hamiltonianCycleGenerator()
 
-    for i in range(len(hamiltonianCycleStack)-1):
+    for i in range(len(hamiltonianCycleStack) - 1):
         pygame.draw.line(screen, coloursLibrary['hamiltonianCycle'],
                          (int(offset + hamiltonianCycleStack[i][0] * widthOfHexCell),
-                     int(offset + hamiltonianCycleStack[i][1] * widthOfHexCell * 1.732)),
-                         (int(offset + hamiltonianCycleStack[i+1][0] * widthOfHexCell),
-                   int(offset + hamiltonianCycleStack[i+1][1] * widthOfHexCell * 1.732)), int(widthOfHexCell * 0.1))
+                          int(offset + hamiltonianCycleStack[i][1] * widthOfHexCell * 1.732)),
+                         (int(offset + hamiltonianCycleStack[i + 1][0] * widthOfHexCell),
+                          int(offset + hamiltonianCycleStack[i + 1][1] * widthOfHexCell * 1.732)),
+                         2)
 
 
 # for buttons
@@ -258,10 +258,7 @@ def buttonOneClicked():
 
     # refresh the whole window
     screen.fill(coloursLibrary['backGround'])
-    buttonConstructorAndPainter()
-    cellsAndAxisConstructor()
-    gourdsConstructor()
-    pygame.display.update()
+    redrawTheScreen()
 
 
 def buttonTwoClicked():
@@ -376,6 +373,8 @@ def cellsAndAxisConstructor():
 
 # for gourds
 
+
+
 def gourdPainter(firstPart, secondPart):
     # draw a gourd
     pygame.draw.circle(screen, coloursLibrary[firstPart[2]], (firstPart[0], firstPart[1]), gourdSize, 0)
@@ -383,11 +382,11 @@ def gourdPainter(firstPart, secondPart):
     pygame.draw.line(screen, coloursLibrary[firstPart[2]],
                      (firstPart[0], firstPart[1]),
                      (int((firstPart[0] + secondPart[0]) / 2), int((firstPart[1] + secondPart[1]) / 2)),
-                     width=int(widthOfHexCell * 0.1 + 2))
+                     width=int(widthOfHexCell * 0.1 + 4))
     pygame.draw.line(screen, coloursLibrary[secondPart[2]],
                      (int((firstPart[0] + secondPart[0]) / 2), int((firstPart[1] + secondPart[1]) / 2)),
                      (secondPart[0], secondPart[1]),
-                     width=int(widthOfHexCell * 0.1 + 2))
+                     width=int(widthOfHexCell * 0.1 + 4))
 
 
 def gourdsConstructor():
@@ -618,7 +617,7 @@ def redrawTheScreen():
     buttonConstructorAndPainter()
     cellsAndAxisConstructor()
     gourdsConstructor()
-    hamiltonianCycleDisplay()
+    hamiltonianCycleDrawer()
     pygame.display.update()
 
 
