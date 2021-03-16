@@ -116,7 +116,8 @@ def hamiltonianCycleInitialization():
         for x in range(len(board[y])):
             if board[y][x] != 0:
                 totalNumberOfCells = totalNumberOfCells + 1
-                hamiltonianCycleRoot = x, y
+                if(hamiltonianCycleRoot[0] == -1):
+                    hamiltonianCycleRoot = x, y
     return
 
 def hamiltonianCycleGenerator():
@@ -132,7 +133,7 @@ def hamiltonianCycleGenerator():
 
     while (not completeFlag):
 
-        pygame.time.delay(1000)
+        # pygame.time.delay(1000)
         # search for next step
 
         neighbourList = searchNeighbourCells(thisCell)
@@ -141,18 +142,15 @@ def hamiltonianCycleGenerator():
         # filter
         for neighbour in neighbourList:
             if [neighbour[0], neighbour[1]] not in footPrintsStack:# not visit yet
-                if neighbour[2] > hamiltonianCycleMap[thisCell[1]][thisCell[0]]:# next.from >= this.to
+                if neighbour[2] > footPrintsMap[thisCell[1]][thisCell[0]]:# next.from >= this.to
                     availableNextCellList.append(neighbour)
+            if neighbour[0] == hamiltonianCycleRoot[0] and neighbour[1] == hamiltonianCycleRoot[1]:#is the root
+                if len(footPrintsStack) == totalNumberOfCells:
+                    footPrintsStack.append([thisCell[0], thisCell[1]])
+                    footPrintsMap[thisCell[1]][thisCell[0]] = neighbour[2]
+                    completeFlag = True
+                    break
 
-            else: # visited previously
-                if neighbour == footPrintsStack[0]:#is the root
-                    if totalNumberOfCells == len(footPrintsStack)-1:
-                        footPrintsStack.append([thisCell[0], thisCell[1]])
-                        footPrintsMap[thisCell[1]][thisCell[0]] = neighbour[2]
-                        completeFlag = True
-                        break
-                else: # not the root
-                    pass
 
         # go to next step
         if not completeFlag:
@@ -160,7 +158,8 @@ def hamiltonianCycleGenerator():
             if len(availableNextCellList) == 0: # no next step
                 footPrintsStack.pop()
                 footPrintsMap[thisCell[1]][thisCell[0]] = 0
-                thisCell = lastCell
+                thisCell = footPrintsStack[len(footPrintsStack) - 1]
+
                 print("go back")
 
             else:# there is next step
