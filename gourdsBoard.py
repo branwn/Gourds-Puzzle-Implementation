@@ -42,7 +42,6 @@ buttonStates = [0, 0, 0, 0, 0, 0, 0]  # 0 by default
 # Hamiltonian Cycle Storage
 totalNumberOfCells = 0
 hamiltonianCycleRoot = -1, -1
-hamiltonianCycleList = [] # 1 for right hand side, and count in clockwise
 hamiltonianCycleMap = numpy.zeros_like(board) # 1 for right hand side, and count in clockwise
 
 
@@ -74,38 +73,44 @@ screen.fill(coloursLibrary['backGround'])
 # for algorithm Hamiltonian Cycle seeking
 
 
-def searchNeighberCells(x, y):
+def searchNeighbourCells(cellIn):
+    x = cellIn[0]
+    y = cellIn[1]
     # obtain the size of the boardMatrix
     maxOfX = len(board[0]) - 1
     maxOfY = len(board) - 1
 
-    results = []
-    # search an empty cell around x, y
+    results = []# (x, y, from, to)
+    # search neighbour cells around the cellIn
+    # know the neighbour x, y, from but not know where to go(set as default 0)
     if x + 2 <= maxOfX:
-        if (board[y][x + 2] != 0):  # right 1
-            results.append([x + 2, y, 1])
+        if (board[y][x + 2] != 0):  # From Left 1 to right 4
+            results.append([x + 2, y, 1, 0])
     if x + 1 <= maxOfX and y + 1 <= maxOfY:
-        if (board[y + 1][x + 1] != 0):  # lower right 2
-            results.append([x + 1, y + 1, 2])
+        if (board[y + 1][x + 1] != 0):  # from upper left 2 to lower right 5
+            results.append([x + 1, y + 1, 2, 0])
     if x - 1 >= 0 and y + 1 <= maxOfY:
-        if (board[y + 1][x - 1] != 0):  # lower left 3
-            results.append([x - 1, y + 1, 3])
+        if (board[y + 1][x - 1] != 0):  # from upper right 3 to lower left 6
+            results.append([x - 1, y + 1, 3, 0])
     if x - 2 >= 0:
-        if (board[y][x - 2] != 0):  # left 4
-            results.append  ([x - 2, y, 4])
+        if (board[y][x - 2] != 0):  # from right 4 to left 1
+            results.append  ([x - 2, y, 4, 0])
     if x - 1 >= 0 and y - 1 >= 0:
-        if (board[y - 1][x - 1] != 0):  # upper left 5
-            results.append  ([x - 1, y - 1, 5])
+        if (board[y - 1][x - 1] != 0):  # from lower right 5 to upper left 2
+            results.append  ([x - 1, y - 1, 5, 0])
     if x + 1 <= maxOfX and y - 1 >= 0:
-        if (board[y - 1][x + 1] != 0):  # upper right 6
-            results.append ([x + 1, y - 1, 6])
+        if (board[y - 1][x + 1] != 0):  # from lower left 6 to upper right 3
+            results.append ([x + 1, y - 1, 6, 0])
 
     return results
 
 def hamiltonianCycleInitialization():
+    # to generate a root and count the #cells
+    #
     global hamiltonianCycleRoot
     global totalNumberOfCells
     totalNumberOfCells = 0
+
 
     for y in range(len(board)):
         for x in range(len(board[y])):
@@ -114,34 +119,54 @@ def hamiltonianCycleInitialization():
                 hamiltonianCycleRoot = x, y
     return
 
-def hamiltonianCycleGenerator(x, y, stepsRecord):
+def hamiltonianCycleGenerator():
     # DFS
-    global hamiltonianCycleList
     global hamiltonianCycleMap
     global hamiltonianCycleRoot
 
-    stepsRecord.append(x, y)
-    neighbourList = searchNeighberCells(x, y)
-    availableNeighbourList = []
-    for neighbour in neighbourList:
-        if (neighbour[0], neighbour[1]) not in stepsRecord:
-            # avoid cycle
-            availableNeighbourList.append(neighbour)
-        else:
-            # check if it is root
-            if len(stepsRecord) == 20:
-                if neighbour[0] == hamiltonianCycleRoot[0]:
-                    if neighbour[1] == hamiltonianCycleRoot[1]:
-                        hamiltonianCycleList = stepsRecord
-                        return True
+    footPrintsStack = []
+    footPrintsMap = numpy.zeros_like(board)
+    thisCell = (hamiltonianCycleRoot[0], hamiltonianCycleRoot[1], -1)
+    completeFlag = False
+    footPrintsStack.append(thisCell)
 
-    if len(availableNeighbourList) == 0:
-        # no ways to go
-        return None
+    while (not completeFlag):
 
-    for neighbour in availableNeighbourList:
-        if hamiltonianCycleGenerator(neighbour[0], neighbour[1], stepsRecord):
-            pass
+        pygame.time.delay(1000)
+        # search for next step
+
+        neighbourList = searchNeighbourCells(thisCell)
+        availableNextCellList = []
+
+        # filter
+        for neighbour in neighbourList:
+            if neighbour not in footPrintsStack:# not visit yet
+                if neighbour[2] > hamiltonianCycleMap[thisCell[1]][thisCell[0]]:# next.from >= this.to
+                    availableNextCellList.append(neighbour)
+
+            else: # visited previously
+                if neighbour == footPrintsStack[0]:#is the root
+                    if totalNumberOfCells == len(footPrintsStack)-1:
+                        footPrintsStack.append(neighbour)
+                        footPrintsMap[thisCell[1]][thisCell[0]] = neighbour[2]
+                        completeFlag = True
+                        break
+                else: # not the root
+                    pass
+
+        # go to next step
+        print("available: ",availableNextCellList)
+        if not completeFlag:
+            if len(availableNextCellList) == 0: # no next step
+                footPrintsStack.pop()
+                print("go back")
+
+            else:# there is next step
+                # record the footprint
+                thisCell = availableNextCellList[0]
+                footPrintsStack.append(thisCell)
+                footPrintsMap[thisCell[1]][thisCell[0]] = thisCell[2]
+                print("goto: ", thisCell)
 
 
 
@@ -233,8 +258,7 @@ def buttonTwoClicked():
         buttonConstructorAndPainter()
         pygame.display.update()
         hamiltonianCycleInitialization()
-        stepsRecord = []
-        hamiltonianCycleGenerator(hamiltonianCycleRoot[0], hamiltonianCycleRoot[1], stepsRecord)
+        hamiltonianCycleGenerator()
         hamiltonianCycleDisplay()
         pygame.display.update()
     else:
