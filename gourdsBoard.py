@@ -165,6 +165,10 @@ def hamiltonianCycleGenerator():
                     completeFlag = True
                     break
 
+        #animation
+        pygame.time.delay(80)
+        redrawTheScreen()
+
         # go to next step
         if not completeFlag:
             lastCell = hamiltonianCycleStack[len(hamiltonianCycleStack) - 1]
@@ -181,6 +185,7 @@ def hamiltonianCycleGenerator():
                 hamiltonianCycleStack.append([thisCell[0], thisCell[1]])
                 hamiltonianCycleMap[lastCell[1]][lastCell[0]] = thisCell[2]
                 # print("goto: ", thisCell)
+
 
 
 def hamiltonianCycleDrawer():
