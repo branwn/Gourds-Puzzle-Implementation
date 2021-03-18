@@ -147,7 +147,9 @@ def hamiltonianCycleGenerator():
 
     while (not completeFlag):
 
-        # pygame.time.delay(1000)
+        # animation
+        pygame.time.delay(80)
+        redrawTheScreen()
         # search for next step
 
         neighbourList = searchNeighbourCells(thisCell)
@@ -165,9 +167,7 @@ def hamiltonianCycleGenerator():
                     completeFlag = True
                     break
 
-        #animation
-        pygame.time.delay(80)
-        redrawTheScreen()
+
 
         # go to next step
         if not completeFlag:
