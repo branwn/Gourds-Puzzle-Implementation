@@ -2,6 +2,7 @@ import pygame
 import numpy
 
 from buttons import buttons
+from cells import cells
 from hamiltonianCycle import hamiltonianCycle
 
 
@@ -50,6 +51,7 @@ coloursLibrary = {
 
 # objects
 myButtons = None
+myCells = None
 myHamiltonianCycle = None
 
 
@@ -80,102 +82,6 @@ screen.fill(coloursLibrary['backGround'])
 
 
 
-
-# for cells
-
-def cellPainter(x, y):
-    widthOfBlackFrameLine = -1
-    widthOfColourCell = (widthOfHexCell * 0.8)
-
-    # draw colour
-    pygame.draw.polygon(screen, coloursLibrary[board[y][x]],
-                        [
-                            (  # down corner
-                                int(offset + x * widthOfHexCell),
-                                int(offset + y * widthOfHexCell * 1.732 + widthOfColourCell * 1.1547)
-                            ),
-                            (  # down-right corner
-                                int(offset + x * widthOfHexCell + widthOfColourCell),
-                                int(offset + y * widthOfHexCell * 1.732 + widthOfColourCell * 0.57735)
-                            ),
-                            (  # up-right corner
-                                int(offset + x * widthOfHexCell + widthOfColourCell),
-                                int(offset + y * widthOfHexCell * 1.732 - widthOfColourCell * 0.57735)
-                            ),
-                            (  # up corner
-                                int(offset + x * widthOfHexCell),
-                                int(offset + y * widthOfHexCell * 1.732 - widthOfColourCell * 1.1547)
-                            ),
-                            (  # up-left corner
-                                int(offset + x * widthOfHexCell - widthOfColourCell),
-                                int(offset + y * widthOfHexCell * 1.732 - widthOfColourCell * 0.57735)
-                            ),
-                            (  # down-left corner
-                                int(offset + x * widthOfHexCell - widthOfColourCell),
-                                int(offset + y * widthOfHexCell * 1.732 + widthOfColourCell * 0.57735)
-                            )
-                        ], int(widthOfHexCell / 10))
-
-    # draw a frame
-    pygame.draw.polygon(screen, coloursLibrary['black'],
-                        [
-                            (  # down corner
-                                int(offset + x * widthOfHexCell),
-                                int(offset + y * widthOfHexCell * 1.732 + widthOfHexCell * 1.1547)
-                            ),
-                            (  # down-right corner
-                                int(offset + x * widthOfHexCell + widthOfHexCell),
-                                int(offset + y * widthOfHexCell * 1.732 + widthOfHexCell * 0.57735)
-                            ),
-                            (  # up-right corner
-                                int(offset + x * widthOfHexCell + widthOfHexCell),
-                                int(offset + y * widthOfHexCell * 1.732 - widthOfHexCell * 0.57735)
-                            ),
-                            (  # up corner
-                                int(offset + x * widthOfHexCell),
-                                int(offset + y * widthOfHexCell * 1.732 - widthOfHexCell * 1.1547)
-                            ),
-                            (  # up-left corner
-                                int(offset + x * widthOfHexCell - widthOfHexCell),
-                                int(offset + y * widthOfHexCell * 1.732 - widthOfHexCell * 0.57735)
-                            ),
-                            (  # down-left corner
-                                int(offset + x * widthOfHexCell - widthOfHexCell),
-                                int(offset + y * widthOfHexCell * 1.732 + widthOfHexCell * 0.57735)
-                            )
-                        ], widthOfBlackFrameLine)
-
-
-def cellsAndAxisConstructor(isDisplayIndex):
-    theFont = pygame.font.Font('OpenSans-Light.ttf', 16)
-
-    # draw the axis
-    # print("widthOfHexCell = ", widthOfHexCell)
-    for y in range(len(board[0])):
-        theText = theFont.render(str(y), True, coloursLibrary['black'])
-        screen.blit(theText, (-6 + offset + y * widthOfHexCell, 0))
-    for x in range(len(board)):
-        theText = theFont.render(str(x), True, coloursLibrary['black'])
-        screen.blit(theText, (8, int(-14 + offset + x * widthOfHexCell * 1.732)))
-
-    # draw the cells
-    theFont = pygame.font.Font('OpenSans-Light.ttf', 22)
-    for y in range(len(board)):
-        for x in range(len(board[0])):
-            # display matrix numbers on screen
-            if isDisplayIndex:
-                if board[y][x]:
-                    # display if not board[i][j] is not 0
-                    theText = theFont.render(str(board[y][x]), True, coloursLibrary[board[y][x]])
-                    screen.blit(theText, (int(-widthOfHexCell / 1.6) + offset + x * widthOfHexCell,
-                                          int(-16 + offset + y * widthOfHexCell * 1.732)))
-            # pygame.draw.circle(screen,(0,0,0),(offset + j * widthOfHexCell, offset + i * widthOfHexCell * 1.732) ,6,1)
-
-            if (board[y][x]):
-                # draw a hexagonal cell
-                cellPainter(x, y)
-    # refresh the window
-    # pygame.display.update()
 
 
 # for gourds
@@ -311,10 +217,10 @@ def gourdsMovementAnimation(before, after, indexOfGourd):
         gourdPainter(firstPart, secondPart)
 
         # redraw relative cells
-        cellPainter(before[0], before[1])
-        cellPainter(before[2], before[3])
-        cellPainter(after[0], after[1])
-        cellPainter(after[2], after[3])
+        myCells.cellPainter(before[0], before[1])
+        myCells.cellPainter(before[2], before[3])
+        myCells.cellPainter(after[0], after[1])
+        myCells.cellPainter(after[2], after[3])
 
     # draw a final gourd place
     firstPart = (int(offset + (before[0] + distance[0] * i * eachPaceInAnimation) * widthOfHexCell),
@@ -414,7 +320,7 @@ def redrawTheScreen():
 
     screen.fill(coloursLibrary['backGround'])
     myButtons.buttonConstructorAndPainter()
-    cellsAndAxisConstructor(myButtons.buttonStates[1])
+    myCells.cellsAndAxisConstructor(myButtons.buttonStates[1])
     gourdsConstructor(myButtons.buttonStates[1])
     myHamiltonianCycle.hamiltonianCycleDrawer(myButtons.buttonStates[2])
     pygame.display.update()
@@ -426,6 +332,8 @@ def main():
     global myButtons
     myButtons = buttons(screen, coloursLibrary, sizeOfTheWindow, buttonSize)
 
+    global myCells
+    myCells = cells(screen, board, coloursLibrary, offset, widthOfHexCell)
 
     global myHamiltonianCycle
     myHamiltonianCycle = hamiltonianCycle(screen, board, coloursLibrary, offset, widthOfHexCell)
