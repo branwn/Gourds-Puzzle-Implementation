@@ -8,13 +8,6 @@ from gourds import gourds
 from hamiltonianCycle import hamiltonianCycle
 
 
-# objects
-myButtons = None
-myCells = None
-myGourds = None
-myHamiltonianCycle = None
-
-
 # size of the window
 sizeOfTheWindow = (600, 400)
 # button size
