@@ -50,11 +50,6 @@ coloursLibrary = {
 
 
 
-# objects
-myButtons = None
-myCells = None
-myGourds = None
-myHamiltonianCycle = None
 
 
 # size of the window
@@ -72,6 +67,13 @@ gourdSize = int(widthOfHexCell * 0.35)
 # first run flag
 runFirstTimeFlag = True
 
+# objects
+myButtons = None
+myCells = None
+myGourds = None
+myHamiltonianCycle = None
+
+
 pygame.init()
 # size of the window
 screen = pygame.display.set_mode(sizeOfTheWindow)
@@ -79,11 +81,6 @@ screen = pygame.display.set_mode(sizeOfTheWindow)
 pygame.display.set_caption('Gourds')
 # background colour setting
 screen.fill(coloursLibrary['backGround'])
-
-
-
-
-
 
 
 
