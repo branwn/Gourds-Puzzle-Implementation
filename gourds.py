@@ -1,6 +1,6 @@
 import pygame
 
-class gourdsConstructor(object):
+class gourds(object):
 
     def __init__(self, screen, board, gourdsList, coloursLibrary, offset, widthOfHexCell, gourdSize):
         self.screen = screen

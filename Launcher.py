@@ -1,11 +1,12 @@
 import pygame
+import numpy
 
-from boardConfigsContainer import boardConfig1 as boardConfig
+from boardConfigsContainer import boardConfig2 as boardConfig
 from buttons import buttons
-from cellsConstructor import cellsConstructor
-from gourdsConstructor import gourdsConstructor
+from cells import cells
+from gourds import gourds
 from hamiltonianCycle import hamiltonianCycle
-from finalGourdsConfig import finalGourdsConfig
+
 
 # size of the window
 sizeOfTheWindow = (600, 400)
@@ -31,14 +32,14 @@ pygame.display.set_caption('Gourds')
 
 def mouseClicked(pos):
     # search Gourds by the given Coordinate
-    indexOfGourd, xGourd, yGourd = myGourdsConstructor.gourdsSearchingByCoordinate(pos)
+    indexOfGourd, xGourd, yGourd = myGourds.gourdsSearchingByCoordinate(pos)
     if indexOfGourd != -1:
         # print(xGourd, yGourd)
         # search if there is an Empty Cell Around
-        xCell, yCell = myGourdsConstructor.emptyCellSearchingAroundAGourd(xGourd, yGourd)
+        xCell, yCell = myGourds.emptyCellSearchingAroundAGourd(xGourd, yGourd)
         if xCell != -1:
             # move gourd to the empty cell
-            myGourdsConstructor.gourdsMovementController(indexOfGourd, xGourd, yGourd, xCell, yCell)
+            myGourds.gourdsMovementController(indexOfGourd, xGourd, yGourd, xCell, yCell)
             # finally refresh the cells and gourds
             redrawTheScreen()
             return 0
@@ -59,11 +60,9 @@ def redrawTheScreen():
 
     screen.fill(myBoardsConfig.coloursLibrary['backGround'])
     myButtons.buttonConstructorAndPainter()
-    myCellsConstructor.cellsAndAxisConstructor(myButtons.buttonStates[1])
-    myGourdsConstructor.gourdsConstructor(myButtons.buttonStates[1])
+    myCells.cellsAndAxisConstructor(myButtons.buttonStates[1])
+    myGourds.gourdsConstructor(myButtons.buttonStates[1])
     myHamiltonianCycle.hamiltonianCycleDrawer(myButtons.buttonStates[2])
-
-    myFinalGourdsConfig.searchAllPossibleAssignment()
     pygame.display.update()
 
 
@@ -88,17 +87,15 @@ def main():
     global myButtons
     myButtons = buttons(screen, myBoardsConfig.coloursLibrary, sizeOfTheWindow, buttonSize)
 
-    global myCellsConstructor
-    myCellsConstructor = cellsConstructor(screen, myBoardsConfig.board, myBoardsConfig.coloursLibrary, offset, widthOfHexCell)
+    global myCells
+    myCells = cells(screen, myBoardsConfig.board, myBoardsConfig.coloursLibrary, offset, widthOfHexCell)
 
-    global myGourdsConstructor
-    myGourdsConstructor = gourdsConstructor(screen, myBoardsConfig.board, myBoardsConfig.gourdsList, myBoardsConfig.coloursLibrary, offset, widthOfHexCell, gourdSize)
+    global myGourds
+    myGourds = gourds(screen, myBoardsConfig.board, myBoardsConfig.gourdsList, myBoardsConfig.coloursLibrary, offset, widthOfHexCell, gourdSize)
 
     global myHamiltonianCycle
     myHamiltonianCycle = hamiltonianCycle(screen, myBoardsConfig.board, myBoardsConfig.coloursLibrary, offset, widthOfHexCell)
 
-    global myFinalGourdsConfig
-    myFinalGourdsConfig = finalGourdsConfig(screen, myBoardsConfig.board, myBoardsConfig.gourdsList, myBoardsConfig.coloursLibrary, offset, widthOfHexCell)
 
     # flag setting
     global runFirstTimeFlag
