@@ -1,6 +1,7 @@
 import pygame
 import numpy
 
+from boardConfig import boardsConfig
 from buttons import buttons
 from cells import cells
 from gourds import gourds
@@ -8,29 +9,6 @@ from hamiltonianCycle import hamiltonianCycle
 
 
 
-##############################################################################################
-###################################### board 2 ##############################
-# set a matrix of board
-
-
-board = numpy.array([
-#x 0, 1, 2, 3, 4, 5, 6, 7, 8
-    [0, 4, 0, 4, 0, 1, 0],  # 0
-    [2, 0, 2, 0, 3, 0, 2],  # 1
-    [0, 1, 0, 1, 0, 1, 0],  # 2
-    [2, 0, 2, 0, 3, 0, 0],  # 3
-])
-
-# set a initial gourds placement
-gourdsList = numpy.array([
-    # x, y, x, y, colourLib_1, colourLib_2
-    [1, 0, 0, 1, 4, 2],
-    [2, 1, 4, 1, 4, 3],
-    [1, 2, 3, 2, 1, 2],
-    [0, 3, 2, 3, 3, 1],
-    [4, 3, 5, 2, 2, 1],
-    [5, 0, 6, 1, 2, 2],
-])
 
 # colour library
 coloursLibrary = {
@@ -46,9 +24,15 @@ coloursLibrary = {
     6: (91, 231, 196),
 }
 
-##############################################################################################
 
+# objects
+myBoard = None
+myGourdsList = None
 
+myButtons = None
+myCells = None
+myGourds = None
+myHamiltonianCycle = None
 
 
 
@@ -56,22 +40,17 @@ coloursLibrary = {
 sizeOfTheWindow = (600, 400)
 # button size
 buttonSize = 200, 30
-# set width of the hexagonal cell
-if (sizeOfTheWindow[0] - buttonSize[0]) / (len(board[0])) <= sizeOfTheWindow[1] / 1.732 / (len(board)):
-    widthOfHexCell = int((sizeOfTheWindow[0] - buttonSize[0]) / (len(board[0]) + 2))
-else:
-    widthOfHexCell = int(sizeOfTheWindow[1] / 1.732 / (len(board) + 1))
-offset = widthOfHexCell * 1.5
+# widthOfHexCells
+widthOfHexCell = -1
+# offset
+offset = -1
 # gourd size
-gourdSize = int(widthOfHexCell * 0.35)
+gourdSize = -1
+
+
 # first run flag
 runFirstTimeFlag = True
 
-# objects
-myButtons = None
-myCells = None
-myGourds = None
-myHamiltonianCycle = None
 
 
 pygame.init()
@@ -122,20 +101,36 @@ def redrawTheScreen():
 
 def main():
     # initialization
+    global myBoardsConfig
+    myBoardsConfig = boardsConfig();
 
+
+    # parameters init
+    global widthOfHexCell, offset, gourdSize
+    # set width of the hexagonal cell
+    if (sizeOfTheWindow[0] - buttonSize[0]) / (len(myBoardsConfig.board[0])) <= sizeOfTheWindow[1] / 1.732 / (len(myBoardsConfig.board)):
+        widthOfHexCell = int((sizeOfTheWindow[0] - buttonSize[0]) / (len(myBoardsConfig.board[0]) + 2))
+    else:
+        widthOfHexCell = int(sizeOfTheWindow[1] / 1.732 / (len(myBoardsConfig.board) + 1))
+    offset = widthOfHexCell * 1.5
+    # gourd size
+    gourdSize = int(widthOfHexCell * 0.35)
+
+    # objects init
     global myButtons
     myButtons = buttons(screen, coloursLibrary, sizeOfTheWindow, buttonSize)
 
     global myCells
-    myCells = cells(screen, board, coloursLibrary, offset, widthOfHexCell)
+    myCells = cells(screen, myBoardsConfig.board, coloursLibrary, offset, widthOfHexCell)
 
     global myGourds
-    myGourds = gourds(screen, board, gourdsList, coloursLibrary, offset, widthOfHexCell, gourdSize)
+    myGourds = gourds(screen, myBoardsConfig.board, myBoardsConfig.gourdsList, coloursLibrary, offset, widthOfHexCell, gourdSize)
 
     global myHamiltonianCycle
-    myHamiltonianCycle = hamiltonianCycle(screen, board, coloursLibrary, offset, widthOfHexCell)
+    myHamiltonianCycle = hamiltonianCycle(screen, myBoardsConfig.board, coloursLibrary, offset, widthOfHexCell)
 
 
+    # flag setting
     global runFirstTimeFlag
     runFirstTimeFlag = False
 
