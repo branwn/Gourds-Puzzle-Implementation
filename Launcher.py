@@ -8,19 +8,11 @@ from gourds import gourds
 from hamiltonianCycle import hamiltonianCycle
 
 
-
-
-
-
 # objects
-myBoard = None
-myGourdsList = None
-
 myButtons = None
 myCells = None
 myGourds = None
 myHamiltonianCycle = None
-
 
 
 # size of the window
@@ -37,8 +29,6 @@ gourdSize = -1
 
 # first run flag
 runFirstTimeFlag = True
-
-
 
 pygame.init()
 # size of the window
