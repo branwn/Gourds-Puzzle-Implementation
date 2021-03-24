@@ -1,7 +1,7 @@
 import pygame
 import numpy
 
-from boardConfig import boardsConfig
+from boardConfigsContainer import boardConfig2 as boardConfig
 from buttons import buttons
 from cells import cells
 from gourds import gourds
@@ -10,19 +10,6 @@ from hamiltonianCycle import hamiltonianCycle
 
 
 
-# colour library
-coloursLibrary = {
-    'backGround': (242, 242, 242),
-    'black': (0, 0, 0),
-    'white': (255, 255, 255),
-    'hamiltonianCycle': (39, 98, 184),
-    1: (190, 127, 73),
-    2: (80, 193, 233),
-    3: (122, 87, 209),
-    4: (237, 84, 133),
-    5: (255, 232, 105),
-    6: (91, 231, 196),
-}
 
 
 # objects
@@ -58,9 +45,6 @@ pygame.init()
 screen = pygame.display.set_mode(sizeOfTheWindow)
 # caption setting
 pygame.display.set_caption('Gourds')
-# background colour setting
-screen.fill(coloursLibrary['backGround'])
-
 
 
 def mouseClicked(pos):
@@ -91,7 +75,7 @@ def mouseClicked(pos):
 
 def redrawTheScreen():
 
-    screen.fill(coloursLibrary['backGround'])
+    screen.fill(myBoardsConfig.coloursLibrary['backGround'])
     myButtons.buttonConstructorAndPainter()
     myCells.cellsAndAxisConstructor(myButtons.buttonStates[1])
     myGourds.gourdsConstructor(myButtons.buttonStates[1])
@@ -102,7 +86,7 @@ def redrawTheScreen():
 def main():
     # initialization
     global myBoardsConfig
-    myBoardsConfig = boardsConfig();
+    myBoardsConfig = boardConfig();
 
 
     # parameters init
@@ -118,16 +102,16 @@ def main():
 
     # objects init
     global myButtons
-    myButtons = buttons(screen, coloursLibrary, sizeOfTheWindow, buttonSize)
+    myButtons = buttons(screen, myBoardsConfig.coloursLibrary, sizeOfTheWindow, buttonSize)
 
     global myCells
-    myCells = cells(screen, myBoardsConfig.board, coloursLibrary, offset, widthOfHexCell)
+    myCells = cells(screen, myBoardsConfig.board, myBoardsConfig.coloursLibrary, offset, widthOfHexCell)
 
     global myGourds
-    myGourds = gourds(screen, myBoardsConfig.board, myBoardsConfig.gourdsList, coloursLibrary, offset, widthOfHexCell, gourdSize)
+    myGourds = gourds(screen, myBoardsConfig.board, myBoardsConfig.gourdsList, myBoardsConfig.coloursLibrary, offset, widthOfHexCell, gourdSize)
 
     global myHamiltonianCycle
-    myHamiltonianCycle = hamiltonianCycle(screen, myBoardsConfig.board, coloursLibrary, offset, widthOfHexCell)
+    myHamiltonianCycle = hamiltonianCycle(screen, myBoardsConfig.board, myBoardsConfig.coloursLibrary, offset, widthOfHexCell)
 
 
     # flag setting
