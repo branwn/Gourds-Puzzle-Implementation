@@ -1,6 +1,6 @@
 import pygame
 
-class cells(object):
+class cellsConstructor(object):
 
     def __init__(self, screen, board, coloursLibrary, offset, widthOfHexCell):
         self.screen = screen
