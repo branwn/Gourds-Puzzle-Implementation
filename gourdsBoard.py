@@ -1,6 +1,9 @@
 import pygame
-import numpy  # for matrix
+import numpy
+
+from buttons import buttons
 from hamiltonianCycle import hamiltonianCycle
+
 
 
 ##############################################################################################
@@ -27,8 +30,6 @@ gourdsList = numpy.array([
     [5, 0, 6, 1, 2, 2],
 ])
 
-
-
 # colour library
 coloursLibrary = {
     'backGround': (242, 242, 242),
@@ -45,12 +46,10 @@ coloursLibrary = {
 
 ##############################################################################################
 
-# button states
-buttonStates = [0, 0, 0, 0, 0, 0, 0]  # 0 by default
 
-displayIndexOnTheScreen = False
 
 # objects
+myButtons = None
 myHamiltonianCycle = None
 
 
@@ -80,89 +79,6 @@ screen.fill(coloursLibrary['backGround'])
 
 
 
-# for buttons
-def buttonConstructorAndPainter():
-    pygame.draw.rect(screen, coloursLibrary['backGround'],
-                     (sizeOfTheWindow[0] - buttonSize[0] - 10, 0, buttonSize[0], sizeOfTheWindow[1]), 0)
-    theFont = pygame.font.Font('OpenSans-Light.ttf', 20)
-
-    # the first button
-    if buttonStates[1] == 0:
-        pygame.draw.rect(screen, coloursLibrary[2],
-                         (sizeOfTheWindow[0] - buttonSize[0] - 10, 10, buttonSize[0], buttonSize[1]), 4)
-        theText = theFont.render("Index Hidden", True, coloursLibrary['black'])
-
-    else:
-        pygame.draw.rect(screen, coloursLibrary[2],
-                         (sizeOfTheWindow[0] - buttonSize[0] - 10, 10, buttonSize[0], buttonSize[1]), 0)
-        theText = theFont.render("Index Displayed", True, coloursLibrary['black'])
-
-    screen.blit(theText, (sizeOfTheWindow[0] - buttonSize[0] + 5, 10))
-
-    # the second button
-    if buttonStates[2] == 0:
-        pygame.draw.rect(screen, coloursLibrary[2],
-                         (sizeOfTheWindow[0] - buttonSize[0] - 10, buttonSize[1] + 20, buttonSize[0], buttonSize[1]), 4)
-        theText = theFont.render("Hamiltonian Cycle?", True, coloursLibrary['black'])
-    else:
-        pygame.draw.rect(screen, coloursLibrary[2],
-                         (sizeOfTheWindow[0] - buttonSize[0] - 10, buttonSize[1] + 20, buttonSize[0], buttonSize[1]), 0)
-        theText = theFont.render("Hamiltonian Cycle!", True, coloursLibrary['black'])
-
-    screen.blit(theText, (sizeOfTheWindow[0] - buttonSize[0] + 5, buttonSize[1] + 20))
-
-    # the third button
-    if buttonStates[3] == 0:
-        pygame.draw.rect(screen, coloursLibrary[2], (
-            sizeOfTheWindow[0] - buttonSize[0] - 10, buttonSize[1] * 2 + 30, buttonSize[0], buttonSize[1]), 4)
-        theText = theFont.render("in state 0", True, coloursLibrary['black'])
-
-    else:
-        pygame.draw.rect(screen, coloursLibrary[2], (
-            sizeOfTheWindow[0] - buttonSize[0] - 10, buttonSize[1] * 2 + 30, buttonSize[0], buttonSize[1]), 0)
-        theText = theFont.render("in state 1", True, coloursLibrary['black'])
-
-    screen.blit(theText, (sizeOfTheWindow[0] - buttonSize[0] + 5, buttonSize[1] * 2 + 30))
-
-    # # refresh the window
-    # pygame.display.update()
-
-
-def buttonsSearchingByCoordinate(pos):
-    if pos[0] > sizeOfTheWindow[0] - buttonSize[0]:
-        if pos[1] < buttonSize[1] + 10: return 1;
-        if pos[1] < buttonSize[1] * 2 + 20: return 2;
-        if pos[1] < buttonSize[1] * 3 + 30: return 3;
-
-    return -1
-
-
-def buttonOneClicked():
-    # switcher
-    buttonStates[1] = 1 - buttonStates[1]
-
-    global displayIndexOnTheScreen
-    if buttonStates[1] == 0:
-        displayIndexOnTheScreen = False
-    else:
-        displayIndexOnTheScreen = True
-
-    # refresh the whole window
-    screen.fill(coloursLibrary['backGround'])
-    redrawTheScreen()
-
-
-def buttonTwoClicked():
-    # switcher
-    buttonStates[2] = 1 - buttonStates[2]
-
-    redrawTheScreen()
-
-
-def buttonThreeClicked():
-    buttonStates[3] = 1 - buttonStates[3]
-    buttonConstructorAndPainter()
-    pygame.display.update()
 
 
 # for cells
@@ -230,7 +146,7 @@ def cellPainter(x, y):
                         ], widthOfBlackFrameLine)
 
 
-def cellsAndAxisConstructor():
+def cellsAndAxisConstructor(isDisplayIndex):
     theFont = pygame.font.Font('OpenSans-Light.ttf', 16)
 
     # draw the axis
@@ -247,7 +163,7 @@ def cellsAndAxisConstructor():
     for y in range(len(board)):
         for x in range(len(board[0])):
             # display matrix numbers on screen
-            if displayIndexOnTheScreen:
+            if isDisplayIndex:
                 if board[y][x]:
                     # display if not board[i][j] is not 0
                     theText = theFont.render(str(board[y][x]), True, coloursLibrary[board[y][x]])
@@ -277,7 +193,7 @@ def gourdPainter(firstPart, secondPart):
                      width=int(widthOfHexCell * 0.1 + 6))
 
 
-def gourdsConstructor():
+def gourdsConstructor(isDisplayIndex):
     # (x of the window, y of the window, index of the gourds)
     firstPart = (-1, -1, -1)
     secondPart = (-1, -1, -1)
@@ -292,7 +208,7 @@ def gourdsConstructor():
         gourdPainter(firstPart, secondPart)
 
         # display the numbers / indexes on the gourds
-        if displayIndexOnTheScreen:
+        if isDisplayIndex:
             # first part
             numberSize = widthOfHexCell / 2
             theFont = pygame.font.Font('OpenSans-Light.ttf', int(numberSize))
@@ -482,39 +398,37 @@ def mouseClicked(pos):
             redrawTheScreen()
             return 0
 
+        redrawTheScreen()
         return 0
 
     # search button by the given coordinate
-    indexOfButton = buttonsSearchingByCoordinate(pos)
-    if indexOfButton == -1: return -1
-    if indexOfButton == 1:
-        buttonOneClicked()
-        return 0
-    if indexOfButton == 2:
-        buttonTwoClicked()
-        return 0
-    if indexOfButton == 3:
-        buttonThreeClicked()
+    if myButtons.buttonsSearchingByCoordinate(pos) != -1:
+
+        redrawTheScreen()
         return 0
 
     return -1;
 
 
 def redrawTheScreen():
+
     screen.fill(coloursLibrary['backGround'])
-    buttonConstructorAndPainter()
-    cellsAndAxisConstructor()
-    gourdsConstructor()
-    myHamiltonianCycle.hamiltonianCycleDrawer(screen, buttonStates[2])
+    myButtons.buttonConstructorAndPainter()
+    cellsAndAxisConstructor(myButtons.buttonStates[1])
+    gourdsConstructor(myButtons.buttonStates[1])
+    myHamiltonianCycle.hamiltonianCycleDrawer(myButtons.buttonStates[2])
     pygame.display.update()
 
 
 def main():
     # initialization
+
+    global myButtons
+    myButtons = buttons(screen, coloursLibrary, sizeOfTheWindow, buttonSize)
+
+
     global myHamiltonianCycle
-    myHamiltonianCycle = hamiltonianCycle(board, coloursLibrary, offset, widthOfHexCell)
-
-
+    myHamiltonianCycle = hamiltonianCycle(screen, board, coloursLibrary, offset, widthOfHexCell)
 
 
     global runFirstTimeFlag

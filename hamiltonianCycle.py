@@ -3,8 +3,9 @@ import pygame
 
 class hamiltonianCycle(object):
 
-    def __init__(self, board, coloursLibrary, offset, widthOfHexCell):
+    def __init__(self, screen, board, coloursLibrary, offset, widthOfHexCell):
         # Hamiltonian Cycle
+        self.screen = screen
         self.widthOfHexCell = widthOfHexCell
         self.offset = offset
         self.board = board
@@ -15,7 +16,6 @@ class hamiltonianCycle(object):
         self.hamiltonianCycleStack = []
         self.hamiltonianCycleGeneratedFlag = False
 
-    # for algorithm Hamiltonian Cycle seeking
     def searchNeighbourCells(self, cellIn):
         x = cellIn[0]
         y = cellIn[1]
@@ -119,20 +119,20 @@ class hamiltonianCycle(object):
                     # print("goto: ", thisCell)
 
 
-    def hamiltonianCycleDrawer(self, screen, buttonStates2):
+    def hamiltonianCycleDrawer(self, buttonStates2):
         if not buttonStates2: return
 
         if not self.hamiltonianCycleGeneratedFlag:
             self.hamiltonianCycleGenerator()
 
         for i in range(len(self.hamiltonianCycleStack) - 1):
-            pygame.draw.line(screen, self.coloursLibrary['backGround'],
+            pygame.draw.line(self.screen, self.coloursLibrary['backGround'],
                              (int(self.offset + self.hamiltonianCycleStack[i][0] * self.widthOfHexCell),
                               int(self.offset + self.hamiltonianCycleStack[i][1] * self.widthOfHexCell * 1.732)),
                              (int(self.offset + self.hamiltonianCycleStack[i + 1][0] * self.widthOfHexCell),
                               int(self.offset + self.hamiltonianCycleStack[i + 1][1] * self.widthOfHexCell * 1.732)),
                              4)
-            pygame.draw.line(screen, self.coloursLibrary['hamiltonianCycle'],
+            pygame.draw.line(self.screen, self.coloursLibrary['hamiltonianCycle'],
                              (int(self.offset + self.hamiltonianCycleStack[i][0] * self.widthOfHexCell),
                               int(self.offset + self.hamiltonianCycleStack[i][1] * self.widthOfHexCell * 1.732)),
                              (int(self.offset + self.hamiltonianCycleStack[i + 1][0] * self.widthOfHexCell),
