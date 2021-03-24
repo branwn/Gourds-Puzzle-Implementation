@@ -1,4 +1,3 @@
-import numpy
 import pygame
 
 class cells(object):
