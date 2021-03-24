@@ -1,10 +1,12 @@
 import pygame
 import numpy  # for matrix
+from hamiltonianCycle import hamiltonianCycle
+
 
 ##############################################################################################
 ###################################### board 2 ##############################
 # set a matrix of board
-from hamiltonianCycle import hamiltonianCycle
+
 
 board = numpy.array([
 #x 0, 1, 2, 3, 4, 5, 6, 7, 8
