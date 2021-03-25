@@ -1,3 +1,4 @@
+import pygame
 
 
 class finalGourdsConfig(object):
@@ -10,17 +11,19 @@ class finalGourdsConfig(object):
         self.board = board
         self.gourdsList = gourdsList
         self.coloursLibrary = coloursLibrary
-        self.gourdsPossibleLocations = []
+        self.gourdsPossibleLocations = {}
         self.gourdsAssignedDict = {}
-        self.gourdsAssignedFootprintStack = []
+        self.gourdsFootprint = {}
         self.totalNumberOfGourds = len(gourdsList)
-
+        self.finishedFlag = False
 
 
     def isAllGourdsAssigned(self):
         # print(self.gourdsAssignedDict)
 
         if len(self.gourdsAssignedDict) == self.totalNumberOfGourds:
+            self.gourdsFootprint = {}
+            self.gourdsPossibleLocations = {}
             return True
 
         return False
@@ -37,7 +40,7 @@ class finalGourdsConfig(object):
             if location is not None:
                 boardTemp[location[2]][location[1]] = 0
                 boardTemp[location[4]][location[3]] = 0
-        print(boardTemp)
+        # print(boardTemp)
 
         # search for available locations
         for y in range(maxOfY):
@@ -66,17 +69,20 @@ class finalGourdsConfig(object):
                                   boardTemp[y + 1][x - 1] == self.gourdsList[gourdIndex][4]):
                                 possibleLocationsStack.append([gourdIndex, x - 1, y + 1, x, y])
 
-        # stack to list
-        self.gourdsPossibleLocations.clear()
+
+        # stack to dict
         for i in range(self.totalNumberOfGourds):
-            self.gourdsPossibleLocations.append([i])
+            self.gourdsPossibleLocations[i] = []
 
             for stack in possibleLocationsStack:
                 if stack[0] == i:
-                   self.gourdsPossibleLocations[i].append(stack)
+                    if self.gourdsFootprint.get(i) is None:
+                        self.gourdsPossibleLocations[i].append(stack)
+                    else:
+                        if stack not in self.gourdsFootprint.get(i):
+                            self.gourdsPossibleLocations[i].append(stack)
 
 
-        print(self.gourdsPossibleLocations)
         return
 
     def allGourdsHavePossibleLocation(self):
@@ -92,28 +98,45 @@ class finalGourdsConfig(object):
 
         return True
 
-    def returnToLastStep(self):
+    def assignGourds(self, returnFlag):
+
+        listOfLocations = []
+        # go next step
+        for i in range(self.totalNumberOfGourds):
+            listOfLocations = self.gourdsPossibleLocations[i]
+            if len(listOfLocations) >= 1:
+                self.gourdsAssignedDict[i] = listOfLocations[0]
+                break
 
 
-        pass
+        # record this footprint
+        if not returnFlag:
+            self.gourdsFootprint[listOfLocations[0][0]] = listOfLocations[0]
+        else:
+            self.gourdsFootprint[listOfLocations[0][0]].append(listOfLocations[0])
+            # self.gourdsFootprint[listOfLocations[0][0]:] = []
 
-    def assignGourds(self):
-        for aLine in self.gourdsPossibleLocations:
-            if len(aLine) >= 2:
-                self.gourdsAssignedDict[aLine[0]] = aLine[1]
-                return
-
-        self.gourdsAssignedFootprintStack.append(aLine[1])
-        pass
+        # print(self.gourdsFootprint)
 
     def finalConfigGenerator(self, buttonState):
         # DFS
         if not buttonState: return
+        if self.finishedFlag:return
 
-        finishedFlag = False
-        while(not finishedFlag):
+
+
+        while(not self.finishedFlag):
+
+
+            pygame.time.delay(1000)
+            print("possible :", self.gourdsPossibleLocations)
+            print("footprint:", self.gourdsFootprint)
+            print("dict     :", self.gourdsAssignedDict)
+
             # all gourds have been assigned?
             if self.isAllGourdsAssigned():
+                self.finishedFlag = True
+
                 return True
 
             # list all possible location
@@ -121,14 +144,17 @@ class finalGourdsConfig(object):
 
             # If there are gourds have no possible location?
             if not self.allGourdsHavePossibleLocation():
-                # return to last step
-                self.returnToLastStep()
+
+                # assign next step
+                returnFlag = False
 
             else:
-                # assign next step
-                self.assignGourds()
+                # return to last step
+                returnFlag = True
+
+            # go to next step
+            self.assignGourds(returnFlag)
 
 
-            finishedFlag = True
 
 

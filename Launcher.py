@@ -1,6 +1,6 @@
 import pygame
 
-from boardConfigsContainer import boardConfig1 as boardConfig
+from boardConfigsContainer import boardConfig2 as boardConfig
 from buttons import buttons
 from cellsConstructor import cellsConstructor
 from gourdsConstructor import gourdsConstructor
