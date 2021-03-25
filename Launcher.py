@@ -63,7 +63,7 @@ def redrawTheScreen():
     myGourdsConstructor.gourdsConstructor(myButtons.buttonStates[1])
     myHamiltonianCycle.hamiltonianCycleDrawer(myButtons.buttonStates[2])
 
-    myFinalGourdsConfig.searchAllPossibleAssignment()
+    myFinalGourdsConfig.finalConfigGenerator(myButtons.buttonStates[3])
     pygame.display.update()
 
 
