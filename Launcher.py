@@ -5,7 +5,7 @@ from buttons import buttons
 from cellsConstructor import cellsConstructor
 from gourdsConstructor import gourdsConstructor
 from hamiltonianCycle import hamiltonianCycle
-from finalGourdsConfig import finalGourdsConfig
+from finalGourdsConfigGenerator import finalGourdsConfig
 
 # size of the window
 sizeOfTheWindow = (600, 400)
