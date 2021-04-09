@@ -41,16 +41,19 @@ class gourdsConstructor(object):
 
             # display the numbers / indexes on the gourds
             if isDisplayIndex:
+                # set the font size
+                if len(self.coloursLibrary) > 15:
+                    fontSize = 15
+                else:
+                    fontSize = 22
+                theFont = pygame.font.Font('OpenSans-Light.ttf', fontSize)
+
                 # first part
-                numberSize = self.widthOfHexCell / 2
-                theFont = pygame.font.Font('OpenSans-Light.ttf', int(numberSize))
                 theText = theFont.render(str(firstPart[2]), True, self.coloursLibrary['backGround'])
-                self.screen.blit(theText, (firstPart[0] - int(numberSize * 0.25), firstPart[1] - int(numberSize * 0.75)))
+                self.screen.blit(theText, (firstPart[0] - int(fontSize * 0.25) + fontSize - 20, firstPart[1] - int(fontSize * 0.75)))
                 # second part
-                numberSize = self.widthOfHexCell / 2
-                theFont = pygame.font.Font('OpenSans-Light.ttf', int(numberSize))
                 theText = theFont.render(str(secondPart[2]), True, self.coloursLibrary['backGround'])
-                self.screen.blit(theText, (secondPart[0] - int(numberSize * 0.25), secondPart[1] - int(numberSize * 0.75)))
+                self.screen.blit(theText, (secondPart[0] - int(fontSize * 0.25) + fontSize - 20, secondPart[1] - int(fontSize * 0.75)))
 
         # refresh the window
         # pygame.display.update()

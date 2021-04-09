@@ -85,7 +85,12 @@ class cellsConstructor(object):
             self.screen.blit(theText, (8, int(-14 + self.offset + x * self.widthOfHexCell * 1.732)))
 
         # draw the cells
-        theFont = pygame.font.Font('OpenSans-Light.ttf', 22)
+        if len(self.coloursLibrary) > 15:
+            fontSize = 15
+        else:
+            fontSize = 22
+        theFont = pygame.font.Font('OpenSans-Light.ttf', fontSize)
+
         for y in range(len(self.board)):
             for x in range(len(self.board[0])):
                 # display matrix numbers on screen
@@ -93,8 +98,8 @@ class cellsConstructor(object):
                     if self.board[y][x]:
                         # display if not board[i][j] is not 0
                         theText = theFont.render(str(self.board[y][x]), True, self.coloursLibrary[self.board[y][x]])
-                        self.screen.blit(theText, (int(-self.widthOfHexCell / 1.6) + self.offset + x * self.widthOfHexCell,
-                                              int(-16 + self.offset + y * self.widthOfHexCell * 1.732)))
+                        self.screen.blit(theText, (int(-self.widthOfHexCell / 1.6) + fontSize - 20 + self.offset + x * self.widthOfHexCell,
+                                              int(- fontSize + 5 + self.offset + y * self.widthOfHexCell * 1.732)))
                 # pygame.draw.circle(screen,(0,0,0),(offset + j * widthOfHexCell, offset + i * widthOfHexCell * 1.732) ,6,1)
 
                 if (self.board[y][x]):

@@ -11,6 +11,10 @@ class buttons(object):
         self.buttonSize = buttonSize
         # button states
         self.buttonStates = [0, 0, 0, 0, 0, 0, 0]  # 0 by default
+        # auto display index
+        if self.coloursLibrary[1] == self.coloursLibrary[2]:
+            self.buttonStates[1] = 1;
+
 
     def buttonConstructorAndPainter(self):
         pygame.draw.rect(self.screen, self.coloursLibrary['backGround'],
@@ -19,12 +23,12 @@ class buttons(object):
 
         # the first button
         if self.buttonStates[1] == 0:
-            pygame.draw.rect(self.screen, self.coloursLibrary[2],
+            pygame.draw.rect(self.screen, self.coloursLibrary['button'],
                              (self.sizeOfTheWindow[0] - self.buttonSize[0] - 10, 10, self.buttonSize[0], self.buttonSize[1]), 4)
             theText = theFont.render("Index Hidden", True, self.coloursLibrary['black'])
 
         else:
-            pygame.draw.rect(self.screen, self.coloursLibrary[2],
+            pygame.draw.rect(self.screen, self.coloursLibrary['button'],
                              (self.sizeOfTheWindow[0] - self.buttonSize[0] - 10, 10, self.buttonSize[0], self.buttonSize[1]), 0)
             theText = theFont.render("Index Displayed", True, self.coloursLibrary['black'])
 
@@ -32,11 +36,11 @@ class buttons(object):
 
         # the second button
         if self.buttonStates[2] == 0:
-            pygame.draw.rect(self.screen, self.coloursLibrary[2],
+            pygame.draw.rect(self.screen, self.coloursLibrary['button'],
                              (self.sizeOfTheWindow[0] - self.buttonSize[0] - 10, self.buttonSize[1] + 20, self.buttonSize[0], self.buttonSize[1]), 4)
             theText = theFont.render("Hamiltonian Cycle?", True, self.coloursLibrary['black'])
         else:
-            pygame.draw.rect(self.screen, self.coloursLibrary[2],
+            pygame.draw.rect(self.screen, self.coloursLibrary['button'],
                              (self.sizeOfTheWindow[0] - self.buttonSize[0] - 10, self.buttonSize[1] + 20, self.buttonSize[0], self.buttonSize[1]), 0)
             theText = theFont.render("Hamiltonian Cycle!", True, self.coloursLibrary['black'])
 
@@ -44,12 +48,12 @@ class buttons(object):
 
         # the third button
         if self.buttonStates[3] == 0:
-            pygame.draw.rect(self.screen, self.coloursLibrary[2], (
+            pygame.draw.rect(self.screen, self.coloursLibrary['button'], (
                 self.sizeOfTheWindow[0] - self.buttonSize[0] - 10, self.buttonSize[1] * 2 + 30, self.buttonSize[0], self.buttonSize[1]), 4)
             theText = theFont.render("in state 0", True, self.coloursLibrary['black'])
 
         else:
-            pygame.draw.rect(self.screen, self.coloursLibrary[2], (
+            pygame.draw.rect(self.screen, self.coloursLibrary['button'], (
                 self.sizeOfTheWindow[0] - self.buttonSize[0] - 10, self.buttonSize[1] * 2 + 30, self.buttonSize[0], self.buttonSize[1]), 0)
             theText = theFont.render("in state 1", True, self.coloursLibrary['black'])
 

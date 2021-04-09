@@ -139,17 +139,18 @@ class finalGourdsConfig(object):
         while(not self.finishedFlag):
 
 
-            pygame.time.delay(1000)
-            print("possible :", self.gourdsPossibleLocations)
-            print('')
-            print("footprint:", self.gourdsFootprint)
-            print("dict     :", self.gourdsAssignedDict)
+            # pygame.time.delay(1000)
+            # print("possible :", self.gourdsPossibleLocations)
+            # print('')
+            # print("footprint:", self.gourdsFootprint)
+            # print("dict     :", self.gourdsAssignedDict)
 
             # all gourds have been assigned?
             if self.isAllGourdsAssigned():
                 self.finishedFlag = True
 
                 print("dict     :", self.gourdsAssignedDict)
+
                 return True
 
             # list all possible location

@@ -1,14 +1,18 @@
 import pygame
 
-from boardConfigsContainer import boardConfig4 as boardConfig
+from boardConfigsContainer import boardConfig7 as boardConfig
 from buttons import buttons
 from cellsConstructor import cellsConstructor
 from gourdsConstructor import gourdsConstructor
 from hamiltonianCycle import hamiltonianCycle
 from finalGourdsConfigGenerator import finalGourdsConfig
 
-# size of the window
-sizeOfTheWindow = (600, 400)
+
+
+# set size of the window
+xLengthOfTheWindow = int(len(boardConfig.board[0])*50 + 250)
+yLengthOfTheWindow = int(len(boardConfig.board)*90 + 50)
+sizeOfTheWindow = (xLengthOfTheWindow, yLengthOfTheWindow)
 # button size
 buttonSize = 200, 30
 # widthOfHexCells
@@ -75,6 +79,8 @@ def main():
 
     # parameters init
     global widthOfHexCell, offset, gourdSize
+
+
     # set width of the hexagonal cell
     if (sizeOfTheWindow[0] - buttonSize[0]) / (len(myBoardsConfig.board[0])) <= sizeOfTheWindow[1] / 1.732 / (len(myBoardsConfig.board)):
         widthOfHexCell = int((sizeOfTheWindow[0] - buttonSize[0]) / (len(myBoardsConfig.board[0]) + 2))
