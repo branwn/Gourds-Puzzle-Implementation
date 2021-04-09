@@ -10,6 +10,7 @@ class phaseOne(object):
         self.myHamiltonianCycle = myHamiltonianCycle
         self.myFinalGourdsConfig = myFinalGourdsConfig
 
+
     def runPhaseOne(self, buttonState3):
         if not buttonState3:
             self.firstRun = True
