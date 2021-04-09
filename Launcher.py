@@ -106,7 +106,7 @@ def main():
     myFinalGourdsConfig.finalConfigGenerator()
 
     global myPhaseOne
-    myPhaseOne = phaseOne(myBoardsConfig, myGourdsConstructor, myHamiltonianCycle)
+    myPhaseOne = phaseOne(screen, myBoardsConfig, myButtons, myCellsConstructor, myGourdsConstructor, myHamiltonianCycle, myFinalGourdsConfig)
 
 
     # flag setting
