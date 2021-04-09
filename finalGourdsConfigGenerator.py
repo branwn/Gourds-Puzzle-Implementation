@@ -130,9 +130,9 @@ class finalGourdsConfig(object):
                 break
 
 
-    def finalConfigGenerator(self, buttonState):
+    def finalConfigGenerator(self):
 
-        if not buttonState: return
+
         if self.finishedFlag: return
 
         # DFS
@@ -149,7 +149,7 @@ class finalGourdsConfig(object):
             if self.isAllGourdsAssigned():
                 self.finishedFlag = True
 
-                print("dict     :", self.gourdsAssignedDict)
+                print("The final configuration: ", self.gourdsAssignedDict)
 
                 return True
 

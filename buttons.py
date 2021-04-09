@@ -10,94 +10,52 @@ class buttons(object):
         self.sizeOfTheWindow = sizeOfTheWindow
         self.buttonSize = buttonSize
         # button states
-        self.buttonStates = [0, 0, 0, 0, 0, 0, 0]  # 0 by default
+        self.buttonStates = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]  # 0 by default
         # auto display index
         if self.coloursLibrary[1] == self.coloursLibrary[2]:
             self.buttonStates[1] = 1;
 
-
-    def buttonConstructorAndPainter(self):
-        pygame.draw.rect(self.screen, self.coloursLibrary['backGround'],
-                         (self.sizeOfTheWindow[0] - self.buttonSize[0] - 10, 0, self.buttonSize[0], self.sizeOfTheWindow[1]), 0)
+    def buttonPainter(self, btnIndex, stringDefault, stringClicked):
         theFont = pygame.font.Font('OpenSans-Light.ttf', 20)
 
-        # the first button
-        if self.buttonStates[1] == 0:
-            pygame.draw.rect(self.screen, self.coloursLibrary['button'],
-                             (self.sizeOfTheWindow[0] - self.buttonSize[0] - 10, 10, self.buttonSize[0], self.buttonSize[1]), 4)
-            theText = theFont.render("Index Hidden", True, self.coloursLibrary['black'])
-
-        else:
-            pygame.draw.rect(self.screen, self.coloursLibrary['button'],
-                             (self.sizeOfTheWindow[0] - self.buttonSize[0] - 10, 10, self.buttonSize[0], self.buttonSize[1]), 0)
-            theText = theFont.render("Index Displayed", True, self.coloursLibrary['black'])
-
-        self.screen.blit(theText, (self.sizeOfTheWindow[0] - self.buttonSize[0] + 5, 10))
-
-        # the second button
-        if self.buttonStates[2] == 0:
-            pygame.draw.rect(self.screen, self.coloursLibrary['button'],
-                             (self.sizeOfTheWindow[0] - self.buttonSize[0] - 10, self.buttonSize[1] + 20, self.buttonSize[0], self.buttonSize[1]), 4)
-            theText = theFont.render("Hamiltonian Cycle?", True, self.coloursLibrary['black'])
-        else:
-            pygame.draw.rect(self.screen, self.coloursLibrary['button'],
-                             (self.sizeOfTheWindow[0] - self.buttonSize[0] - 10, self.buttonSize[1] + 20, self.buttonSize[0], self.buttonSize[1]), 0)
-            theText = theFont.render("Hamiltonian Cycle!", True, self.coloursLibrary['black'])
-
-        self.screen.blit(theText, (self.sizeOfTheWindow[0] - self.buttonSize[0] + 5, self.buttonSize[1] + 20))
-
-        # the third button
-        if self.buttonStates[3] == 0:
+        if self.buttonStates[btnIndex] == 0:
             pygame.draw.rect(self.screen, self.coloursLibrary['button'], (
-                self.sizeOfTheWindow[0] - self.buttonSize[0] - 10, self.buttonSize[1] * 2 + 30, self.buttonSize[0], self.buttonSize[1]), 4)
-            theText = theFont.render("in state 0", True, self.coloursLibrary['black'])
-
+                self.sizeOfTheWindow[0] - self.buttonSize[0] - 10, self.buttonSize[1] * (btnIndex-1) + btnIndex*10, self.buttonSize[0], self.buttonSize[1]), 4)
+            theText = theFont.render(stringDefault, True, self.coloursLibrary['black'])
         else:
             pygame.draw.rect(self.screen, self.coloursLibrary['button'], (
-                self.sizeOfTheWindow[0] - self.buttonSize[0] - 10, self.buttonSize[1] * 2 + 30, self.buttonSize[0], self.buttonSize[1]), 0)
-            theText = theFont.render("in state 1", True, self.coloursLibrary['black'])
-
-        self.screen.blit(theText, (self.sizeOfTheWindow[0] - self.buttonSize[0] + 5, self.buttonSize[1] * 2 + 30))
-
-        # # refresh the window
-        # pygame.display.update()
+                self.sizeOfTheWindow[0] - self.buttonSize[0] - 10, self.buttonSize[1] * (btnIndex-1) + btnIndex*10, self.buttonSize[0], self.buttonSize[1]), 0)
+            theText = theFont.render(stringClicked, True, self.coloursLibrary['black'])
+        self.screen.blit(theText, (self.sizeOfTheWindow[0] - self.buttonSize[0] + 5, self.buttonSize[1] * (btnIndex-1) + btnIndex*10))
 
 
-    def buttonsSearchingByCoordinate(self, pos):
+    def buttonConstructor(self):
+        pygame.draw.rect(self.screen, self.coloursLibrary['backGround'],
+                         (self.sizeOfTheWindow[0] - self.buttonSize[0] - 10, 0, self.buttonSize[0], self.sizeOfTheWindow[1]), 0)
+
+        self.buttonPainter(1, "Index Hidden", "Index Displayed")
+        self.buttonPainter(2, "Hamiltonian Cycle?", "Hamiltonian Cycle!")
+        self.buttonPainter(3, "Start Phase 1", "Phase 1 Finished")
+        self.buttonPainter(4, "Start Phase 2", "Phase 2 Finished")
+        self.buttonPainter(5, "Start Phase 3", "Phase 3 Finished")
+
+        return
+
+
+    def buttonsClicked(self, pos):
         # search button by the given coordinate
 
         indexOfButton = -1
         if pos[0] > self.sizeOfTheWindow[0] - self.buttonSize[0]:
-            if pos[1] < self.buttonSize[1] + 10: indexOfButton = 1;
-            elif pos[1] < self.buttonSize[1] * 2 + 20: indexOfButton = 2;
-            elif pos[1] < self.buttonSize[1] * 3 + 30: indexOfButton = 3;
+            if pos[1] < self.buttonSize[1] + 10:  self.buttonStates[1] = 1 - self.buttonStates[1]
+            elif pos[1] < self.buttonSize[1] * 2 + 20: self.buttonStates[2] = 1 - self.buttonStates[2]
+            elif pos[1] < self.buttonSize[1] * 3 + 30: self.buttonStates[3] = 1 - self.buttonStates[3]
+            elif pos[1] < self.buttonSize[1] * 4 + 40: self.buttonStates[4] = 1 - self.buttonStates[4]
+            elif pos[1] < self.buttonSize[1] * 5 + 50: self.buttonStates[5] = 1 - self.buttonStates[5]
 
-        if indexOfButton == -1: return -1
-        if indexOfButton == 1:
-            self.buttonOneClicked()
-            return 0
-        if indexOfButton == 2:
-            self.buttonTwoClicked()
-            return 0
-        if indexOfButton == 3:
-            self.buttonThreeClicked()
-            return 0
-
-        return -1
-
-
-    def buttonOneClicked(self):
-        # switcher
-        self.buttonStates[1] = 1 - self.buttonStates[1]
-
-
-    def buttonTwoClicked(self):
-        # switcher
-        self.buttonStates[2] = 1 - self.buttonStates[2]
+        return
 
 
 
-    def buttonThreeClicked(self):
-        self.buttonStates[3] = 1 - self.buttonStates[3]
-        self.buttonConstructorAndPainter()
-        # pygame.display.update()
+
+

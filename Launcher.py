@@ -1,6 +1,6 @@
 import pygame
 
-from boardConfigsContainer import boardConfig7 as boardConfig
+from boardConfigsContainer import boardConfig4 as boardConfig
 from buttons import buttons
 from cellsConstructor import cellsConstructor
 from gourdsConstructor import gourdsConstructor
@@ -51,7 +51,7 @@ def mouseClicked(pos):
         return 0
 
     # search button by the given coordinate
-    if myButtons.buttonsSearchingByCoordinate(pos) != -1:
+    if myButtons.buttonsClicked(pos) != -1:
 
         redrawTheScreen()
         return 0
@@ -62,12 +62,12 @@ def mouseClicked(pos):
 def redrawTheScreen():
 
     screen.fill(myBoardsConfig.coloursLibrary['backGround'])
-    myButtons.buttonConstructorAndPainter()
+    myButtons.buttonConstructor()
     myCellsConstructor.cellsAndAxisConstructor(myButtons.buttonStates[1])
     myGourdsConstructor.gourdsConstructor(myButtons.buttonStates[1])
     myHamiltonianCycle.hamiltonianCycleDrawer(myButtons.buttonStates[2])
 
-    myFinalGourdsConfig.finalConfigGenerator(myButtons.buttonStates[3])
+
     pygame.display.update()
 
 
@@ -105,6 +105,7 @@ def main():
 
     global myFinalGourdsConfig
     myFinalGourdsConfig = finalGourdsConfig(screen, myBoardsConfig.board, myBoardsConfig.gourdsList, myBoardsConfig.coloursLibrary, offset, widthOfHexCell)
+    myFinalGourdsConfig.finalConfigGenerator()
 
     # flag setting
     global runFirstTimeFlag
