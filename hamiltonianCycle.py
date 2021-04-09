@@ -16,6 +16,7 @@ class hamiltonianCycle(object):
         self.hamiltonianCycleStack = []
         self.hamiltonianCycleGeneratedFlag = False
 
+
     def searchNeighbourCells(self, cellIn):
         x = cellIn[0]
         y = cellIn[1]
@@ -117,6 +118,8 @@ class hamiltonianCycle(object):
                     self.hamiltonianCycleStack.append([thisCell[0], thisCell[1]])
                     self.hamiltonianCycleMap[lastCell[1]][lastCell[0]] = thisCell[2]
                     # print("goto: ", thisCell)
+
+        print ("hamiltonianCycleGenerator finished")
 
 
     def hamiltonianCycleDrawer(self, buttonStates2):

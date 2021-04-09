@@ -10,6 +10,8 @@ from finalGourdsConfigGenerator import finalGourdsConfig
 
 
 # set size of the window
+from phaseOne import phaseOne
+
 xLengthOfTheWindow = int(len(boardConfig.board[0])*50 + 250)
 yLengthOfTheWindow = int(len(boardConfig.board)*90 + 50)
 sizeOfTheWindow = (xLengthOfTheWindow, yLengthOfTheWindow)
@@ -33,25 +35,19 @@ screen = pygame.display.set_mode(sizeOfTheWindow)
 pygame.display.set_caption('Gourds')
 
 
-def mouseClicked(pos):
-    # search Gourds by the given Coordinate
-    indexOfGourd, xGourd, yGourd = myGourdsConstructor.gourdsSearchingByCoordinate(pos)
-    if indexOfGourd != -1:
-        # print(xGourd, yGourd)
-        # search if there is an Empty Cell Around
-        xCell, yCell = myGourdsConstructor.emptyCellSearchingAroundAGourd(xGourd, yGourd)
-        if xCell != -1:
-            # move gourd to the empty cell
-            myGourdsConstructor.gourdsMovementController(indexOfGourd, xGourd, yGourd, xCell, yCell)
-            # finally refresh the cells and gourds
-            redrawTheScreen()
-            return 0
 
+def mouseClicked(pos):
+    if myGourdsConstructor.gourdsClicked(pos, 'm'):
+        # phases buttons states turn to default
+        myButtons.buttonStates[3] = 0
+        myButtons.buttonStates[4] = 0
+        myButtons.buttonStates[5] = 0
+        myButtons.buttonStates[6] = 0
         redrawTheScreen()
         return 0
 
     # search button by the given coordinate
-    if myButtons.buttonsClicked(pos) != -1:
+    elif myButtons.buttonsClicked(pos) != -1:
 
         redrawTheScreen()
         return 0
@@ -66,6 +62,7 @@ def redrawTheScreen():
     myCellsConstructor.cellsAndAxisConstructor(myButtons.buttonStates[1])
     myGourdsConstructor.gourdsConstructor(myButtons.buttonStates[1])
     myHamiltonianCycle.hamiltonianCycleDrawer(myButtons.buttonStates[2])
+    myPhaseOne.runPhaseOne(myButtons.buttonStates[3])
 
 
     pygame.display.update()
@@ -102,10 +99,15 @@ def main():
 
     global myHamiltonianCycle
     myHamiltonianCycle = hamiltonianCycle(screen, myBoardsConfig.board, myBoardsConfig.coloursLibrary, offset, widthOfHexCell)
+    myHamiltonianCycle.hamiltonianCycleGenerator()
 
     global myFinalGourdsConfig
     myFinalGourdsConfig = finalGourdsConfig(screen, myBoardsConfig.board, myBoardsConfig.gourdsList, myBoardsConfig.coloursLibrary, offset, widthOfHexCell)
     myFinalGourdsConfig.finalConfigGenerator()
+
+    global myPhaseOne
+    myPhaseOne = phaseOne(myBoardsConfig, myGourdsConstructor, myHamiltonianCycle)
+
 
     # flag setting
     global runFirstTimeFlag

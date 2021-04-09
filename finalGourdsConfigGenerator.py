@@ -1,6 +1,3 @@
-import pygame
-
-
 class finalGourdsConfig(object):
 
     def __init__(self, screen, board, gourdsList, coloursLibrary, offset, widthOfHexCell):

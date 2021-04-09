@@ -214,4 +214,23 @@ class gourdsConstructor(object):
         # cellsAndAxisConstructor()
         # gourdsConstructor()
 
+
         return 0
+
+    def gourdsClicked(self, pos, mode):
+        # search Gourds by the given Coordinate
+        if mode == 'm':
+            indexOfGourd, xGourd, yGourd = self.gourdsSearchingByCoordinate(pos)
+        else:
+            indexOfGourd, xGourd, yGourd = self.gourdsSearchingByIndex(pos[0], pos[1])
+
+        if indexOfGourd != -1:
+            # print(xGourd, yGourd)
+            # search if there is an Empty Cell Around
+            xCell, yCell = self.emptyCellSearchingAroundAGourd(xGourd, yGourd)
+            if xCell != -1:
+                # move gourd to the empty cell
+                self.gourdsMovementController(indexOfGourd, xGourd, yGourd, xCell, yCell)
+                return True
+
+            return False
