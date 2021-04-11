@@ -65,8 +65,7 @@ class phaseOne(object):
         return False, gourdsIndex
 
     def gourdsMovement(self, HCycleIndex):
-        print(HCycleIndex + 1)
-        print(self.HCycleAux[HCycleIndex + 1])
+
 
 
 
@@ -84,15 +83,22 @@ class phaseOne(object):
                 theNextPart = self.myBoardsConfig.gourdsList[indexOfGourds][0], self.myBoardsConfig.gourdsList[indexOfGourds][1]
 
             self.myGourdsConstructor.gourdsClicked(theNextPart, 'al')
-            return
+            self.redrawTheScreen()
+            return True
 
 
         # move first part
         HCycleIndex += 1
-        gourdsIndex, partIndex = self.myGourdsConstructor.gourdsClicked(self.HCycleAux[HCycleIndex], 'al')
-        if gourdsIndex == -1:
+
+        print(HCycleIndex )
+        print(self.HCycleAux[HCycleIndex])
+        clickedResult = self.myGourdsConstructor.gourdsClicked(self.HCycleAux[HCycleIndex], 'al')
+        print(clickedResult)
+        if clickedResult is None:
             print ("---WARN--- No these gourds found!")
             return False
+
+        gourdsIndex, partIndex = clickedResult
 
         # check if the next part is along the HCycle
         if (self.myBoardsConfig.gourdsList[gourdsIndex][2-partIndex] == self.HCycleAux[HCycleIndex][0]
@@ -108,8 +114,8 @@ class phaseOne(object):
 
         # print(partIndex)
 
-
-        return
+        self.redrawTheScreen()
+        return True
 
     def redrawTheScreen(self):
 

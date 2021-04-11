@@ -173,7 +173,8 @@ class gourdsConstructor(object):
             xGourdLinked = self.gourdsList[indexOfGourd][0]
             yGourdLinked = self.gourdsList[indexOfGourd][1]
         else:
-            print("---WARN---Something went wrong in gourdsMovement()")
+
+            print("---WARN--- Something went wrong in gourdsMovement()")
             return -1, -1
         # move gourd
 
@@ -234,5 +235,7 @@ class gourdsConstructor(object):
                 # move gourd to the empty cell
 
                 return self.gourdsMovementController(indexOfGourd, xGourd, yGourd, xCell, yCell)
+
+
 
             return -1, -1
