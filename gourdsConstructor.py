@@ -162,7 +162,6 @@ class gourdsConstructor(object):
 
     def gourdsMovementController(self, indexOfGourd, xGourdClicked, yGourdClicked, xCell, yCell):
         # identify the clicked and linked parts of gourd
-        partIndex = -1
         if self.gourdsList[indexOfGourd][0] == xGourdClicked and self.gourdsList[indexOfGourd][1] == yGourdClicked:
             partIndex = 0
             firstPartClicked = True
@@ -174,7 +173,7 @@ class gourdsConstructor(object):
             xGourdLinked = self.gourdsList[indexOfGourd][0]
             yGourdLinked = self.gourdsList[indexOfGourd][1]
         else:
-            print("Something went wrong in gourdsMovement()")
+            print("---WARN---Something went wrong in gourdsMovement()")
             return -1, -1
         # move gourd
 
@@ -236,4 +235,4 @@ class gourdsConstructor(object):
 
                 return self.gourdsMovementController(indexOfGourd, xGourd, yGourd, xCell, yCell)
 
-            return False
+            return -1, -1

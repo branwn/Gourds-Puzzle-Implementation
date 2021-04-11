@@ -14,7 +14,7 @@ class phaseOne(object):
         # make a copy of Hamiltonian Cycle and duplicate it
         self.HCycleAux = copy.deepcopy(self.myHamiltonianCycle.hamiltonianCycleStack)
         for i in range(len(self.HCycleAux)):
-            self.HCycleAux.append(self.HCycleAux[i])
+            self.HCycleAux.append(copy.deepcopy((self.HCycleAux[i])))
 
     def runPhaseOne(self, buttonState3):
         if buttonState3 != 2: # running
@@ -22,7 +22,6 @@ class phaseOne(object):
             return
         print("Phase one is running")
 
-        #TODO
 
 
         # find the empty cell
@@ -32,14 +31,14 @@ class phaseOne(object):
             isEmpty, indexOfGourds = self.isCellEmpty(aCell)
             if isEmpty: break
 
-        if (rootIndex == False):
+        if rootIndex == -1:
             print("---WARN--- No empty cell found")
             return False
 
 
 
         # move the gourds
-        for i in range(0,5,2):
+        for i in range(0, len(self.myHamiltonianCycle.hamiltonianCycleStack)-2, 2):
             # print (self.HCycleAux[rootIndex + i])
             self.gourdsMovement(rootIndex + i)
 
@@ -66,10 +65,13 @@ class phaseOne(object):
         return False, gourdsIndex
 
     def gourdsMovement(self, HCycleIndex):
+        print(HCycleIndex + 1)
+        print(self.HCycleAux[HCycleIndex + 1])
+
+
 
         isEmpty, indexOfGourds = self.isCellEmpty(self.HCycleAux[HCycleIndex])
         if not isEmpty:
-            print("is empty and indexOfGourds", indexOfGourds)
 
             if (self.myBoardsConfig.gourdsList[indexOfGourds][0] == self.HCycleAux[HCycleIndex][0]
                     and self.myBoardsConfig.gourdsList[indexOfGourds][1] == self.HCycleAux[HCycleIndex][1]):
@@ -88,7 +90,7 @@ class phaseOne(object):
         # move first part
         HCycleIndex += 1
         gourdsIndex, partIndex = self.myGourdsConstructor.gourdsClicked(self.HCycleAux[HCycleIndex], 'al')
-        if gourdsIndex is None:
+        if gourdsIndex == -1:
             print ("---WARN--- No these gourds found!")
             return False
 
