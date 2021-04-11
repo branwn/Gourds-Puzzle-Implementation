@@ -38,7 +38,7 @@ class phaseOne(object):
 
 
         # move the gourds
-        for i in range(0, len(self.myHamiltonianCycle.hamiltonianCycleStack)-2, 2):
+        for i in range(0, len(self.myHamiltonianCycle.hamiltonianCycleStack), 2):
             # print (self.HCycleAux[rootIndex + i])
             self.gourdsMovement(rootIndex + i)
 
