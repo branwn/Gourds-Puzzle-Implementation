@@ -162,17 +162,20 @@ class gourdsConstructor(object):
 
     def gourdsMovementController(self, indexOfGourd, xGourdClicked, yGourdClicked, xCell, yCell):
         # identify the clicked and linked parts of gourd
+        partIndex = -1
         if self.gourdsList[indexOfGourd][0] == xGourdClicked and self.gourdsList[indexOfGourd][1] == yGourdClicked:
+            partIndex = 0
             firstPartClicked = True
             xGourdLinked = self.gourdsList[indexOfGourd][2]
             yGourdLinked = self.gourdsList[indexOfGourd][3]
         elif self.gourdsList[indexOfGourd][2] == xGourdClicked and self.gourdsList[indexOfGourd][3] == yGourdClicked:
+            partIndex = 1
             firstPartClicked = False
             xGourdLinked = self.gourdsList[indexOfGourd][0]
             yGourdLinked = self.gourdsList[indexOfGourd][1]
         else:
             print("Something went wrong in gourdsMovement()")
-            return -1
+            return -1, -1
         # move gourd
 
         distanceSquare = ((xGourdLinked - xCell) ** 2) + (((yGourdLinked - yCell) * 1.732) ** 2)
@@ -215,7 +218,7 @@ class gourdsConstructor(object):
         # gourdsConstructor()
 
 
-        return 0
+        return indexOfGourd, partIndex
 
     def gourdsClicked(self, pos, mode):
         # search Gourds by the given Coordinate
@@ -230,7 +233,7 @@ class gourdsConstructor(object):
             xCell, yCell = self.emptyCellSearchingAroundAGourd(xGourd, yGourd)
             if xCell != -1:
                 # move gourd to the empty cell
-                self.gourdsMovementController(indexOfGourd, xGourd, yGourd, xCell, yCell)
-                return True
+
+                return self.gourdsMovementController(indexOfGourd, xGourd, yGourd, xCell, yCell)
 
             return False

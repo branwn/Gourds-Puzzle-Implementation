@@ -42,7 +42,7 @@ class buttons(object):
                          (self.sizeOfTheWindow[0] - self.buttonSize[0] - 10, 0, self.buttonSize[0], self.sizeOfTheWindow[1]), 0)
 
         self.buttonPainter(1, "Index Hidden", "Index Displayed", "running")
-        self.buttonPainter(2, "Hamiltonian Cycle?", "Hamiltonian Cycle!", "running")
+        self.buttonPainter(2, "Hamiltonian Cycle?", "H-Cycle Displayed", "running")
         self.buttonPainter(3, "Phase 1", "Phase 1 Finished", "running")
         self.buttonPainter(4, "Phase 2 O(n^3)", "Phase 2 Finished", "running")
         self.buttonPainter(5, "Phase 2 O(n^2)", "Phase 2 Finished", "running")

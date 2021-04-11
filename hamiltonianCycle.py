@@ -119,7 +119,7 @@ class hamiltonianCycle(object):
                     self.hamiltonianCycleMap[lastCell[1]][lastCell[0]] = thisCell[2]
                     # print("goto: ", thisCell)
 
-        print ("hamiltonianCycleGenerator finished")
+        print ("Hamiltonian Cycle: ", self.hamiltonianCycleStack)
 
 
     def hamiltonianCycleDrawer(self, buttonStates2):
@@ -127,6 +127,8 @@ class hamiltonianCycle(object):
 
         if not self.hamiltonianCycleGeneratedFlag:
             self.hamiltonianCycleGenerator()
+
+
 
         for i in range(len(self.hamiltonianCycleStack) - 1):
             pygame.draw.line(self.screen, self.coloursLibrary['backGround'],

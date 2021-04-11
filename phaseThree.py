@@ -15,7 +15,7 @@ class phaseThree(object):
         if buttonState6 != 2: # running
             self.firstRun = True
             return
-
+        print("Phase three is running")
 
         #TODO
 
@@ -38,7 +38,7 @@ class phaseThree(object):
         self.myGourdsConstructor.gourdsClicked([ 4, 2], 'a')
         self.redrawTheScreen()
 
-        print("Phase three is running")
+
 
     def redrawTheScreen(self):
 

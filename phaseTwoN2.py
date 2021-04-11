@@ -15,7 +15,7 @@ class phaseTwoN2(object):
         if buttonState5 != 2: # running
             self.firstRun = True
             return
-
+        print("Phase two O(n^2) is running")
 
         #TODO
 
@@ -24,7 +24,7 @@ class phaseTwoN2(object):
         self.myGourdsConstructor.gourdsClicked([ 4, 2], 'a')
         self.redrawTheScreen()
 
-        print("Phase two O(n^3) is running")
+
 
     def redrawTheScreen(self):
 
