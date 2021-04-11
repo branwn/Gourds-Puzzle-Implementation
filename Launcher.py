@@ -11,6 +11,9 @@ from finalGourdsConfigGenerator import finalGourdsConfig
 
 # set size of the window
 from phaseOne import phaseOne
+from phaseThree import phaseThree
+from phaseTwoN2 import phaseTwoN2
+from phaseTwoN3 import phaseTwoN3
 
 xLengthOfTheWindow = int(len(boardConfig.board[0])*50 + 250)
 yLengthOfTheWindow = int(len(boardConfig.board)*90 + 50)
@@ -63,7 +66,9 @@ def redrawTheScreen():
     myGourdsConstructor.gourdsConstructor(myButtons.buttonStates[1])
     myHamiltonianCycle.hamiltonianCycleDrawer(myButtons.buttonStates[2])
     myPhaseOne.runPhaseOne(myButtons.buttonStates[3])
-
+    myPhaseTwoN3.runPhaseTwoN3(myButtons.buttonStates[4])
+    myPhaseTwoN2.runPhaseTwoN2(myButtons.buttonStates[5])
+    myPhaseThree.runPhaseThree(myButtons.buttonStates[6])
 
     pygame.display.update()
 
@@ -107,6 +112,15 @@ def main():
 
     global myPhaseOne
     myPhaseOne = phaseOne(screen, myBoardsConfig, myButtons, myCellsConstructor, myGourdsConstructor, myHamiltonianCycle, myFinalGourdsConfig)
+
+    global myPhaseTwoN3
+    myPhaseTwoN3 = phaseTwoN3(screen, myBoardsConfig, myButtons, myCellsConstructor, myGourdsConstructor, myHamiltonianCycle, myFinalGourdsConfig)
+
+    global myPhaseTwoN2
+    myPhaseTwoN2 = phaseTwoN2(screen, myBoardsConfig, myButtons, myCellsConstructor, myGourdsConstructor, myHamiltonianCycle, myFinalGourdsConfig)
+
+    global myPhaseThree
+    myPhaseThree = phaseThree(screen, myBoardsConfig, myButtons, myCellsConstructor, myGourdsConstructor, myHamiltonianCycle, myFinalGourdsConfig)
 
 
     # flag setting

@@ -1,5 +1,5 @@
 import pygame
-class phaseOne(object):
+class phaseThree(object):
 
     def __init__(self, screen, myBoardsConfig, myButtons, myCellsConstructor, myGourdsConstructor, myHamiltonianCycle, myFinalGourdsConfig):
         self.screen = screen
@@ -11,8 +11,8 @@ class phaseOne(object):
         self.myFinalGourdsConfig = myFinalGourdsConfig
 
 
-    def runPhaseOne(self, buttonState3):
-        if buttonState3 != 2: # running
+    def runPhaseThree(self, buttonState6):
+        if buttonState6 != 2: # running
             self.firstRun = True
             return
 
@@ -34,11 +34,11 @@ class phaseOne(object):
 
 
 
-        self.myButtons.buttonStates[3] = 1 # finished
+        self.myButtons.buttonStates[6] = 1 # finished
         self.myGourdsConstructor.gourdsClicked([ 4, 2], 'a')
         self.redrawTheScreen()
 
-        print("Phase one is running")
+        print("Phase three is running")
 
     def redrawTheScreen(self):
 
