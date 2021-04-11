@@ -9,14 +9,15 @@ class phaseOne(object):
         self.myGourdsConstructor = myGourdsConstructor
         self.myHamiltonianCycle = myHamiltonianCycle
         self.myFinalGourdsConfig = myFinalGourdsConfig
+        self.firstRun = True
 
     def runPhaseOne(self, buttonState3):
-        if not buttonState3:
+        if buttonState3 != 2: # running
             self.firstRun = True
             return
         if not self.firstRun: return
         self.firstRun = False
-
+        self.myButtons.buttonStates[3] = 1 # finished
 
 
         self.myGourdsConstructor.gourdsClicked([ 4, 2], 'a')
