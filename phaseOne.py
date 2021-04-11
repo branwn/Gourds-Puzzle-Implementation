@@ -25,18 +25,23 @@ class phaseOne(object):
         #TODO
 
 
-        i = 0
+        # find the empty cell
+        rootIndex = -1
+        for aCell in self.myHamiltonianCycle.hamiltonianCycleStack:
+            rootIndex += 1
+            isEmpty, indexOfGourds = self.isCellEmpty(aCell)
+            if isEmpty: break
 
-        # for i in range(len(self.myHamiltonianCycle.hamiltonianCycleStack)):
-
-        # find a root in h-cycle
-        rootIndex = self.theEmptyCellSearching()
         if (rootIndex == False):
             print("---WARN--- No empty cell found")
             return False
 
+
+
         # move the gourds
-        self.gourdsMovement(rootIndex + i)
+        for i in range(0,5,2):
+            # print (self.HCycleAux[rootIndex + i])
+            self.gourdsMovement(rootIndex + i)
 
 
 
@@ -45,35 +50,61 @@ class phaseOne(object):
 
 
 
-    def theEmptyCellSearching(self):
-        cellIndex = -1
-        for aCell in self.myHamiltonianCycle.hamiltonianCycleStack:
-            cellIndex +=1
-            isEmpty = True
-            for aGourds in self.myBoardsConfig.gourdsList:
-                if (aCell[0] == aGourds[0] and aCell[1] == aGourds[1]):
-                    isEmpty = False
-                    break
-                elif (aCell[0] == aGourds[2] and aCell[1] == aGourds[3]):
-                    isEmpty = False
-                    break
-            if isEmpty:
-                return cellIndex
-        return False
+    def isCellEmpty(self, aCell):
+        isEmpty = True
+        gourdsIndex = -1
+        for aGourds in self.myBoardsConfig.gourdsList:
+            gourdsIndex += 1
+            if (aCell[0] == aGourds[0] and aCell[1] == aGourds[1]):
+                isEmpty = False
+                break
+            elif (aCell[0] == aGourds[2] and aCell[1] == aGourds[3]):
+                isEmpty = False
+                break
+        if isEmpty:
+            return True, -1
+        return False, gourdsIndex
 
-    def gourdsMovement(self, index):
-        index += 1
+    def gourdsMovement(self, HCycleIndex):
+
+        isEmpty, indexOfGourds = self.isCellEmpty(self.HCycleAux[HCycleIndex])
+        if not isEmpty:
+            print("is empty and indexOfGourds", indexOfGourds)
+
+            if (self.myBoardsConfig.gourdsList[indexOfGourds][0] == self.HCycleAux[HCycleIndex][0]
+                    and self.myBoardsConfig.gourdsList[indexOfGourds][1] == self.HCycleAux[HCycleIndex][1]):
+                # is the first part
+                # click the second part
+                theNextPart = self.myBoardsConfig.gourdsList[indexOfGourds][2], self.myBoardsConfig.gourdsList[indexOfGourds][3]
+            else:
+                # is the second part
+                # click the first part
+                theNextPart = self.myBoardsConfig.gourdsList[indexOfGourds][0], self.myBoardsConfig.gourdsList[indexOfGourds][1]
+
+            self.myGourdsConstructor.gourdsClicked(theNextPart, 'al')
+            return
+
+
         # move first part
-        gourdsIndex, partIndex = self.myGourdsConstructor.gourdsClicked(self.HCycleAux[index], 'al')
+        HCycleIndex += 1
+        gourdsIndex, partIndex = self.myGourdsConstructor.gourdsClicked(self.HCycleAux[HCycleIndex], 'al')
         if gourdsIndex is None:
             print ("---WARN--- No these gourds found!")
             return False
-        # if the second part should be moved?
+
+        # check if the next part is along the HCycle
+        if (self.myBoardsConfig.gourdsList[gourdsIndex][2-partIndex] == self.HCycleAux[HCycleIndex][0]
+                and self.myBoardsConfig.gourdsList[gourdsIndex][2-partIndex+1] == self.HCycleAux[HCycleIndex][1]):
+            # is along the HCycle
+            pass
+        else:
+            # is not along the HCycle
+            nextPartofGourds = self.myBoardsConfig.gourdsList[gourdsIndex][2-partIndex], self.myBoardsConfig.gourdsList[gourdsIndex][2-partIndex+1]
+            # move the next part
+            self.myGourdsConstructor.gourdsClicked(nextPartofGourds, 'al')
 
 
-
-
-        print(partIndex)
+        # print(partIndex)
 
 
         return

@@ -169,7 +169,7 @@ class gourdsConstructor(object):
             xGourdLinked = self.gourdsList[indexOfGourd][2]
             yGourdLinked = self.gourdsList[indexOfGourd][3]
         elif self.gourdsList[indexOfGourd][2] == xGourdClicked and self.gourdsList[indexOfGourd][3] == yGourdClicked:
-            partIndex = 1
+            partIndex = 2
             firstPartClicked = False
             xGourdLinked = self.gourdsList[indexOfGourd][0]
             yGourdLinked = self.gourdsList[indexOfGourd][1]
@@ -218,7 +218,7 @@ class gourdsConstructor(object):
         # gourdsConstructor()
 
 
-        return indexOfGourd, partIndex
+        return indexOfGourd, partIndex # partIndex is 0 or 2
 
     def gourdsClicked(self, pos, mode):
         # search Gourds by the given Coordinate
