@@ -11,10 +11,11 @@ class phaseTwoN3(object):
         self.myHamiltonianCycle = myHamiltonianCycle
         self.myFinalGourdsConfig = myFinalGourdsConfig
         self.HCycleAux = self.myHamiltonianCycle.HCycleAux
+        self.firstRunFlag = True
+        self.gourdsOrderInHCycle = []
 
     def runPhaseTwoN3(self, buttonState4):
         if buttonState4 != 2: # running
-            self.firstRun = True
             return False
 
         if self.myButtons.buttonStates[3] != 1:
@@ -22,28 +23,61 @@ class phaseTwoN3(object):
             print("Phase 1 should be finished first!")
             self.redrawTheScreen()
             return False
+
+
         print("Phase two O(n^3) is running")
 
-        isFinishedFlag = False
+        result = False
 
-        #search type two
+
+        # gourdsOrderInHCycleGenerator
+        if len(self.gourdsOrderInHCycle) <= 0:
+            self.gourdsOrderInHCycleGenerator()
+
+
+        # search type two
         cellIndexInHCycle = self.searchLeafInTypeTwo()
         if cellIndexInHCycle != -1:
-            isFinishedFlag = self.typeTwoBubbleSort()
+            result = self.typeTwoBubbleSort()
 
 
         else:
             # search type one
             cellIndexInHCycle = self.searchLeafInTypeOne()
             if cellIndexInHCycle != -1:
-                isFinishedFlag = self.typeOneInsertionSort()
+                result = self.typeOneInsertionSort()
 
 
         self.myButtons.buttonStates[4] = 1  # finished
         self.myButtons.buttonStates[5] = 1  # finished
         self.redrawTheScreen()
-        if not isFinishedFlag: print("---WARN--- Something went wrong in Phase 2 O(n^3)!")
-        return isFinishedFlag
+        if not result: print("---WARN--- Something went wrong in Phase 2 O(n^3)!")
+        return result
+
+
+
+
+
+    def gourdsOrderInHCycleGenerator(self):
+        orderlist = []
+
+        for cell in self.myHamiltonianCycle.hamiltonianCycleStack:
+            for i in range(self.myFinalGourdsConfig.totalNumberOfGourds):
+                if i not in orderlist:
+                    gourd = self.myFinalGourdsConfig.gourdsAssignedDict.get(i)
+                    if gourd[1] == cell[0] and gourd[2] == cell[1]:
+                        orderlist.append(i)
+                        break
+                    elif gourd[3] == cell[0] and gourd[4] == cell[1]:
+                        orderlist.append(i)
+                        break
+
+
+        self.gourdsOrderInHCycle = orderlist
+        return self.gourdsOrderInHCycle
+
+
+
 
     def searchLeafInTypeOne(self):
         HCycleIndex = -1

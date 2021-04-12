@@ -100,7 +100,7 @@ class hamiltonianCycle(object):
                         availableNextCellList.append(neighbour)
                 if neighbour[0] == self.hamiltonianCycleRoot[0] and neighbour[1] == self.hamiltonianCycleRoot[1]:  # is the root
                     if len(self.hamiltonianCycleStack) == totalNumberOfCells:
-                        self.hamiltonianCycleStack.append(self.hamiltonianCycleStack[0])
+                        # self.hamiltonianCycleStack.append(self.hamiltonianCycleStack[0])
                         self.hamiltonianCycleMap[thisCell[1]][thisCell[0]] = neighbour[2]
                         completeFlag = True
                         break
@@ -126,10 +126,9 @@ class hamiltonianCycle(object):
 
         print ("Hamiltonian Cycle: ", self.hamiltonianCycleStack)
 
-        self.lengthOfHCycle = len(self.hamiltonianCycleStack) - 1
+        self.lengthOfHCycle = len(self.hamiltonianCycleStack)
 
         self.HCycleAux = copy.deepcopy(self.hamiltonianCycleStack)
-        self.HCycleAux.pop()
         for i in range(len(self.HCycleAux)):
             self.HCycleAux.append((self.HCycleAux[i]))
 
@@ -142,18 +141,19 @@ class hamiltonianCycle(object):
         if not self.hamiltonianCycleGeneratedFlag:
             self.hamiltonianCycleGenerator()
 
+        HCycleStack = copy.copy(self.hamiltonianCycleStack)
+        HCycleStack.append(self.hamiltonianCycleStack[0])
 
-
-        for i in range(len(self.hamiltonianCycleStack) - 1):
+        for i in range(len(HCycleStack)-1):
             pygame.draw.line(self.screen, self.coloursLibrary['backGround'],
-                             (int(self.offset + self.hamiltonianCycleStack[i][0] * self.widthOfHexCell),
-                              int(self.offset + self.hamiltonianCycleStack[i][1] * self.widthOfHexCell * 1.732)),
-                             (int(self.offset + self.hamiltonianCycleStack[i + 1][0] * self.widthOfHexCell),
-                              int(self.offset + self.hamiltonianCycleStack[i + 1][1] * self.widthOfHexCell * 1.732)),
+                             (int(self.offset + HCycleStack[i][0] * self.widthOfHexCell),
+                              int(self.offset + HCycleStack[i][1] * self.widthOfHexCell * 1.732)),
+                             (int(self.offset + HCycleStack[i + 1][0] * self.widthOfHexCell),
+                              int(self.offset + HCycleStack[i + 1][1] * self.widthOfHexCell * 1.732)),
                              4)
             pygame.draw.line(self.screen, self.coloursLibrary['hamiltonianCycle'],
-                             (int(self.offset + self.hamiltonianCycleStack[i][0] * self.widthOfHexCell),
-                              int(self.offset + self.hamiltonianCycleStack[i][1] * self.widthOfHexCell * 1.732)),
-                             (int(self.offset + self.hamiltonianCycleStack[i + 1][0] * self.widthOfHexCell),
-                              int(self.offset + self.hamiltonianCycleStack[i + 1][1] * self.widthOfHexCell * 1.732)),
+                             (int(self.offset + HCycleStack[i][0] * self.widthOfHexCell),
+                              int(self.offset + HCycleStack[i][1] * self.widthOfHexCell * 1.732)),
+                             (int(self.offset + HCycleStack[i + 1][0] * self.widthOfHexCell),
+                              int(self.offset + HCycleStack[i + 1][1] * self.widthOfHexCell * 1.732)),
                              2)

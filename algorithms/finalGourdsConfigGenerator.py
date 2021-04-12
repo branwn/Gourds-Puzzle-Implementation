@@ -126,7 +126,6 @@ class finalGourdsConfig(object):
                 self.gourdsAssignedDict[i-1] = []
                 break
 
-
     def finalConfigGenerator(self):
 
 
