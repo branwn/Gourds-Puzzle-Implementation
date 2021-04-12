@@ -16,21 +16,14 @@ class phaseOne(object):
         self.HCycleAux.pop()
         for i in range(len(self.HCycleAux)):
             self.HCycleAux.append((self.HCycleAux[i]))
-        print(self.HCycleAux)
 
     def runPhaseOne(self, buttonState3):
         if buttonState3 != 2: # running
             self.firstRun = True
             return
         print("Phase one is running")
-
-
-
-
-        repeat = int(len(self.myHamiltonianCycle.hamiltonianCycleStack))
-
         # move the gourds
-        for i in range(repeat):
+        while(self.ifThereIsGourdsNotAligned()):
             # print (self.HCycleAux[rootIndex + i])
             # find the empty cell
             rootIndex = -1
@@ -50,7 +43,16 @@ class phaseOne(object):
         self.myButtons.buttonStates[3] = 1 # finished
         self.redrawTheScreen()
 
-
+    def ifThereIsGourdsNotAligned(self):
+        for gourds in self.myBoardsConfig.gourdsList:
+            for HCycleCellIndex in range(1, len(self.HCycleAux)):
+                if (gourds[0] == self.HCycleAux[HCycleCellIndex][0] and gourds[1] == self.HCycleAux[HCycleCellIndex][1]):
+                    if (gourds[2] == self.HCycleAux[HCycleCellIndex+1][0] and gourds[3] == self.HCycleAux[HCycleCellIndex+1][1]):
+                        break
+                    elif (gourds[2] == self.HCycleAux[HCycleCellIndex-1][0] and gourds[3] == self.HCycleAux[HCycleCellIndex-1][1]):
+                        break
+                    return True
+        return False
 
     def isCellEmpty(self, aCell):
         isEmpty = True
@@ -68,39 +70,29 @@ class phaseOne(object):
         return False, gourdsIndex
 
     def gourdsMovement(self, HCycleIndex):
-        print(HCycleIndex)
-
-
         isEmpty, indexOfGourds = self.isCellEmpty(self.HCycleAux[HCycleIndex])
         if not isEmpty:
-            print("occupied", self.HCycleAux[HCycleIndex])
             if (self.myBoardsConfig.gourdsList[indexOfGourds][0] == self.HCycleAux[HCycleIndex][0]
                     and self.myBoardsConfig.gourdsList[indexOfGourds][1] == self.HCycleAux[HCycleIndex][1]):
                 # is the first part
                 if (self.myBoardsConfig.gourdsList[indexOfGourds][2] == self.HCycleAux[HCycleIndex+1][0]
                     and self.myBoardsConfig.gourdsList[indexOfGourds][3] == self.HCycleAux[HCycleIndex+1][1]):
-                    print("aligned")
                     return True
                 elif(self.myBoardsConfig.gourdsList[indexOfGourds][2] == self.HCycleAux[HCycleIndex-1][0]
                     and self.myBoardsConfig.gourdsList[indexOfGourds][3] == self.HCycleAux[HCycleIndex-1][1]):
-                    print("aligned")
                     return True
                 # click the second part
-                print("not align")
                 theNextPart = self.myBoardsConfig.gourdsList[indexOfGourds][2], self.myBoardsConfig.gourdsList[indexOfGourds][3]
 
             else:
                 # is the second part
                 if (self.myBoardsConfig.gourdsList[indexOfGourds][0] == self.HCycleAux[HCycleIndex+1][0]
                     and self.myBoardsConfig.gourdsList[indexOfGourds][1] == self.HCycleAux[HCycleIndex+1][1]):
-                    print("aligned")
                     return True
                 elif (self.myBoardsConfig.gourdsList[indexOfGourds][0] == self.HCycleAux[HCycleIndex - 1][0]
                       and self.myBoardsConfig.gourdsList[indexOfGourds][1] == self.HCycleAux[HCycleIndex - 1][1]):
-                    print("aligned")
                     return True
                 # click the first part
-                print("not align")
                 theNextPart = self.myBoardsConfig.gourdsList[indexOfGourds][0], self.myBoardsConfig.gourdsList[indexOfGourds][1]
 
             self.myGourdsConstructor.gourdsClicked(theNextPart, 'al')
@@ -111,7 +103,6 @@ class phaseOne(object):
         # move first part
         HCycleIndex += 1
 
-        print("move the first part ",self.HCycleAux[HCycleIndex])
 
         gourdsIndex, partIndex  = self.myGourdsConstructor.gourdsClicked(self.HCycleAux[HCycleIndex], 'al')
         if gourdsIndex == -1:
@@ -129,7 +120,6 @@ class phaseOne(object):
             # is not along the HCycle
             nextPartofGourds = self.myBoardsConfig.gourdsList[gourdsIndex][2-partIndex], self.myBoardsConfig.gourdsList[gourdsIndex][2-partIndex+1]
             # move the next part
-            print("move the next part ")
             self.myGourdsConstructor.gourdsClicked(nextPartofGourds, 'al')
 
 
