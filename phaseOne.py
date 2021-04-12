@@ -22,6 +22,11 @@ class phaseOne(object):
             self.firstRun = True
             return
         print("Phase one is running")
+
+        # show the H-Cycle
+        self.myButtons.buttonStates[2] = 1
+        self.redrawTheScreen()
+
         # move the gourds
         while(self.ifThereIsGourdsNotAligned()):
             # print (self.HCycleAux[rootIndex + i])
