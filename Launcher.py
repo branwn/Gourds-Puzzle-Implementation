@@ -40,17 +40,18 @@ pygame.display.set_caption('Gourds')
 
 
 def mouseClicked(pos):
-    if myGourdsConstructor.gourdsClicked(pos, 'm'):
-        # phases buttons states turn to default
+    if myGourdsConstructor.gourdsClicked(pos, 'm')[0] != -1:
+        # reset the algorithms states
         myButtons.buttonStates[3] = 0
         myButtons.buttonStates[4] = 0
         myButtons.buttonStates[5] = 0
         myButtons.buttonStates[6] = 0
+
         redrawTheScreen()
         return 0
 
     # search button by the given coordinate
-    elif myButtons.buttonsClicked(pos) != -1:
+    if myButtons.buttonsClicked(pos) != -1:
 
         redrawTheScreen()
         return 0
