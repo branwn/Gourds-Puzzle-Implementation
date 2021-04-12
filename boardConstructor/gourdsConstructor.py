@@ -46,7 +46,7 @@ class gourdsConstructor(object):
                     fontSize = 15
                 else:
                     fontSize = 22
-                theFont = pygame.font.Font('OpenSans-Light.ttf', fontSize)
+                theFont = pygame.font.Font('boardConstructor\OpenSans-Light.ttf', fontSize)
 
                 # first part
                 theText = theFont.render(str(firstPart[2]), True, self.coloursLibrary['backGround'])

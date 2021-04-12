@@ -1,19 +1,19 @@
 import pygame
 
-from boardConfigsContainer import boardConfig5 as boardConfig
-from buttons import buttons
-from cellsConstructor import cellsConstructor
-from gourdsConstructor import gourdsConstructor
-from hamiltonianCycle import hamiltonianCycle
-from finalGourdsConfigGenerator import finalGourdsConfig
+from boardConfigsContainer import boardConfig13 as boardConfig
+from boardConstructor.buttons import buttons
+from boardConstructor.cellsConstructor import cellsConstructor
+from boardConstructor.gourdsConstructor import gourdsConstructor
+from algorithms.hamiltonianCycle import hamiltonianCycle
+from algorithms.finalGourdsConfigGenerator import finalGourdsConfig
 
 
 
 # set size of the window
-from phaseOne import phaseOne
-from phaseThree import phaseThree
-from phaseTwoN2 import phaseTwoN2
-from phaseTwoN3 import phaseTwoN3
+from algorithms.phaseOne import phaseOne
+from algorithms.phaseThree import phaseThree
+from algorithms.phaseTwoN2 import phaseTwoN2
+from algorithms.phaseTwoN3 import phaseTwoN3
 
 xLengthOfTheWindow = int(len(boardConfig.board[0])*50 + 250)
 yLengthOfTheWindow = int(len(boardConfig.board)*90 + 50)

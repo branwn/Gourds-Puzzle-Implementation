@@ -73,7 +73,7 @@ class cellsConstructor(object):
 
 
     def cellsAndAxisConstructor(self, isDisplayIndex):
-        self.theFont = pygame.font.Font('OpenSans-Light.ttf', 16)
+        self.theFont = pygame.font.Font('boardConstructor\OpenSans-Light.ttf', 16)
 
         # draw the axis
         # print("widthOfHexCell = ", widthOfHexCell)
@@ -89,7 +89,7 @@ class cellsConstructor(object):
             fontSize = 15
         else:
             fontSize = 22
-        theFont = pygame.font.Font('OpenSans-Light.ttf', fontSize)
+        theFont = pygame.font.Font('boardConstructor\OpenSans-Light.ttf', fontSize)
 
         for y in range(len(self.board)):
             for x in range(len(self.board[0])):

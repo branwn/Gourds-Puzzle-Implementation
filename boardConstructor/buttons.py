@@ -16,7 +16,7 @@ class buttons(object):
             self.buttonStates[1] = 1;
 
     def buttonPainter(self, btnIndex, stringDefault, stringFinished, stringWorking):
-        theFont = pygame.font.Font('OpenSans-Light.ttf', 20)
+        theFont = pygame.font.Font('boardConstructor\OpenSans-Light.ttf', 20)
 
         if self.buttonStates[btnIndex] == 0:
             pygame.draw.rect(self.screen, self.coloursLibrary['button'], (
