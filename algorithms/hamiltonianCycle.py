@@ -18,6 +18,7 @@ class hamiltonianCycle(object):
         self.hamiltonianCycleGeneratedFlag = False
         # make a copy of Hamiltonian Cycle and duplicate it
         self.HCycleAux = []
+        self.lengthOfHCycle = 0
 
 
 
@@ -124,6 +125,8 @@ class hamiltonianCycle(object):
                     # print("goto: ", thisCell)
 
         print ("Hamiltonian Cycle: ", self.hamiltonianCycleStack)
+
+        self.lengthOfHCycle = len(self.hamiltonianCycleStack) - 1
 
         self.HCycleAux = copy.deepcopy(self.hamiltonianCycleStack)
         self.HCycleAux.pop()

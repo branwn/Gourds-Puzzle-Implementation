@@ -47,16 +47,45 @@ class phaseTwoN3(object):
 
     def searchLeafInTypeOne(self):
         HCycleIndex = -1
-        #TODO
 
-
-
+        # calculate the distance between i+0 and i+3
+        for i in range(self.myHamiltonianCycle.lengthOfHCycle):
+            diffInX = self.HCycleAux[i][0] - self.HCycleAux[i+3][0]
+            diffInY = self.HCycleAux[i][1] - self.HCycleAux[i+3][1]
+            squaredDistance = diffInX * diffInX + diffInY * diffInY * 1.732 * 1.732
+            if squaredDistance <= 4:
+                print(self.HCycleAux[i], "is the x of leaf type one")
+                return i
 
         return HCycleIndex
 
     def searchLeafInTypeTwo(self):
         HCycleIndex = -1
         #TODO
+
+
+        for i in range(self.myHamiltonianCycle.lengthOfHCycle):
+            # calculate the distance between i+0 and i+2
+            diffInX = self.HCycleAux[i][0] - self.HCycleAux[i + 2][0]
+            diffInY = self.HCycleAux[i][1] - self.HCycleAux[i + 2][1]
+            squaredDistance = diffInX * diffInX + diffInY * diffInY * 1.732 * 1.732
+            if squaredDistance <= 4:
+                # calculate the distance between i+0 and i+4
+                diffInX = self.HCycleAux[i][0] - self.HCycleAux[i + 4][0]
+                diffInY = self.HCycleAux[i][1] - self.HCycleAux[i + 4][1]
+                squaredDistance = diffInX * diffInX + diffInY * diffInY * 1.732 * 1.732
+                if squaredDistance <= 4:
+                    # calculate the distance between i+2 and i+4
+                    diffInX = self.HCycleAux[i + 2][0] - self.HCycleAux[i + 4][0]
+                    diffInY = self.HCycleAux[i + 2][1] - self.HCycleAux[i + 4][1]
+                    squaredDistance = diffInX * diffInX + diffInY * diffInY * 1.732 * 1.732
+                    if squaredDistance <= 4:
+                        print(self.HCycleAux[i], "is the x of leaf type two")
+                        return i
+
+
+
+
         return HCycleIndex
 
     def typeOneInsertionSort(self):
