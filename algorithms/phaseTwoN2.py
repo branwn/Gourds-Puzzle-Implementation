@@ -15,6 +15,13 @@ class phaseTwoN2(object):
         if buttonState5 != 2: # running
             self.firstRun = True
             return
+
+        if self.myButtons.buttonStates[3] != 1:
+            self.myButtons.buttonStates[5] = 0
+            print("Phase 1 should be finished first!")
+            self.redrawTheScreen()
+            return False
+
         print("Phase two O(n^2) is running")
 
         #TODO
