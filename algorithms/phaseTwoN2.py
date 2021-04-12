@@ -28,7 +28,7 @@ class phaseTwoN2(object):
 
         self.myButtons.buttonStates[4] = 1  # finished
         self.myButtons.buttonStates[5] = 1  # finished
-        self.myGourdsConstructor.gourdsClicked([ 4, 2], 'a')
+        self.myGourdsConstructor.gourdsClicked([ 4, 2], 'al')
         self.redrawTheScreen()
 
 

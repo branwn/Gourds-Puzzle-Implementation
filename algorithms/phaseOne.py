@@ -1,6 +1,6 @@
-import copy
-
 import pygame
+
+
 class phaseOne(object):
 
     def __init__(self, screen, myBoardsConfig, myButtons, myCellsConstructor, myGourdsConstructor, myHamiltonianCycle, myFinalGourdsConfig):
@@ -11,11 +11,7 @@ class phaseOne(object):
         self.myGourdsConstructor = myGourdsConstructor
         self.myHamiltonianCycle = myHamiltonianCycle
         self.myFinalGourdsConfig = myFinalGourdsConfig
-        # make a copy of Hamiltonian Cycle and duplicate it
-        self.HCycleAux = copy.deepcopy(self.myHamiltonianCycle.hamiltonianCycleStack)
-        self.HCycleAux.pop()
-        for i in range(len(self.HCycleAux)):
-            self.HCycleAux.append((self.HCycleAux[i]))
+        self.HCycleAux = self.myHamiltonianCycle.HCycleAux
 
     def runPhaseOne(self, buttonState3):
         if buttonState3 != 2: # running

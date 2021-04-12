@@ -1,4 +1,5 @@
 import pygame
+
 class phaseTwoN3(object):
 
     def __init__(self, screen, myBoardsConfig, myButtons, myCellsConstructor, myGourdsConstructor, myHamiltonianCycle, myFinalGourdsConfig):
@@ -9,7 +10,7 @@ class phaseTwoN3(object):
         self.myGourdsConstructor = myGourdsConstructor
         self.myHamiltonianCycle = myHamiltonianCycle
         self.myFinalGourdsConfig = myFinalGourdsConfig
-
+        self.HCycleAux = self.myHamiltonianCycle.HCycleAux
 
     def runPhaseTwoN3(self, buttonState4):
         if buttonState4 != 2: # running
@@ -21,43 +22,47 @@ class phaseTwoN3(object):
             print("Phase 1 should be finished first!")
             self.redrawTheScreen()
             return False
-
-
         print("Phase two O(n^3) is running")
 
+        isFinishedFlag = False
 
-        #TODO
-        leafType, HCycleIndex = self.findTheLeaves()
-        if leafType == -1:
-            print("---WARN--- Cannot find a leaf!")
-            return False
+        #search type two
+        cellIndexInHCycle = self.searchLeafInTypeTwo()
+        if cellIndexInHCycle != -1:
+            isFinishedFlag = self.typeTwoBubbleSort()
 
-        if leafType == 1:
-            self.typeOneInsertionSort()
 
-        elif leafType == 2:
-            self.typeTwoBubbleSort()
-
+        else:
+            # search type one
+            cellIndexInHCycle = self.searchLeafInTypeOne()
+            if cellIndexInHCycle != -1:
+                isFinishedFlag = self.typeOneInsertionSort()
 
 
         self.myButtons.buttonStates[4] = 1  # finished
         self.myButtons.buttonStates[5] = 1  # finished
         self.redrawTheScreen()
-        return True
+        if not isFinishedFlag: print("---WARN--- Something went wrong in Phase 2 O(n^3)!")
+        return isFinishedFlag
 
-    def findTheLeaves(self):
-        type = -1
+    def searchLeafInTypeOne(self):
         HCycleIndex = -1
+        #TODO
 
 
-        return type, HCycleIndex
 
 
+        return HCycleIndex
+
+    def searchLeafInTypeTwo(self):
+        HCycleIndex = -1
+        #TODO
+        return HCycleIndex
 
     def typeOneInsertionSort(self):
         #TODO
 
-        self.myGourdsConstructor.gourdsClicked([4, 2], 'a')
+        # self.myGourdsConstructor.gourdsClicked([4, 2], 'al')
         return True
 
     def typeTwoBubbleSort(self):

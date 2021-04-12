@@ -41,7 +41,7 @@ class phaseThree(object):
 
 
         self.myButtons.buttonStates[6] = 1 # finished
-        self.myGourdsConstructor.gourdsClicked([ 4, 2], 'a')
+        self.myGourdsConstructor.gourdsClicked([ 4, 2], 'al')
         self.redrawTheScreen()
 
 

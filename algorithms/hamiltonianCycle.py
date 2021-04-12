@@ -1,3 +1,4 @@
+import copy
 import numpy
 import pygame
 
@@ -15,6 +16,9 @@ class hamiltonianCycle(object):
         self.hamiltonianCycleMap = numpy.zeros_like(board)  # 1 for right hand side, and count in clockwise
         self.hamiltonianCycleStack = []
         self.hamiltonianCycleGeneratedFlag = False
+        # make a copy of Hamiltonian Cycle and duplicate it
+        self.HCycleAux = []
+
 
 
     def searchNeighbourCells(self, cellIn):
@@ -120,6 +124,13 @@ class hamiltonianCycle(object):
                     # print("goto: ", thisCell)
 
         print ("Hamiltonian Cycle: ", self.hamiltonianCycleStack)
+
+        self.HCycleAux = copy.deepcopy(self.hamiltonianCycleStack)
+        self.HCycleAux.pop()
+        for i in range(len(self.HCycleAux)):
+            self.HCycleAux.append((self.HCycleAux[i]))
+
+        return True
 
 
     def hamiltonianCycleDrawer(self, buttonStates2):
