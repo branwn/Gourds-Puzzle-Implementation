@@ -40,7 +40,7 @@ class phaseOne(object):
             self.gourdsMovement(rootIndex)
 
 
-
+        print("Phase one finished!")
         self.myButtons.buttonStates[3] = 1 # finished
         self.redrawTheScreen()
 

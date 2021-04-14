@@ -32,8 +32,9 @@ class phaseTwoN3(object):
 
         # gourdsOrderInHCycleGenerator
         if len(self.gourdsOrderInHCycle) <= 0:
-            self.gourdsOrderInHCycleGenerator()
+            self.gourdsFinalOrderInHCycleGenerator()
 
+        # obtain the present orders of gourds
 
         # search type two
         cellIndexInHCycle = self.searchLeafInTypeTwo()
@@ -58,7 +59,7 @@ class phaseTwoN3(object):
 
 
 
-    def gourdsOrderInHCycleGenerator(self):
+    def gourdsFinalOrderInHCycleGenerator(self):
         orderlist = []
 
         for cell in self.myHamiltonianCycle.hamiltonianCycleStack:
@@ -72,12 +73,9 @@ class phaseTwoN3(object):
                         orderlist.append(i)
                         break
 
-
+        print("\tThe order of gourds should be reached in phase 2: ",orderlist)
         self.gourdsOrderInHCycle = orderlist
         return self.gourdsOrderInHCycle
-
-
-
 
     def searchLeafInTypeOne(self):
         HCycleIndex = -1
@@ -88,14 +86,13 @@ class phaseTwoN3(object):
             diffInY = self.HCycleAux[i][1] - self.HCycleAux[i+3][1]
             squaredDistance = diffInX * diffInX + diffInY * diffInY * 1.732 * 1.732
             if squaredDistance <= 4:
-                print(self.HCycleAux[i], "is the x of leaf type one")
+                print("\t", self.HCycleAux[i], "is the x of leaf type one")
                 return i
 
         return HCycleIndex
 
     def searchLeafInTypeTwo(self):
         HCycleIndex = -1
-        #TODO
 
 
         for i in range(self.myHamiltonianCycle.lengthOfHCycle):
@@ -114,7 +111,7 @@ class phaseTwoN3(object):
                     diffInY = self.HCycleAux[i + 2][1] - self.HCycleAux[i + 4][1]
                     squaredDistance = diffInX * diffInX + diffInY * diffInY * 1.732 * 1.732
                     if squaredDistance <= 4:
-                        print(self.HCycleAux[i], "is the x of leaf type two")
+                        print("\t", self.HCycleAux[i], "is the x of leaf type two")
                         return i
 
 
@@ -133,6 +130,22 @@ class phaseTwoN3(object):
 
 
         return True
+
+    def gourdsPresentOrderInHCycle(self):
+        order = []
+        for cell in self.myHamiltonianCycle.hamiltonianCycleStack:
+            for i in range(self.myFinalGourdsConfig.totalNumberOfGourds):
+                if i not in order:
+                    gourd = self.myFinalGourdsConfig.gourdsAssignedDict.get(i)
+                    if gourd[1] == cell[0] and gourd[2] == cell[1]:
+                        order.append(i)
+                        break
+                    elif gourd[3] == cell[0] and gourd[4] == cell[1]:
+                        order.append(i)
+                        break
+
+        print("\tThe order of gourds right now: ", order)
+        return order
 
     def redrawTheScreen(self):
 
