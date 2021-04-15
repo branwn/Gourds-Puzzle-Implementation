@@ -39,7 +39,7 @@ class phaseTwoN3(object):
         cellIndexInHCycle = self.searchLeafInTypeTwo()
         if cellIndexInHCycle != -1:
             print("\t", self.HCycleAux[cellIndexInHCycle], "is the x of leaf type two")
-            result = self.typeTwoBubbleSort()
+            result = self.typeTwoBubbleSort(cellIndexInHCycle)
 
 
         else:
@@ -47,7 +47,7 @@ class phaseTwoN3(object):
             cellIndexInHCycle = self.searchLeafInTypeOne()
             if cellIndexInHCycle != -1:
                 print("\t", self.HCycleAux[cellIndexInHCycle], "is the x of leaf type one")
-                result = self.typeOneInsertionSort()
+                result = self.typeOneInsertionSort(cellIndexInHCycle)
 
 
 
@@ -132,20 +132,31 @@ class phaseTwoN3(object):
 
         return HCycleIndex
 
-    def typeOneInsertionSort(self):
+    def typeOneInsertionSort(self, cellIndexInHCycle):
         # this is not really an Insertion Sort, it just an Insertion Sort-like algorithms
         #TODO
-        result = self.gourdsOrderInHCycle == self.gourdsPresentOrderInHCycle()
+
         print("\tThe order of gourds right now: ", self.gourdsPresentOrderInHCycle())
 
-        print(result)
+
+        if(not self.gourdsOrderInHCycle == self.gourdsPresentOrderInHCycle()):
+
+
+
+
+
+
+            pass
+
+
+
 
 
 
         # self.myGourdsConstructor.gourdsClicked([4, 2], 'al')
         return True
 
-    def typeTwoBubbleSort(self):
+    def typeTwoBubbleSort(self, cellIndexInHCycle):
         # this is also not really a Bubble Sort, it just a Bubble Sort-like algorithm.
         #TODO
 
