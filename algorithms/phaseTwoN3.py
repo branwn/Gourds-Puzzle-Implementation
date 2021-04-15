@@ -34,11 +34,6 @@ class phaseTwoN3(object):
         if len(self.gourdsOrderInHCycle) <= 0:
             self.gourdsFinalOrderInHCycleGenerator()
 
-        # obtain the present orders of gourds
-        self.gourdsPresentOrderInHCycle()
-
-
-
 
         # search type two
         cellIndexInHCycle = self.searchLeafInTypeTwo()
@@ -97,7 +92,6 @@ class phaseTwoN3(object):
                         order.append(i)
                         break
 
-        print("\tThe order of gourds right now: ", order)
         return order
 
 
@@ -139,12 +133,20 @@ class phaseTwoN3(object):
         return HCycleIndex
 
     def typeOneInsertionSort(self):
+        # this is not really an Insertion Sort, it just an Insertion Sort-like algorithms
         #TODO
+        result = self.gourdsOrderInHCycle == self.gourdsPresentOrderInHCycle()
+        print("\tThe order of gourds right now: ", self.gourdsPresentOrderInHCycle())
+
+        print(result)
+
+
 
         # self.myGourdsConstructor.gourdsClicked([4, 2], 'al')
         return True
 
     def typeTwoBubbleSort(self):
+        # this is also not really a Bubble Sort, it just a Bubble Sort-like algorithm.
         #TODO
 
 
