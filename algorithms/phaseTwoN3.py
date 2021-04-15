@@ -37,9 +37,13 @@ class phaseTwoN3(object):
         # obtain the present orders of gourds
         self.gourdsPresentOrderInHCycle()
 
+
+
+
         # search type two
         cellIndexInHCycle = self.searchLeafInTypeTwo()
         if cellIndexInHCycle != -1:
+            print("\t", self.HCycleAux[cellIndexInHCycle], "is the x of leaf type two")
             result = self.typeTwoBubbleSort()
 
 
@@ -47,7 +51,9 @@ class phaseTwoN3(object):
             # search type one
             cellIndexInHCycle = self.searchLeafInTypeOne()
             if cellIndexInHCycle != -1:
+                print("\t", self.HCycleAux[cellIndexInHCycle], "is the x of leaf type one")
                 result = self.typeOneInsertionSort()
+
 
 
         self.myButtons.buttonStates[4] = 1  # finished
@@ -104,7 +110,6 @@ class phaseTwoN3(object):
             diffInY = self.HCycleAux[i][1] - self.HCycleAux[i+3][1]
             squaredDistance = diffInX * diffInX + diffInY * diffInY * 1.732 * 1.732
             if squaredDistance <= 4:
-                print("\t", self.HCycleAux[i], "is the x of leaf type one")
                 return i
 
         return HCycleIndex
@@ -129,11 +134,7 @@ class phaseTwoN3(object):
                     diffInY = self.HCycleAux[i + 2][1] - self.HCycleAux[i + 4][1]
                     squaredDistance = diffInX * diffInX + diffInY * diffInY * 1.732 * 1.732
                     if squaredDistance <= 4:
-                        print("\t", self.HCycleAux[i], "is the x of leaf type two")
                         return i
-
-
-
 
         return HCycleIndex
 
@@ -148,8 +149,6 @@ class phaseTwoN3(object):
 
 
         return True
-
-
 
     def redrawTheScreen(self):
 
