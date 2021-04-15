@@ -14,7 +14,7 @@ class phaseTwoN3(object):
         self.myFinalGourdsConfig = myFinalGourdsConfig
         self.HCycleAux = self.myHamiltonianCycle.HCycleAux
         self.firstRunFlag = True
-        self.gourdsOrderInHCycle = []
+        self.gourdsFinalOrderInHCycle = []
         self.leafType = -1
         self.leafIndex = -1
 
@@ -35,7 +35,7 @@ class phaseTwoN3(object):
 
 
         # gourdsOrderInHCycleGenerator
-        if len(self.gourdsOrderInHCycle) <= 0:
+        if len(self.gourdsFinalOrderInHCycle) <= 0:
             self.gourdsFinalOrderInHCycleGetter()
 
 
@@ -123,8 +123,8 @@ class phaseTwoN3(object):
                         break
 
         print("\tThe order of gourds should be reached in phase 2: ",orderlist)
-        self.gourdsOrderInHCycle = orderlist
-        return self.gourdsOrderInHCycle
+        self.gourdsFinalOrderInHCycle = orderlist
+        return self.gourdsFinalOrderInHCycle
 
     def gourdsPresentOrderInHCycleGetter(self):
         order = []
@@ -146,14 +146,14 @@ class phaseTwoN3(object):
         presentGourdsOrder = self.gourdsPresentOrderInHCycleGetter()
         offset = 0
         for i in range(len(presentGourdsOrder)):
-            if presentGourdsOrder[i] == self.gourdsOrderInHCycle[0]:
+            if presentGourdsOrder[i] == self.gourdsFinalOrderInHCycle[0]:
                 offset = i
                 break
         # check if the offset valid
         duplicatePresentGourdsOrder = presentGourdsOrder * 2
         result = True
         for i in range(len(presentGourdsOrder)):
-            if not duplicatePresentGourdsOrder[i + offset] == self.gourdsOrderInHCycle[i]:
+            if not duplicatePresentGourdsOrder[i + offset] == self.gourdsFinalOrderInHCycle[i]:
                 result = False
 
                 break
@@ -209,28 +209,46 @@ class phaseTwoN3(object):
         HPrimeCycleDup.pop(cellIndexInHCycle + 1)
         HPrimeCycleDup = HPrimeCycleDup * 2
 
-        if(True):
+        while(True):
             presentGourdsOrder = self.gourdsPresentOrderInHCycleGetter()
             # already done?
-            if(self.gourdsOrderInHCycle == presentGourdsOrder):
+            if(self.gourdsFinalOrderInHCycle == presentGourdsOrder):
                 return True
+            lenOfACycle = int(len(HCycleDup) / 2)
+
 
             # check if there's an offset, if true, then move gourds counter-clock-wise
             if self.gourdsOrderedWithOffset():
-                lenOfACycle = int(len(HCycleDup) / 2)
+
                 for counter in range(lenOfACycle):
                     self.movesAllGourdsCClockwiseAlongACycle(HCycleDup)
 
 
             # insertion
+            # Ensure Gourds In Proper Places
             self.typeOneEnsureGourdsInProperPlaces(HCycleDup, cellIndexInHCycle, HPrimeCycleDup)
 
 
+            gourdsIndexAtXPlusOne = self.myGourdsConstructor.gourdsSearchingByIndex(HCycleDup[cellIndexInHCycle + 1][0], HCycleDup[cellIndexInHCycle + 1][1])[0]
+            gourdsIndexAtXPlusZero = self.myGourdsConstructor.gourdsSearchingByIndex(HCycleDup[cellIndexInHCycle + 0][0], HCycleDup[cellIndexInHCycle + 0][1])[0]
 
+            gourdsIndexShouldNextToXPlusOne = -1
+            for i in range(lenOfACycle):
+                if gourdsIndexAtXPlusOne == self.gourdsFinalOrderInHCycle[i]:
+                    gourdsIndexShouldNextToXPlusOne = self.gourdsFinalOrderInHCycle[i-1]
+                    break
 
+            while not (gourdsIndexAtXPlusZero == gourdsIndexShouldNextToXPlusOne):
+                self.movesAllGourdsCClockwiseAlongACycle(HPrimeCycleDup)
 
+                print("\tThe order of gourds now: ", self.gourdsPresentOrderInHCycleGetter())
 
+                gourdsIndexAtXPlusZero = \
+                self.myGourdsConstructor.gourdsSearchingByIndex(HCycleDup[cellIndexInHCycle + 0][0],
+                                                                HCycleDup[cellIndexInHCycle + 0][1])[0]
 
+            self.typeOneEnsureGourdsInProperPlaces(HCycleDup, cellIndexInHCycle, HPrimeCycleDup)
+            self.movesAllGourdsCClockwiseAlongACycle(HCycleDup)
 
 
         return True
@@ -249,7 +267,6 @@ class phaseTwoN3(object):
         tempTwo = self.myGourdsConstructor.gourdsSearchingByIndex(HCycleDup[cellIndexInHCycle + 2][0],
                                                                   HCycleDup[cellIndexInHCycle + 2][1])
         while not (tempOne[0] == tempTwo[0]):
-            print(tempOne[0] == tempTwo[0])
             self.movesAllGourdsCClockwiseAlongACycle(HCycleDup)
 
             tempOne = self.myGourdsConstructor.gourdsSearchingByIndex(HCycleDup[cellIndexInHCycle + 1][0],
@@ -263,7 +280,6 @@ class phaseTwoN3(object):
         tempTwo = self.myGourdsConstructor.gourdsSearchingByIndex(HCycleDup[cellIndexInHCycle + 3][0],
                                                                   HCycleDup[cellIndexInHCycle + 3][1])
         while (tempOne[0] == tempTwo[0]):
-            print(tempOne[0] == tempTwo[0])
             self.movesAllGourdsCClockwiseAlongACycle(HPrimeCycleDup)
 
             tempOne = self.myGourdsConstructor.gourdsSearchingByIndex(HCycleDup[cellIndexInHCycle + 0][0],
