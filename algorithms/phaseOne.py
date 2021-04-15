@@ -37,7 +37,7 @@ class phaseOne(object):
                 print("---WARN--- No empty cell found")
                 return False
 
-            self.gourdsMovement(rootIndex)
+            self.gourdsMovementController(rootIndex)
 
 
         print("Phase one finished!")
@@ -57,9 +57,9 @@ class phaseOne(object):
 
     def isCellEmpty(self, aCell):
         isEmpty = True
-        gourdsIndex = -1
+        gourdsIndexInHCycle = -1
         for aGourds in self.myBoardsConfig.gourdsList:
-            gourdsIndex += 1
+            gourdsIndexInHCycle += 1
             if (aCell[0] == aGourds[0] and aCell[1] == aGourds[1]):
                 isEmpty = False
                 break
@@ -68,9 +68,32 @@ class phaseOne(object):
                 break
         if isEmpty:
             return True, -1
-        return False, gourdsIndex
+        return False, gourdsIndexInHCycle
 
-    def gourdsMovement(self, HCycleIndex):
+    def movesAloneTheHCycle(self, HCycleIndex):
+        # move first part
+        HCycleIndex += 1
+
+
+        gourdsIndex, partIndex  = self.myGourdsConstructor.gourdsClicked(self.HCycleAux[HCycleIndex], 'al')
+        if gourdsIndex == -1:
+            print ("---WARN--- No these gourds found!")
+            return False
+
+
+
+        # check if the next part is along the HCycle
+        if (self.myBoardsConfig.gourdsList[gourdsIndex][2-partIndex] == self.HCycleAux[HCycleIndex][0]
+                and self.myBoardsConfig.gourdsList[gourdsIndex][2-partIndex+1] == self.HCycleAux[HCycleIndex][1]):
+            # is along the HCycle
+            pass
+        else:
+            # is not along the HCycle
+            nextPartofGourds = self.myBoardsConfig.gourdsList[gourdsIndex][2-partIndex], self.myBoardsConfig.gourdsList[gourdsIndex][2-partIndex+1]
+            # move the next part
+            self.myGourdsConstructor.gourdsClicked(nextPartofGourds, 'al')
+
+    def gourdsMovementController(self, HCycleIndex):
         isEmpty, indexOfGourds = self.isCellEmpty(self.HCycleAux[HCycleIndex])
         if not isEmpty:
             if (self.myBoardsConfig.gourdsList[indexOfGourds][0] == self.HCycleAux[HCycleIndex][0]
@@ -101,28 +124,7 @@ class phaseOne(object):
             return True
 
 
-        # move first part
-        HCycleIndex += 1
-
-
-        gourdsIndex, partIndex  = self.myGourdsConstructor.gourdsClicked(self.HCycleAux[HCycleIndex], 'al')
-        if gourdsIndex == -1:
-            print ("---WARN--- No these gourds found!")
-            return False
-
-
-
-        # check if the next part is along the HCycle
-        if (self.myBoardsConfig.gourdsList[gourdsIndex][2-partIndex] == self.HCycleAux[HCycleIndex][0]
-                and self.myBoardsConfig.gourdsList[gourdsIndex][2-partIndex+1] == self.HCycleAux[HCycleIndex][1]):
-            # is along the HCycle
-            pass
-        else:
-            # is not along the HCycle
-            nextPartofGourds = self.myBoardsConfig.gourdsList[gourdsIndex][2-partIndex], self.myBoardsConfig.gourdsList[gourdsIndex][2-partIndex+1]
-            # move the next part
-            self.myGourdsConstructor.gourdsClicked(nextPartofGourds, 'al')
-
+        self.movesAloneTheHCycle(HCycleIndex)
 
         # print(partIndex)
 

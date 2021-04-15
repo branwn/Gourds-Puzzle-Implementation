@@ -58,8 +58,43 @@ class phaseTwoN3(object):
         return result
 
 
+    def isCellEmpty(self, aCell):
+        isEmpty = True
+        gourdsIndexInHCycle = -1
+        for aGourds in self.myBoardsConfig.gourdsList:
+            gourdsIndexInHCycle += 1
+            if (aCell[0] == aGourds[0] and aCell[1] == aGourds[1]):
+                isEmpty = False
+                break
+            elif (aCell[0] == aGourds[2] and aCell[1] == aGourds[3]):
+                isEmpty = False
+                break
+        if isEmpty:
+            return True, -1
+        return False, gourdsIndexInHCycle
+
+    def movesAloneTheHCycle(self, HCycleIndex):
+        # move first part
+        HCycleIndex += 1
 
 
+        gourdsIndex, partIndex  = self.myGourdsConstructor.gourdsClicked(self.HCycleAux[HCycleIndex], 'al')
+        if gourdsIndex == -1:
+            print ("---WARN--- No these gourds found!")
+            return False
+
+
+
+        # check if the next part is along the HCycle
+        if (self.myBoardsConfig.gourdsList[gourdsIndex][2-partIndex] == self.HCycleAux[HCycleIndex][0]
+                and self.myBoardsConfig.gourdsList[gourdsIndex][2-partIndex+1] == self.HCycleAux[HCycleIndex][1]):
+            # is along the HCycle
+            pass
+        else:
+            # is not along the HCycle
+            nextPartofGourds = self.myBoardsConfig.gourdsList[gourdsIndex][2-partIndex], self.myBoardsConfig.gourdsList[gourdsIndex][2-partIndex+1]
+            # move the next part
+            self.myGourdsConstructor.gourdsClicked(nextPartofGourds, 'al')
 
     def gourdsFinalOrderInHCycleGenerator(self):
         orderlist = []
@@ -157,31 +192,22 @@ class phaseTwoN3(object):
 
 
 
-        # while(True):
-        presentGourdsOrder = self.gourdsPresentOrderInHCycle()
-        if(self.gourdsOrderInHCycle == presentGourdsOrder):
-            return True
+        if(True):
+            presentGourdsOrder = self.gourdsPresentOrderInHCycle()
+            if(self.gourdsOrderInHCycle == presentGourdsOrder):
+                return True
 
-        # check if there's an offset
-        if self.gourdsOrderedWithOffset():
-
-            pass
-
-
-
-
-
+            # check if there's an offset, if true, then move gourds counter-clock-wise
+            if self.gourdsOrderedWithOffset():
+                print("gourdsOrderedWithOffset")
+                for i in range(len(self.myHamiltonianCycle.hamiltonianCycleStack)):
+                    if self.isCellEmpty(self.HCycleAux[i])[0]:
+                        self.movesAloneTheHCycle(i)
+                        break
 
 
 
 
-
-
-
-
-            pass
-
-        # self.myGourdsConstructor.gourdsClicked([4, 2], 'al')
         return True
 
     def typeTwoBubbleSort(self, cellIndexInHCycle):
@@ -190,8 +216,6 @@ class phaseTwoN3(object):
 
 
         return True
-
-
 
     def redrawTheScreen(self):
 
