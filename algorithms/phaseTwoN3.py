@@ -139,7 +139,29 @@ class phaseTwoN3(object):
         print("\tThe order of gourds right now: ", self.gourdsPresentOrderInHCycle())
 
 
-        if(not self.gourdsOrderInHCycle == self.gourdsPresentOrderInHCycle()):
+
+        # while(True):
+        presentGourdsOrder = self.gourdsPresentOrderInHCycle()
+        if(self.gourdsOrderInHCycle == presentGourdsOrder):
+            # break
+            pass
+        else:
+            # check if there's an offset
+
+            # measure the offset
+            offset = 0
+            for i in range(len(presentGourdsOrder)):
+                if presentGourdsOrder[i] == self.gourdsOrderInHCycle[0]:
+                    offset = i
+                    break
+            # check if the offset valid
+            for i in range(len(presentGourdsOrder)):
+                if not presentGourdsOrder[i + offset] == self.gourdsOrderInHCycle[i]:
+
+
+                    
+                    pass
+
 
 
 
@@ -147,11 +169,6 @@ class phaseTwoN3(object):
 
 
             pass
-
-
-
-
-
 
         # self.myGourdsConstructor.gourdsClicked([4, 2], 'al')
         return True
