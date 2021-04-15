@@ -248,7 +248,8 @@ class phaseTwoN3(object):
                                                                 HCycleDup[cellIndexInHCycle + 0][1])[0]
 
             self.typeOneEnsureGourdsInProperPlaces(HCycleDup, cellIndexInHCycle, HPrimeCycleDup)
-            self.movesAllGourdsCClockwiseAlongACycle(HCycleDup)
+            for i in range(lenOfACycle):
+                self.movesAllGourdsCClockwiseAlongACycle(HCycleDup)
 
 
         return True
