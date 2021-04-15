@@ -73,17 +73,20 @@ class phaseTwoN3(object):
             return True, -1
         return False, gourdsIndexInHCycle
 
-    def movesAloneTheHCycle(self, HCycleIndex):
+    def movesAllGourdsCClockwiseAlongCClockwise(self):
+        for counter in range(len(self.myHamiltonianCycle.hamiltonianCycleStack)):
+            for i in range(len(self.myHamiltonianCycle.hamiltonianCycleStack)):
+                if self.isCellEmpty(self.HCycleAux[i])[0]:
+                    self.movesAGourdAloneTheHCycle(i)
+                    break
+
+    def movesAGourdAloneTheHCycle(self, HCycleIndex):
         # move first part
         HCycleIndex += 1
-
-
         gourdsIndex, partIndex  = self.myGourdsConstructor.gourdsClicked(self.HCycleAux[HCycleIndex], 'al')
         if gourdsIndex == -1:
             print ("---WARN--- No these gourds found!")
             return False
-
-
 
         # check if the next part is along the HCycle
         if (self.myBoardsConfig.gourdsList[gourdsIndex][2-partIndex] == self.HCycleAux[HCycleIndex][0]
@@ -95,6 +98,8 @@ class phaseTwoN3(object):
             nextPartofGourds = self.myBoardsConfig.gourdsList[gourdsIndex][2-partIndex], self.myBoardsConfig.gourdsList[gourdsIndex][2-partIndex+1]
             # move the next part
             self.myGourdsConstructor.gourdsClicked(nextPartofGourds, 'al')
+
+        self.redrawTheScreen()
 
     def gourdsFinalOrderInHCycleGenerator(self):
         orderlist = []
@@ -199,11 +204,7 @@ class phaseTwoN3(object):
 
             # check if there's an offset, if true, then move gourds counter-clock-wise
             if self.gourdsOrderedWithOffset():
-                print("gourdsOrderedWithOffset")
-                for i in range(len(self.myHamiltonianCycle.hamiltonianCycleStack)):
-                    if self.isCellEmpty(self.HCycleAux[i])[0]:
-                        self.movesAloneTheHCycle(i)
-                        break
+                self.movesAllGourdsCClockwiseAlongCClockwise()
 
 
 
