@@ -94,6 +94,23 @@ class phaseTwoN3(object):
 
         return order
 
+    def gourdsOrderedWithOffset(self):
+        # measure the offset
+        presentGourdsOrder = self.gourdsPresentOrderInHCycle()
+        offset = 0
+        for i in range(len(presentGourdsOrder)):
+            if presentGourdsOrder[i] == self.gourdsOrderInHCycle[0]:
+                offset = i
+                break
+        # check if the offset valid
+        duplicatePresentGourdsOrder = presentGourdsOrder * 2
+        result = True
+        for i in range(len(presentGourdsOrder)):
+            if not duplicatePresentGourdsOrder[i + offset] == self.gourdsOrderInHCycle[i]:
+                result = False
+
+                break
+        return result
 
     def searchLeafInTypeOne(self):
         HCycleIndex = -1
@@ -136,7 +153,7 @@ class phaseTwoN3(object):
         # this is not really an Insertion Sort, it just an Insertion Sort-like algorithms
         #TODO
 
-        print("\tThe order of gourds right now: ", self.gourdsPresentOrderInHCycle())
+        print("\tThe order of gourds now: ", self.gourdsPresentOrderInHCycle())
 
 
 
@@ -144,24 +161,14 @@ class phaseTwoN3(object):
         presentGourdsOrder = self.gourdsPresentOrderInHCycle()
         if(self.gourdsOrderInHCycle == presentGourdsOrder):
             return True
-        else:
-            # check if there's an offset
 
-            # measure the offset
-            offset = 0
-            for i in range(len(presentGourdsOrder)):
-                if presentGourdsOrder[i] == self.gourdsOrderInHCycle[0]:
-                    offset = i
-                    break
-            # check if the offset valid
-            duplicatePresentGourdsOrder = presentGourdsOrder*2
-            isAllDone = True
-            for i in range(len(presentGourdsOrder)):
-                if not duplicatePresentGourdsOrder[i + offset] == self.gourdsOrderInHCycle[i]:
-                    isAllDone = False
+        # check if there's an offset
+        if self.gourdsOrderedWithOffset():
 
-                    break
-            print(isAllDone)
+            pass
+
+
+
 
 
 
@@ -183,6 +190,8 @@ class phaseTwoN3(object):
 
 
         return True
+
+
 
     def redrawTheScreen(self):
 
