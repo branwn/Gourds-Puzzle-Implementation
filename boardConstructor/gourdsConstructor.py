@@ -71,7 +71,7 @@ class gourdsConstructor(object):
         return self.gourdsSearchingByIndex(x, y)
 
     def gourdsSearchingByIndex(self, x, y):
-        # search if there is a gourd on (x, y)
+        # search if there is a pair of gourds on (x, y)
         for i in range(len(self.gourdsList)):
             if (x == self.gourdsList[i][0] and y == self.gourdsList[i][1]):
                 return i, x, y

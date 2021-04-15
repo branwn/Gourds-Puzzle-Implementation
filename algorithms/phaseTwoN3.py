@@ -80,17 +80,17 @@ class phaseTwoN3(object):
 
     def movesAllGourdsCClockwiseAlongACycle(self, aCycleDup):
         lenOfACycle = int(len(aCycleDup) / 2)
-        for counter in range(lenOfACycle):
-            for i in range(lenOfACycle):
-                if self.isCellEmpty(aCycleDup[i])[0]:
-                    self.movesAGourdAloneTheACycle(aCycleDup, i)
-                    break
+
+        for i in range(lenOfACycle):
+            if self.isCellEmpty(aCycleDup[i])[0]:
+                self.movesAGourdAloneTheACycle(aCycleDup, i)
+                break
 
     def movesAGourdAloneTheACycle(self, aCycleDup, cycleIndex):
 
         # move first part
         cycleIndex += 1
-        gourdsIndex, partIndex= self.myGourdsConstructor.gourdsClicked(aCycleDup[cycleIndex], 'al')
+        gourdsIndex, partIndex = self.myGourdsConstructor.gourdsClicked(aCycleDup[cycleIndex], 'al')
         if gourdsIndex == -1:
             print ("---WARN--- No these gourds found!")
             return False
@@ -205,8 +205,8 @@ class phaseTwoN3(object):
         # init
         HCycleDup = self.myHamiltonianCycle.hamiltonianCycleStack * 2
         HPrimeCycleDup = copy.copy(self.myHamiltonianCycle.hamiltonianCycleStack)
-        HPrimeCycleDup.pop(cellIndexInHCycle + 1)
         HPrimeCycleDup.pop(cellIndexInHCycle + 2)
+        HPrimeCycleDup.pop(cellIndexInHCycle + 1)
         HPrimeCycleDup = HPrimeCycleDup * 2
 
         if(True):
@@ -217,9 +217,28 @@ class phaseTwoN3(object):
 
             # check if there's an offset, if true, then move gourds counter-clock-wise
             if self.gourdsOrderedWithOffset():
-                self.movesAllGourdsCClockwiseAlongACycle(HCycleDup)
+                lenOfACycle = int(len(HCycleDup) / 2)
+                for counter in range(lenOfACycle):
+                    self.movesAllGourdsCClockwiseAlongACycle(HCycleDup)
+
 
             # insertion
+            # move a pair of gourds into the leaf
+            tempOne = self.myGourdsConstructor.gourdsSearchingByIndex(HCycleDup[cellIndexInHCycle+1][0], HCycleDup[cellIndexInHCycle+1][1])
+            tempTwo = self.myGourdsConstructor.gourdsSearchingByIndex(HCycleDup[cellIndexInHCycle+2][0], HCycleDup[cellIndexInHCycle+2][1])
+            while not (tempOne[0] == tempTwo[0]):
+                print(tempOne[0] == tempTwo[0])
+                self.movesAllGourdsCClockwiseAlongACycle(HCycleDup)
+
+                tempOne = self.myGourdsConstructor.gourdsSearchingByIndex(HCycleDup[cellIndexInHCycle + 1][0],
+                                                                          HCycleDup[cellIndexInHCycle + 1][1])
+                tempTwo = self.myGourdsConstructor.gourdsSearchingByIndex(HCycleDup[cellIndexInHCycle + 2][0],
+                                                                          HCycleDup[cellIndexInHCycle + 2][1])
+
+
+
+
+
 
 
 
