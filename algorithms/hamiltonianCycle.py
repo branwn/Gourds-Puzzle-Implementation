@@ -128,9 +128,9 @@ class hamiltonianCycle(object):
 
         self.lengthOfHCycle = len(self.hamiltonianCycleStack)
 
-        self.HCycleAux = copy.deepcopy(self.hamiltonianCycleStack)
-        for i in range(len(self.HCycleAux)):
-            self.HCycleAux.append((self.HCycleAux[i]))
+        self.HCycleAux = copy.deepcopy(self.hamiltonianCycleStack * 2)
+        # for i in range(len(self.HCycleAux)):
+        #     self.HCycleAux.append((self.HCycleAux[i]))
 
         return True
 

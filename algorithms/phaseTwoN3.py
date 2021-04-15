@@ -143,8 +143,7 @@ class phaseTwoN3(object):
         # while(True):
         presentGourdsOrder = self.gourdsPresentOrderInHCycle()
         if(self.gourdsOrderInHCycle == presentGourdsOrder):
-            # break
-            pass
+            return True
         else:
             # check if there's an offset
 
@@ -155,12 +154,17 @@ class phaseTwoN3(object):
                     offset = i
                     break
             # check if the offset valid
+            duplicatePresentGourdsOrder = presentGourdsOrder*2
+            isAllDone = True
             for i in range(len(presentGourdsOrder)):
-                if not presentGourdsOrder[i + offset] == self.gourdsOrderInHCycle[i]:
+                if not duplicatePresentGourdsOrder[i + offset] == self.gourdsOrderInHCycle[i]:
+                    isAllDone = False
+
+                    break
+            print(isAllDone)
 
 
-                    
-                    pass
+
 
 
 
