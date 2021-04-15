@@ -1,3 +1,5 @@
+import copy
+
 import pygame
 
 class phaseTwoN3(object):
@@ -13,6 +15,8 @@ class phaseTwoN3(object):
         self.HCycleAux = self.myHamiltonianCycle.HCycleAux
         self.firstRunFlag = True
         self.gourdsOrderInHCycle = []
+        self.leafType = -1
+        self.leafIndex = -1
 
     def runPhaseTwoN3(self, buttonState4):
         if buttonState4 != 2: # running
@@ -32,12 +36,13 @@ class phaseTwoN3(object):
 
         # gourdsOrderInHCycleGenerator
         if len(self.gourdsOrderInHCycle) <= 0:
-            self.gourdsFinalOrderInHCycleGenerator()
+            self.gourdsFinalOrderInHCycleGetter()
 
 
         # search type two
         cellIndexInHCycle = self.searchLeafInTypeTwo()
         if cellIndexInHCycle != -1:
+            self.leafType = 2
             print("\t", self.HCycleAux[cellIndexInHCycle], "is the x of leaf type two")
             result = self.typeTwoBubbleSort(cellIndexInHCycle)
 
@@ -46,6 +51,7 @@ class phaseTwoN3(object):
             # search type one
             cellIndexInHCycle = self.searchLeafInTypeOne()
             if cellIndexInHCycle != -1:
+                self.leafType = 2
                 print("\t", self.HCycleAux[cellIndexInHCycle], "is the x of leaf type one")
                 result = self.typeOneInsertionSort(cellIndexInHCycle)
 
@@ -56,7 +62,6 @@ class phaseTwoN3(object):
         self.redrawTheScreen()
         if not result: print("---WARN--- Something went wrong in Phase 2 O(n^3)!")
         return result
-
 
     def isCellEmpty(self, aCell):
         isEmpty = True
@@ -73,24 +78,26 @@ class phaseTwoN3(object):
             return True, -1
         return False, gourdsIndexInHCycle
 
-    def movesAllGourdsCClockwiseAlongCClockwise(self):
-        for counter in range(len(self.myHamiltonianCycle.hamiltonianCycleStack)):
-            for i in range(len(self.myHamiltonianCycle.hamiltonianCycleStack)):
-                if self.isCellEmpty(self.HCycleAux[i])[0]:
-                    self.movesAGourdAloneTheHCycle(i)
+    def movesAllGourdsCClockwiseAlongACycle(self, aCycleDup):
+        lenOfACycle = int(len(aCycleDup) / 2)
+        for counter in range(lenOfACycle):
+            for i in range(lenOfACycle):
+                if self.isCellEmpty(aCycleDup[i])[0]:
+                    self.movesAGourdAloneTheACycle(aCycleDup, i)
                     break
 
-    def movesAGourdAloneTheHCycle(self, HCycleIndex):
+    def movesAGourdAloneTheACycle(self, aCycleDup, cycleIndex):
+
         # move first part
-        HCycleIndex += 1
-        gourdsIndex, partIndex  = self.myGourdsConstructor.gourdsClicked(self.HCycleAux[HCycleIndex], 'al')
+        cycleIndex += 1
+        gourdsIndex, partIndex= self.myGourdsConstructor.gourdsClicked(aCycleDup[cycleIndex], 'al')
         if gourdsIndex == -1:
             print ("---WARN--- No these gourds found!")
             return False
 
         # check if the next part is along the HCycle
-        if (self.myBoardsConfig.gourdsList[gourdsIndex][2-partIndex] == self.HCycleAux[HCycleIndex][0]
-                and self.myBoardsConfig.gourdsList[gourdsIndex][2-partIndex+1] == self.HCycleAux[HCycleIndex][1]):
+        if (self.myBoardsConfig.gourdsList[gourdsIndex][2-partIndex] == aCycleDup[cycleIndex][0]
+                and self.myBoardsConfig.gourdsList[gourdsIndex][2-partIndex+1] == aCycleDup[cycleIndex][1]):
             # is along the HCycle
             pass
         else:
@@ -101,7 +108,7 @@ class phaseTwoN3(object):
 
         self.redrawTheScreen()
 
-    def gourdsFinalOrderInHCycleGenerator(self):
+    def gourdsFinalOrderInHCycleGetter(self):
         orderlist = []
 
         for cell in self.myHamiltonianCycle.hamiltonianCycleStack:
@@ -119,7 +126,7 @@ class phaseTwoN3(object):
         self.gourdsOrderInHCycle = orderlist
         return self.gourdsOrderInHCycle
 
-    def gourdsPresentOrderInHCycle(self):
+    def gourdsPresentOrderInHCycleGetter(self):
         order = []
         for cell in self.myHamiltonianCycle.hamiltonianCycleStack:
             for i in range(self.myFinalGourdsConfig.totalNumberOfGourds):
@@ -136,7 +143,7 @@ class phaseTwoN3(object):
 
     def gourdsOrderedWithOffset(self):
         # measure the offset
-        presentGourdsOrder = self.gourdsPresentOrderInHCycle()
+        presentGourdsOrder = self.gourdsPresentOrderInHCycleGetter()
         offset = 0
         for i in range(len(presentGourdsOrder)):
             if presentGourdsOrder[i] == self.gourdsOrderInHCycle[0]:
@@ -193,18 +200,27 @@ class phaseTwoN3(object):
         # this is not really an Insertion Sort, it just an Insertion Sort-like algorithms
         #TODO
 
-        print("\tThe order of gourds now: ", self.gourdsPresentOrderInHCycle())
+        print("\tThe order of gourds now: ", self.gourdsPresentOrderInHCycleGetter())
 
-
+        # init
+        HCycleDup = self.myHamiltonianCycle.hamiltonianCycleStack * 2
+        HPrimeCycleDup = copy.copy(self.myHamiltonianCycle.hamiltonianCycleStack)
+        HPrimeCycleDup.pop(cellIndexInHCycle + 1)
+        HPrimeCycleDup.pop(cellIndexInHCycle + 2)
+        HPrimeCycleDup = HPrimeCycleDup * 2
 
         if(True):
-            presentGourdsOrder = self.gourdsPresentOrderInHCycle()
+            presentGourdsOrder = self.gourdsPresentOrderInHCycleGetter()
+            # already done?
             if(self.gourdsOrderInHCycle == presentGourdsOrder):
                 return True
 
             # check if there's an offset, if true, then move gourds counter-clock-wise
             if self.gourdsOrderedWithOffset():
-                self.movesAllGourdsCClockwiseAlongCClockwise()
+                self.movesAllGourdsCClockwiseAlongACycle(HCycleDup)
+
+            # insertion
+
 
 
 
