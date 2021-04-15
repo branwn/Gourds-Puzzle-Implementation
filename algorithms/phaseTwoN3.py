@@ -223,18 +223,7 @@ class phaseTwoN3(object):
 
 
             # insertion
-            # move a pair of gourds into the leaf
-            tempOne = self.myGourdsConstructor.gourdsSearchingByIndex(HCycleDup[cellIndexInHCycle+1][0], HCycleDup[cellIndexInHCycle+1][1])
-            tempTwo = self.myGourdsConstructor.gourdsSearchingByIndex(HCycleDup[cellIndexInHCycle+2][0], HCycleDup[cellIndexInHCycle+2][1])
-            while not (tempOne[0] == tempTwo[0]):
-                print(tempOne[0] == tempTwo[0])
-                self.movesAllGourdsCClockwiseAlongACycle(HCycleDup)
-
-                tempOne = self.myGourdsConstructor.gourdsSearchingByIndex(HCycleDup[cellIndexInHCycle + 1][0],
-                                                                          HCycleDup[cellIndexInHCycle + 1][1])
-                tempTwo = self.myGourdsConstructor.gourdsSearchingByIndex(HCycleDup[cellIndexInHCycle + 2][0],
-                                                                          HCycleDup[cellIndexInHCycle + 2][1])
-
+            self.typeOneEnsureGourdsInProperPlaces(HCycleDup, cellIndexInHCycle, HPrimeCycleDup)
 
 
 
@@ -252,6 +241,39 @@ class phaseTwoN3(object):
 
 
         return True
+
+    def typeOneEnsureGourdsInProperPlaces(self, HCycleDup, cellIndexInHCycle, HPrimeCycleDup):
+        # moves a pair of gourds into the leaf (x+1) and (x+2)
+        tempOne = self.myGourdsConstructor.gourdsSearchingByIndex(HCycleDup[cellIndexInHCycle + 1][0],
+                                                                  HCycleDup[cellIndexInHCycle + 1][1])
+        tempTwo = self.myGourdsConstructor.gourdsSearchingByIndex(HCycleDup[cellIndexInHCycle + 2][0],
+                                                                  HCycleDup[cellIndexInHCycle + 2][1])
+        while not (tempOne[0] == tempTwo[0]):
+            print(tempOne[0] == tempTwo[0])
+            self.movesAllGourdsCClockwiseAlongACycle(HCycleDup)
+
+            tempOne = self.myGourdsConstructor.gourdsSearchingByIndex(HCycleDup[cellIndexInHCycle + 1][0],
+                                                                      HCycleDup[cellIndexInHCycle + 1][1])
+            tempTwo = self.myGourdsConstructor.gourdsSearchingByIndex(HCycleDup[cellIndexInHCycle + 2][0],
+                                                                      HCycleDup[cellIndexInHCycle + 2][1])
+
+        # make sure not a pair of gourds outside the leaf (x+1) and (x+2)
+        tempOne = self.myGourdsConstructor.gourdsSearchingByIndex(HCycleDup[cellIndexInHCycle + 0][0],
+                                                                  HCycleDup[cellIndexInHCycle + 0][1])
+        tempTwo = self.myGourdsConstructor.gourdsSearchingByIndex(HCycleDup[cellIndexInHCycle + 3][0],
+                                                                  HCycleDup[cellIndexInHCycle + 3][1])
+        while (tempOne[0] == tempTwo[0]):
+            print(tempOne[0] == tempTwo[0])
+            self.movesAllGourdsCClockwiseAlongACycle(HPrimeCycleDup)
+
+            tempOne = self.myGourdsConstructor.gourdsSearchingByIndex(HCycleDup[cellIndexInHCycle + 0][0],
+                                                                      HCycleDup[cellIndexInHCycle + 0][1])
+            tempTwo = self.myGourdsConstructor.gourdsSearchingByIndex(HCycleDup[cellIndexInHCycle + 3][0],
+                                                                      HCycleDup[cellIndexInHCycle + 3][1])
+
+
+
+
 
     def redrawTheScreen(self):
 
