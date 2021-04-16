@@ -53,7 +53,9 @@ class phaseThree(object):
 
         print(footPrintAux)
 
-        self.myButtons.buttonStates[6] = 1 # finished
+
+        self.myButtons.buttonStates[6] = 1  # finished
+        self.myButtons.buttonStates[2] = 0  # hidden the H-Cycle
         self.redrawTheScreen()
 
 

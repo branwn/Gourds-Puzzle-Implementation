@@ -41,20 +41,20 @@ class phaseTwoN3(object):
             self.gourdsFinalOrderInHCycleGetter()
 
 
-        # search type two
-        cellIndexInHCycle = self.searchLeafInTypeTwo()
+
+        # search type one
+        cellIndexInHCycle = self.searchLeafInTypeOne()
         if cellIndexInHCycle != -1:
             self.leafType = 2
-            result = self.typeTwoBubbleSort(cellIndexInHCycle)
-
+            print("\t", self.HCycleAux[cellIndexInHCycle], "is the x of leaf type one")
+            result = self.typeOneInsertionSort(cellIndexInHCycle)
 
         else:
-            # search type one
-            cellIndexInHCycle = self.searchLeafInTypeOne()
+            # search type two
+            cellIndexInHCycle = self.searchLeafInTypeTwo()
             if cellIndexInHCycle != -1:
                 self.leafType = 2
-                print("\t", self.HCycleAux[cellIndexInHCycle], "is the x of leaf type one")
-                result = self.typeOneInsertionSort(cellIndexInHCycle)
+                result = self.typeTwoBubbleSort(cellIndexInHCycle)
 
 
 
