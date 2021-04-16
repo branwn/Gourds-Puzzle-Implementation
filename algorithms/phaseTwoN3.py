@@ -233,7 +233,7 @@ class phaseTwoN3(object):
                                                                 HCycleDup[cellIndexInHCycle + 0][1])[0]
 
             self.typeOneEnsureGourdsInProperPlaces(HCycleDup, cellIndexInHCycle, HPrimeCycleDup)
-            for i in range(lenOfACycle):
+            for i in range(lenOfACycle - 1):
                 self.movesAllGourdsCClockwiseAlongACycle(HCycleDup)
 
             print("\tThe order of gourds now: ", self.gourdsPresentOrderInHCycleGetter())

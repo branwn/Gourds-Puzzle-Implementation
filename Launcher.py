@@ -1,7 +1,7 @@
 import pygame
 
 from algorithms.finalHCycleOrderGenerator import finalHCycleOrderGenerator
-from boardConfigsContainer import boardConfig1 as boardConfig
+from boardConfigsContainer import boardConfig12 as boardConfig
 from boardConstructor.buttons import buttons
 from boardConstructor.cellsConstructor import cellsConstructor
 from boardConstructor.gourdsConstructor import gourdsConstructor
