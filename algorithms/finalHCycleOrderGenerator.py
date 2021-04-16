@@ -16,7 +16,7 @@ class finalHCycleOrderGenerator(object):
         self.HCycleAux = self.myHamiltonianCycle.HCycleAux
         self.gourdsFinalOrderInHCycle = []
         self.stackOfFootPrint = []
-
+        self.emptyCellIndex = -1
 
         # build up final gourds config
         finalGourdsList = copy.deepcopy(self.myBoardsConfig.gourdsList)
@@ -28,11 +28,12 @@ class finalHCycleOrderGenerator(object):
 
         # set values
         self.myBoardsConfig.gourdsList = finalGourdsList
-
         self.gourdsList = self.myBoardsConfig.gourdsList
         self.board = self.myBoardsConfig.board
 
     def runFinalHCycleOrderGenerator(self):
+
+
         # move the gourds
         while(self.ifThereIsGourdsNotAligned()):
             # print (self.HCycleAux[rootIndex + i])
@@ -49,11 +50,20 @@ class finalHCycleOrderGenerator(object):
 
             self.gourdsMovementControllerInOrderGenerator(rootIndex)
 
+
+
+        # record the empty cell
+        for i in range(len(self.myHamiltonianCycle.HCycleAux)):
+            isEmpty, indexOfGourds = self.isCellEmpty(self.myHamiltonianCycle.HCycleAux[i])
+            if isEmpty:
+                self.emptyCellIndex = i
+                break
+
         self.gourdsFinalOrderInHCycleGenerator()
 
         print(self.stackOfFootPrint)
         print(self.gourdsFinalOrderInHCycle)
-
+        print(self.emptyCellIndex)
 
     def gourdsFinalOrderInHCycleGenerator(self):
         orderlist = []
@@ -161,7 +171,7 @@ class finalHCycleOrderGenerator(object):
     # copied from gourds constructor
     def gourdsClicked(self, pos, mode):
         # search Gourds by the given Coordinate
-        self.stackOfFootPrint.append([pos])
+
         indexOfGourd, xGourd, yGourd = self.gourdsSearchingByIndex(pos[0], pos[1])
 
         if indexOfGourd != -1:
@@ -214,6 +224,7 @@ class finalHCycleOrderGenerator(object):
         return -1, -1
 
     def gourdsMovementController(self, indexOfGourd, xGourdClicked, yGourdClicked, xCell, yCell):
+
         # identify the clicked and linked parts of gourd
         if self.gourdsList[indexOfGourd][0] == xGourdClicked and self.gourdsList[indexOfGourd][1] == yGourdClicked:
             partIndex = 0
@@ -230,16 +241,20 @@ class finalHCycleOrderGenerator(object):
             print("---WARN--- Something went wrong in gourdsMovement()")
             return -1, -1
         # move gourd
-
+        print(1111)
         distanceSquare = ((xGourdLinked - xCell) ** 2) + (((yGourdLinked - yCell) * 1.732) ** 2)
         if distanceSquare < 4.3:  # pivot
             xGourdClicked = xCell
             yGourdClicked = yCell
+            #record
+            self.stackOfFootPrint.append([xCell, yCell])
         else:  # slide or turn
             xGourdLinked = xGourdClicked
             yGourdLinked = yGourdClicked
             xGourdClicked = xCell
             yGourdClicked = yCell
+            # record
+            self.stackOfFootPrint.append([xGourdLinked, yGourdLinked])
 
         # identify the clicked and linked parts and save
         if firstPartClicked:
