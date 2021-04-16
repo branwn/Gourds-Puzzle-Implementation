@@ -1,5 +1,6 @@
 import pygame
 
+from algorithms.finalHCycleOrderGenerator import finalHCycleOrderGenerator
 from boardConfigsContainer import boardConfig12 as boardConfig
 from boardConstructor.buttons import buttons
 from boardConstructor.cellsConstructor import cellsConstructor
@@ -110,6 +111,10 @@ def main():
     global myFinalGourdsConfig
     myFinalGourdsConfig = finalGourdsConfig(screen, myBoardsConfig.board, myBoardsConfig.gourdsList, myBoardsConfig.coloursLibrary, offset, widthOfHexCell)
     myFinalGourdsConfig.finalConfigGenerator()
+
+    global myFinalHCycleOrderConfig
+    myFinalHCycleOrderConfig = finalHCycleOrderGenerator(screen, myBoardsConfig, myButtons, myCellsConstructor, myGourdsConstructor, myHamiltonianCycle, myFinalGourdsConfig)
+    myFinalHCycleOrderConfig.runFinalHCycleOrderGenerator()
 
     global myPhaseOne
     myPhaseOne = phaseOne(screen, myBoardsConfig, myButtons, myCellsConstructor, myGourdsConstructor, myHamiltonianCycle, myFinalGourdsConfig)
