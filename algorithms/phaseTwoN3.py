@@ -110,7 +110,6 @@ class phaseTwoN3(object):
         self.redrawTheScreen()
 
     def gourdsFinalOrderInHCycleGetter(self):
-
         return self.gourdsFinalOrderInHCycle
 
     def gourdsPresentOrderInHCycleGetter(self):
@@ -186,15 +185,15 @@ class phaseTwoN3(object):
     def typeOneInsertionSort(self, cellIndexInHCycle):
         # this is not really an Insertion Sort, it just an Insertion Sort-like algorithms
         #TODO
-
-        print("\tThe order of gourds now: ", self.gourdsPresentOrderInHCycleGetter())
-
         # init
         HCycleDup = self.myHamiltonianCycle.hamiltonianCycleStack * 2
         HPrimeCycleDup = copy.copy(self.myHamiltonianCycle.hamiltonianCycleStack)
         HPrimeCycleDup.pop(cellIndexInHCycle + 2)
         HPrimeCycleDup.pop(cellIndexInHCycle + 1)
         HPrimeCycleDup = HPrimeCycleDup * 2
+        print("\tThe order of gourds now: ", self.gourdsPresentOrderInHCycleGetter())
+
+
 
         while(True):
             presentGourdsOrder = self.gourdsPresentOrderInHCycleGetter()
@@ -274,10 +273,6 @@ class phaseTwoN3(object):
                                                                       HCycleDup[cellIndexInHCycle + 0][1])
             tempTwo = self.myGourdsConstructor.gourdsSearchingByIndex(HCycleDup[cellIndexInHCycle + 3][0],
                                                                       HCycleDup[cellIndexInHCycle + 3][1])
-
-
-
-
 
     def redrawTheScreen(self):
 

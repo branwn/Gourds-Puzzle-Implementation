@@ -241,7 +241,6 @@ class finalHCycleOrderGenerator(object):
             print("---WARN--- Something went wrong in gourdsMovement()")
             return -1, -1
         # move gourd
-        print(1111)
         distanceSquare = ((xGourdLinked - xCell) ** 2) + (((yGourdLinked - yCell) * 1.732) ** 2)
         if distanceSquare < 4.3:  # pivot
             xGourdClicked = xCell
