@@ -191,6 +191,8 @@ class phaseTwoN3(object):
         HPrimeCycleDup.pop(cellIndexInHCycle + 2)
         HPrimeCycleDup.pop(cellIndexInHCycle + 1)
         HPrimeCycleDup = HPrimeCycleDup * 2
+        gourdsFinalOrderInHCycleAux = self.gourdsFinalOrderInHCycle * 2
+        print(gourdsFinalOrderInHCycleAux)
         print("\tThe order of gourds now: ", self.gourdsPresentOrderInHCycleGetter())
 
 
@@ -217,25 +219,53 @@ class phaseTwoN3(object):
             self.typeOneEnsureGourdsInProperPlaces(HCycleDup, cellIndexInHCycle, HPrimeCycleDup)
 
 
-            gourdsIndexAtXPlusOne = self.myGourdsConstructor.gourdsSearchingByIndex(HCycleDup[cellIndexInHCycle + 1][0], HCycleDup[cellIndexInHCycle + 1][1])[0]
-            gourdsIndexAtXPlusZero = self.myGourdsConstructor.gourdsSearchingByIndex(HCycleDup[cellIndexInHCycle + 0][0], HCycleDup[cellIndexInHCycle + 0][1])[0]
 
-            gourdsIndexShouldNextToXPlusOne = -1
+
+            gourdsIndexAtXPlusOne = self.myGourdsConstructor.gourdsSearchingByIndex(HCycleDup[cellIndexInHCycle + 1][0], HCycleDup[cellIndexInHCycle + 1][1])[0]
+            # get the index of x should be
+            gourdsIndexShouldBeAtX = -1
+
+            # don't align 0
+            if gourdsIndexAtXPlusOne == 0:
+                self.movesAllGourdsCClockwiseAlongACycle(HCycleDup)
+                continue
+
+
             for i in range(lenOfACycle):
                 if gourdsIndexAtXPlusOne == self.gourdsFinalOrderInHCycle[i]:
-                    gourdsIndexShouldNextToXPlusOne = self.gourdsFinalOrderInHCycle[i-1]
+                    gourdsIndexShouldBeAtX = self.gourdsFinalOrderInHCycle[i-1]
                     break
 
-            while not (gourdsIndexAtXPlusZero == gourdsIndexShouldNextToXPlusOne):
+
+            # get the index of x really be
+            if self.isCellEmpty(HCycleDup[cellIndexInHCycle + 0]):
+                gourdsIndexAtX = self.myGourdsConstructor.gourdsSearchingByIndex(HCycleDup[cellIndexInHCycle - 1][0], HCycleDup[cellIndexInHCycle - 1][1])[0]
+            else:
+                gourdsIndexAtX = self.myGourdsConstructor.gourdsSearchingByIndex(HCycleDup[cellIndexInHCycle + 0][0], HCycleDup[cellIndexInHCycle + 0][1])[0]
+
+
+            while not (gourdsIndexAtX == gourdsIndexShouldBeAtX):
                 self.movesAllGourdsCClockwiseAlongACycle(HPrimeCycleDup)
-                gourdsIndexAtXPlusZero = \
-                self.myGourdsConstructor.gourdsSearchingByIndex(HCycleDup[cellIndexInHCycle + 0][0],
-                                                                HCycleDup[cellIndexInHCycle + 0][1])[0]
 
-            self.typeOneEnsureGourdsInProperPlaces(HCycleDup, cellIndexInHCycle, HPrimeCycleDup)
-            for i in range(lenOfACycle - 1):
-                self.movesAllGourdsCClockwiseAlongACycle(HCycleDup)
+                if self.isCellEmpty(HCycleDup[cellIndexInHCycle + 0]):
+                    gourdsIndexAtX = \
+                    self.myGourdsConstructor.gourdsSearchingByIndex(HCycleDup[cellIndexInHCycle - 1][0],
+                                                                    HCycleDup[cellIndexInHCycle - 1][1])[0]
+                else:
+                    gourdsIndexAtX = \
+                    self.myGourdsConstructor.gourdsSearchingByIndex(HCycleDup[cellIndexInHCycle + 0][0],
+                                                                    HCycleDup[cellIndexInHCycle + 0][1])[0]
 
+                print("\tThe order of gourds now: ", self.gourdsPresentOrderInHCycleGetter(), "gourdsIndexAtX+1: ", gourdsIndexAtXPlusOne,
+                      "gourdsIndexAtX: ", gourdsIndexAtX, "gourdsIndexAtX should be: ", gourdsIndexShouldBeAtX)
+
+
+            # self.typeOneEnsureGourdsInProperPlaces(HCycleDup, cellIndexInHCycle, HPrimeCycleDup)
+
+            for i in range(lenOfACycle):
+                if self.isCellEmpty(HCycleDup[i])[0]:
+                    self.movesAGourdAloneTheACycle(HCycleDup, i)
+                    break
             print("\tThe order of gourds now: ", self.gourdsPresentOrderInHCycleGetter())
 
         return True
