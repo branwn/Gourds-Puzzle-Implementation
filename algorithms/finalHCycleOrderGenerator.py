@@ -15,6 +15,7 @@ class finalHCycleOrderGenerator(object):
         self.myFinalGourdsConfig = myFinalGourdsConfig
         self.HCycleAux = self.myHamiltonianCycle.HCycleAux
         self.gourdsFinalOrderInHCycle = []
+        self.gourdsFinalDirectionInHCycle = {}
         self.stackOfFootPrint = []
         self.emptyCellIndex = -1
 
@@ -61,27 +62,35 @@ class finalHCycleOrderGenerator(object):
 
         self.gourdsFinalOrderInHCycleGenerator()
 
-        print(self.stackOfFootPrint)
-        print(self.gourdsFinalOrderInHCycle)
-        print(self.emptyCellIndex)
+        # print(self.stackOfFootPrint)
+        # print(self.gourdsFinalOrderInHCycle)
+        # print(self.emptyCellIndex)
 
     def gourdsFinalOrderInHCycleGenerator(self):
-        orderlist = []
+        orderList = []
+        directionDict = {}
 
         for cell in self.myHamiltonianCycle.hamiltonianCycleStack:
             for i in range(len(self.gourdsList)):
-                if i not in orderlist:
+                if i not in orderList:
                     gourd = self.gourdsList[i]
                     if gourd[0] == cell[0] and gourd[1] == cell[1]:
-                        orderlist.append(i)
+                        orderList.append(i)
+                        directionDict[i] = 0
                         break
                     elif gourd[2] == cell[0] and gourd[3] == cell[1]:
-                        orderlist.append(i)
+                        orderList.append(i)
+                        directionDict[i] = 1
                         break
 
-        print("\tThe order of gourds should be reached in phase 2: ",orderlist)
-        self.gourdsFinalOrderInHCycle = orderlist
+        print("\tThe order of gourds should be reached in phase 2: ",orderList)
+        self.gourdsFinalOrderInHCycle = orderList
+        self.gourdsFinalDirectionInHCycle = directionDict
+        print(self.gourdsFinalOrderInHCycle)
+        print(self.gourdsFinalDirectionInHCycle)
         return self.gourdsFinalOrderInHCycle
+
+
 
     def ifThereIsGourdsNotAligned(self):
         for gourds in self.myBoardsConfig.gourdsList:

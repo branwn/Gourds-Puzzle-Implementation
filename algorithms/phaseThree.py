@@ -51,7 +51,7 @@ class phaseThree(object):
             self.myGourdsConstructor.gourdsClicked(footPrintAux.pop(), 'al')
 
 
-        print(footPrintAux)
+        # print(footPrintAux)
 
 
         self.myButtons.buttonStates[6] = 1  # finished
