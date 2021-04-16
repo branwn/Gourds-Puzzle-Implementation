@@ -37,7 +37,6 @@ class phaseThree(object):
 
         # ensure the empty cell is at a proper place, if not true, then move gourds counter-clock-wise
         while not (emptyCellAtAProperPlace and isTheFinalOrder):
-            print(False)
 
             self.movesAllGourdsCClockwiseAlongACycle(self.HCycleDup)
 
