@@ -107,7 +107,7 @@ class phaseTwoN3(object):
             # move the next part
             self.myGourdsConstructor.gourdsClicked(nextPartofGourds, 'al')
 
-        self.redrawTheScreen()
+            self.redrawTheScreen()
 
     def gourdsFinalOrderInHCycleGetter(self):
         return self.gourdsFinalOrderInHCycle

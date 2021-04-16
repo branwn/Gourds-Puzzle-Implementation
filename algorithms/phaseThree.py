@@ -48,6 +48,9 @@ class phaseThree(object):
 
         # go back-ward
         footPrintAux = copy.deepcopy(self.myFinalHCycleOrderConfig.stackOfFootPrint)
+        while len(footPrintAux) > 0 :
+            self.myGourdsConstructor.gourdsClicked(footPrintAux.pop(), 'al')
+
 
         print(footPrintAux)
 
