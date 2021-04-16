@@ -16,7 +16,7 @@ class phaseTwoN3(object):
 
         self.HCycleAux = self.myHamiltonianCycle.HCycleAux
         self.firstRunFlag = True
-        self.gourdsFinalOrderInHCycle = myFinalHCycleOrderConfig.gourdsFinalOrderInHCycle
+        self.gourdsFinalOrderInHCycle = self.myFinalHCycleOrderConfig.gourdsFinalOrderInHCycle
         self.leafType = -1
         self.leafIndex = -1
 

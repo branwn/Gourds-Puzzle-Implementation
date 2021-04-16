@@ -44,8 +44,14 @@ class phaseThree(object):
             isTheFinalOrder = self.gourdsFinalOrderInHCycleGetter() == self.gourdsPresentOrderInHCycleGetter()
             emptyCellAtAProperPlace = self.isCellEmpty(self.HCycleDup[self.myFinalHCycleOrderConfig.emptyCellIndex])[0]
 
+
+
+        # go back-ward
+        footPrintAux = copy.deepcopy(self.myFinalHCycleOrderConfig.stackOfFootPrint)
+
+        print(footPrintAux)
+
         self.myButtons.buttonStates[6] = 1 # finished
-        self.myGourdsConstructor.gourdsClicked([ 4, 2], 'al')
         self.redrawTheScreen()
 
 

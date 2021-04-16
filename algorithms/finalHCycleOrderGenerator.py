@@ -69,13 +69,13 @@ class finalHCycleOrderGenerator(object):
         orderlist = []
 
         for cell in self.myHamiltonianCycle.hamiltonianCycleStack:
-            for i in range(self.myFinalGourdsConfig.totalNumberOfGourds):
+            for i in range(len(self.gourdsList)):
                 if i not in orderlist:
-                    gourd = self.myFinalGourdsConfig.gourdsAssignedDict.get(i)
-                    if gourd[1] == cell[0] and gourd[2] == cell[1]:
+                    gourd = self.gourdsList[i]
+                    if gourd[0] == cell[0] and gourd[1] == cell[1]:
                         orderlist.append(i)
                         break
-                    elif gourd[3] == cell[0] and gourd[4] == cell[1]:
+                    elif gourd[2] == cell[0] and gourd[3] == cell[1]:
                         orderlist.append(i)
                         break
 
