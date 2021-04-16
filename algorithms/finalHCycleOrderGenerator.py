@@ -14,7 +14,8 @@ class finalHCycleOrderGenerator(object):
         self.myHamiltonianCycle = myHamiltonianCycle
         self.myFinalGourdsConfig = myFinalGourdsConfig
         self.HCycleAux = self.myHamiltonianCycle.HCycleAux
-
+        self.gourdsFinalOrderInHCycle = []
+        self.stackOfFootPrint = []
 
 
         # build up final gourds config
@@ -31,9 +32,7 @@ class finalHCycleOrderGenerator(object):
         self.gourdsList = self.myBoardsConfig.gourdsList
         self.board = self.myBoardsConfig.board
 
-
     def runFinalHCycleOrderGenerator(self):
-        print(self.gourdsList)
         # move the gourds
         while(self.ifThereIsGourdsNotAligned()):
             # print (self.HCycleAux[rootIndex + i])
@@ -50,7 +49,29 @@ class finalHCycleOrderGenerator(object):
 
             self.gourdsMovementControllerInOrderGenerator(rootIndex)
 
-        print(self.gourdsList)
+        self.gourdsFinalOrderInHCycleGenerator()
+
+        print(self.stackOfFootPrint)
+        print(self.gourdsFinalOrderInHCycle)
+
+
+    def gourdsFinalOrderInHCycleGenerator(self):
+        orderlist = []
+
+        for cell in self.myHamiltonianCycle.hamiltonianCycleStack:
+            for i in range(self.myFinalGourdsConfig.totalNumberOfGourds):
+                if i not in orderlist:
+                    gourd = self.myFinalGourdsConfig.gourdsAssignedDict.get(i)
+                    if gourd[1] == cell[0] and gourd[2] == cell[1]:
+                        orderlist.append(i)
+                        break
+                    elif gourd[3] == cell[0] and gourd[4] == cell[1]:
+                        orderlist.append(i)
+                        break
+
+        print("\tThe order of gourds should be reached in phase 2: ",orderlist)
+        self.gourdsFinalOrderInHCycle = orderlist
+        return self.gourdsFinalOrderInHCycle
 
     def ifThereIsGourdsNotAligned(self):
         for gourds in self.myBoardsConfig.gourdsList:
@@ -140,7 +161,7 @@ class finalHCycleOrderGenerator(object):
     # copied from gourds constructor
     def gourdsClicked(self, pos, mode):
         # search Gourds by the given Coordinate
-
+        self.stackOfFootPrint.append([pos])
         indexOfGourd, xGourd, yGourd = self.gourdsSearchingByIndex(pos[0], pos[1])
 
         if indexOfGourd != -1:
@@ -240,3 +261,4 @@ class finalHCycleOrderGenerator(object):
 
 
         return indexOfGourd, partIndex # partIndex is 0 or 2
+

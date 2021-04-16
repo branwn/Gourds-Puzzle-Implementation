@@ -1,7 +1,7 @@
 import pygame
 class phaseThree(object):
 
-    def __init__(self, screen, myBoardsConfig, myButtons, myCellsConstructor, myGourdsConstructor, myHamiltonianCycle, myFinalGourdsConfig):
+    def __init__(self, screen, myBoardsConfig, myButtons, myCellsConstructor, myGourdsConstructor, myHamiltonianCycle, myFinalGourdsConfig, myFinalHCycleOrderConfig):
         self.screen = screen
         self.myBoardsConfig = myBoardsConfig
         self.myButtons = myButtons
@@ -9,6 +9,7 @@ class phaseThree(object):
         self.myGourdsConstructor = myGourdsConstructor
         self.myHamiltonianCycle = myHamiltonianCycle
         self.myFinalGourdsConfig = myFinalGourdsConfig
+        self.myFinalHCycleOrderConfig = myFinalHCycleOrderConfig
 
 
     def runPhaseThree(self, buttonState6):

@@ -11,7 +11,10 @@ class phaseOne(object):
         self.myGourdsConstructor = myGourdsConstructor
         self.myHamiltonianCycle = myHamiltonianCycle
         self.myFinalGourdsConfig = myFinalGourdsConfig
+
+
         self.HCycleAux = self.myHamiltonianCycle.HCycleAux
+
 
     def runPhaseOne(self, buttonState3):
         if buttonState3 != 2: # running

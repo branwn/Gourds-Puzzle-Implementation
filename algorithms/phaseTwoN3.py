@@ -4,7 +4,7 @@ import pygame
 
 class phaseTwoN3(object):
 
-    def __init__(self, screen, myBoardsConfig, myButtons, myCellsConstructor, myGourdsConstructor, myHamiltonianCycle, myFinalGourdsConfig):
+    def __init__(self, screen, myBoardsConfig, myButtons, myCellsConstructor, myGourdsConstructor, myHamiltonianCycle, myFinalGourdsConfig, myFinalHCycleOrderConfig):
         self.screen = screen
         self.myBoardsConfig = myBoardsConfig
         self.myButtons = myButtons
@@ -12,9 +12,11 @@ class phaseTwoN3(object):
         self.myGourdsConstructor = myGourdsConstructor
         self.myHamiltonianCycle = myHamiltonianCycle
         self.myFinalGourdsConfig = myFinalGourdsConfig
+        self.myFinalHCycleOrderConfig = myFinalHCycleOrderConfig
+
         self.HCycleAux = self.myHamiltonianCycle.HCycleAux
         self.firstRunFlag = True
-        self.gourdsFinalOrderInHCycle = []
+        self.gourdsFinalOrderInHCycle = myFinalHCycleOrderConfig.gourdsFinalOrderInHCycle
         self.leafType = -1
         self.leafIndex = -1
 
@@ -43,7 +45,6 @@ class phaseTwoN3(object):
         cellIndexInHCycle = self.searchLeafInTypeTwo()
         if cellIndexInHCycle != -1:
             self.leafType = 2
-            print("\t", self.HCycleAux[cellIndexInHCycle], "is the x of leaf type two")
             result = self.typeTwoBubbleSort(cellIndexInHCycle)
 
 
@@ -109,21 +110,7 @@ class phaseTwoN3(object):
         self.redrawTheScreen()
 
     def gourdsFinalOrderInHCycleGetter(self):
-        orderlist = []
 
-        for cell in self.myHamiltonianCycle.hamiltonianCycleStack:
-            for i in range(self.myFinalGourdsConfig.totalNumberOfGourds):
-                if i not in orderlist:
-                    gourd = self.myFinalGourdsConfig.gourdsAssignedDict.get(i)
-                    if gourd[1] == cell[0] and gourd[2] == cell[1]:
-                        orderlist.append(i)
-                        break
-                    elif gourd[3] == cell[0] and gourd[4] == cell[1]:
-                        orderlist.append(i)
-                        break
-
-        print("\tThe order of gourds should be reached in phase 2: ",orderlist)
-        self.gourdsFinalOrderInHCycle = orderlist
         return self.gourdsFinalOrderInHCycle
 
     def gourdsPresentOrderInHCycleGetter(self):
