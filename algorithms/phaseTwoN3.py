@@ -213,6 +213,8 @@ class phaseTwoN3(object):
             presentGourdsOrder = self.gourdsPresentOrderInHCycleGetter()
             # already done?
             if(self.gourdsFinalOrderInHCycle == presentGourdsOrder):
+                print("\tThe order of gourds now: ", self.gourdsPresentOrderInHCycleGetter())
+
                 return True
             lenOfACycle = int(len(HCycleDup) / 2)
 
@@ -240,9 +242,6 @@ class phaseTwoN3(object):
 
             while not (gourdsIndexAtXPlusZero == gourdsIndexShouldNextToXPlusOne):
                 self.movesAllGourdsCClockwiseAlongACycle(HPrimeCycleDup)
-
-                print("\tThe order of gourds now: ", self.gourdsPresentOrderInHCycleGetter())
-
                 gourdsIndexAtXPlusZero = \
                 self.myGourdsConstructor.gourdsSearchingByIndex(HCycleDup[cellIndexInHCycle + 0][0],
                                                                 HCycleDup[cellIndexInHCycle + 0][1])[0]
@@ -251,6 +250,7 @@ class phaseTwoN3(object):
             for i in range(lenOfACycle):
                 self.movesAllGourdsCClockwiseAlongACycle(HCycleDup)
 
+            print("\tThe order of gourds now: ", self.gourdsPresentOrderInHCycleGetter())
 
         return True
 
