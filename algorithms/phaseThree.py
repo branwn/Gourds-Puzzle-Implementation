@@ -58,7 +58,6 @@ class phaseThree(object):
         self.myButtons.buttonStates[2] = 0  # hidden the H-Cycle
         self.redrawTheScreen()
 
-
     def isCellEmpty(self, aCell):
         isEmpty = True
         gourdsIndexInHCycle = -1

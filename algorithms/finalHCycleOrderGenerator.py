@@ -70,6 +70,12 @@ class finalHCycleOrderGenerator(object):
         orderList = []
         directionDict = {}
 
+        # set the first gourds
+        if not self.isCellEmpty(self.HCycleAux[0]):
+            if self.gourdsSearchingByIndex(self.HCycleAux[0])[0] == self.gourdsSearchingByIndex(self.HCycleAux[-1])[0]:
+                orderList.append(self.gourdsSearchingByIndex(self.HCycleAux[-1])[0])
+                directionDict[self.gourdsSearchingByIndex(self.HCycleAux[-1])[0]] = self.gourdsSearchingByIndex(self.HCycleAux[-1])[1]
+
         for cell in self.myHamiltonianCycle.hamiltonianCycleStack:
             for i in range(len(self.gourdsList)):
                 if i not in orderList:
@@ -86,11 +92,18 @@ class finalHCycleOrderGenerator(object):
         print("\tThe order of gourds should be reached in phase 2: ",orderList)
         self.gourdsFinalOrderInHCycle = orderList
         self.gourdsFinalDirectionInHCycle = directionDict
-        print(self.gourdsFinalOrderInHCycle)
-        print(self.gourdsFinalDirectionInHCycle)
+        # print(self.gourdsFinalOrderInHCycle)
+        # print(self.gourdsFinalDirectionInHCycle)
         return self.gourdsFinalOrderInHCycle
 
-
+    def gourdsSearchingByIndex(self, x, y):
+        # search if there is a pair of gourds on (x, y)
+        for i in range(len(self.gourdsList)):
+            if (x == self.gourdsList[i][0] and y == self.gourdsList[i][1]):
+                return i, 0
+            if (x == self.gourdsList[i][2] and y == self.gourdsList[i][3]):
+                return i, 1
+        return -1, -1
 
     def ifThereIsGourdsNotAligned(self):
         for gourds in self.myBoardsConfig.gourdsList:

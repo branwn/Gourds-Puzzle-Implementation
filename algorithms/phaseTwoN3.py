@@ -43,19 +43,19 @@ class phaseTwoN3(object):
 
 
         # search type one
-        cellIndexInHCycle, threeConnection = self.searchLeafInTypeOne()
-        if cellIndexInHCycle != -1:
+        leafIndex, threeConnection = self.searchLeafInTypeOne()
+        if leafIndex != -1:
             self.leafType = 2
-            print("\t", self.HCycleAux[cellIndexInHCycle], "is the x of leaf type one")
-            resultOfSort = self.typeOneInsertionSort(cellIndexInHCycle, threeConnection)
-            self.typeOneCheckTheDirectionOfGourds()
+            print("\t", self.HCycleAux[leafIndex], "is the x of leaf type one")
+            resultOfSort = self.typeOneInsertionSort(leafIndex)
+            self.typeOneCheckTheDirectionOfGourds(leafIndex, threeConnection)
 
         else:
             # search type two
-            cellIndexInHCycle = self.searchLeafInTypeTwo()
-            if cellIndexInHCycle != -1:
+            leafIndex = self.searchLeafInTypeTwo()
+            if leafIndex != -1:
                 self.leafType = 2
-                resultOfSort = self.typeTwoBubbleSort(cellIndexInHCycle)
+                resultOfSort = self.typeTwoBubbleSort(leafIndex)
 
 
 
@@ -63,9 +63,12 @@ class phaseTwoN3(object):
         self.myButtons.buttonStates[5] = 1  # finished
         self.redrawTheScreen()
         if not resultOfSort: print("---WARN--- Something went wrong in Phase 2 O(n^3)!")
+
+
+        print("Phase two finished!")
         return resultOfSort
 
-    def isCellEmpty(self, aCell):
+    def cellChecking(self, aCell):
         isEmpty = True
         gourdsIndexInHCycle = -1
         for aGourds in self.myBoardsConfig.gourdsList:
@@ -80,13 +83,13 @@ class phaseTwoN3(object):
             return True, -1
         return False, gourdsIndexInHCycle
 
-    def movesAllGourdsCClockwiseAlongACycle(self, aCycleDup):
+    def movesGourdsCClockwiseAlongACycle(self, aCycleDup):
         lenOfACycle = int(len(aCycleDup) / 2)
 
         for i in range(lenOfACycle):
-            if self.isCellEmpty(aCycleDup[i])[0]:
+            if self.cellChecking(aCycleDup[i])[0]:
                 self.movesAGourdAloneTheACycle(aCycleDup, i)
-                break
+                return
 
     def movesAGourdAloneTheACycle(self, aCycleDup, cycleIndex):
 
@@ -167,9 +170,9 @@ class phaseTwoN3(object):
         diffInY = self.HCycleAux[HCycleIndex][1] - self.HCycleAux[HCycleIndex + 2][1]
         squaredDistance = diffInX * diffInX + diffInY * diffInY * 1.732 * 1.732
         if squaredDistance <= 4:
-            threeConnection = 1
+            threeConnection = 12
         else:
-            threeConnection = 2
+            threeConnection = 123
 
         return HCycleIndex, threeConnection
 
@@ -197,7 +200,7 @@ class phaseTwoN3(object):
 
         return HCycleIndex
 
-    def typeOneInsertionSort(self, cellIndexInHCycle, threeConnection):
+    def typeOneInsertionSort(self, cellIndexInHCycle):
         # this is not really an Insertion Sort, it just an Insertion Sort-like algorithms
 
         # initialization
@@ -206,8 +209,6 @@ class phaseTwoN3(object):
         HPrimeCycleDup.pop(cellIndexInHCycle + 2)
         HPrimeCycleDup.pop(cellIndexInHCycle + 1)
         HPrimeCycleDup = HPrimeCycleDup * 2
-        gourdsFinalOrderInHCycleAux = self.gourdsFinalOrderInHCycle * 2
-        print(gourdsFinalOrderInHCycleAux)
         print("\tThe order of gourds now: ", self.gourdsPresentOrderAndDirectionInHCycleGetter())
 
 
@@ -241,7 +242,7 @@ class phaseTwoN3(object):
 
             # don't align 0
             if gourdsIndexAtXPlusOne == 0:
-                self.movesAllGourdsCClockwiseAlongACycle(HCycleDup)
+                self.movesGourdsCClockwiseAlongACycle(HCycleDup)
                 continue
 
 
@@ -253,16 +254,16 @@ class phaseTwoN3(object):
 
 
             # get the index of x really be
-            if self.isCellEmpty(HCycleDup[cellIndexInHCycle + 0]):
+            if self.cellChecking(HCycleDup[cellIndexInHCycle + 0])[0]:
                 gourdsIndexAtX = self.myGourdsConstructor.gourdsSearchingByIndex(HCycleDup[cellIndexInHCycle - 1][0], HCycleDup[cellIndexInHCycle - 1][1])[0]
             else:
                 gourdsIndexAtX = self.myGourdsConstructor.gourdsSearchingByIndex(HCycleDup[cellIndexInHCycle + 0][0], HCycleDup[cellIndexInHCycle + 0][1])[0]
 
 
             while not (gourdsIndexAtX == gourdsIndexShouldBeAtX):
-                self.movesAllGourdsCClockwiseAlongACycle(HPrimeCycleDup)
+                self.movesGourdsCClockwiseAlongACycle(HPrimeCycleDup)
 
-                if self.isCellEmpty(HCycleDup[cellIndexInHCycle + 0]):
+                if self.cellChecking(HCycleDup[cellIndexInHCycle + 0])[0]:
                     gourdsIndexAtX = \
                     self.myGourdsConstructor.gourdsSearchingByIndex(HCycleDup[cellIndexInHCycle - 1][0],
                                                                     HCycleDup[cellIndexInHCycle - 1][1])[0]
@@ -278,7 +279,7 @@ class phaseTwoN3(object):
             # self.typeOneEnsureGourdsInProperPlaces(HCycleDup, cellIndexInHCycle, HPrimeCycleDup)
 
             for i in range(lenOfACycle):
-                if self.isCellEmpty(HCycleDup[i])[0]:
+                if self.cellChecking(HCycleDup[i])[0]:
                     self.movesAGourdAloneTheACycle(HCycleDup, i)
                     break
             print("\tThe order of gourds now: ", self.gourdsPresentOrderAndDirectionInHCycleGetter())
@@ -294,7 +295,7 @@ class phaseTwoN3(object):
         tempTwo = self.myGourdsConstructor.gourdsSearchingByIndex(HCycleDup[cellIndexInHCycle + 2][0],
                                                                   HCycleDup[cellIndexInHCycle + 2][1])
         while not (tempOne[0] == tempTwo[0]):
-            self.movesAllGourdsCClockwiseAlongACycle(HCycleDup)
+            self.movesGourdsCClockwiseAlongACycle(HCycleDup)
 
             tempOne = self.myGourdsConstructor.gourdsSearchingByIndex(HCycleDup[cellIndexInHCycle + 1][0],
                                                                       HCycleDup[cellIndexInHCycle + 1][1])
@@ -307,89 +308,115 @@ class phaseTwoN3(object):
         tempTwo = self.myGourdsConstructor.gourdsSearchingByIndex(HCycleDup[cellIndexInHCycle + 3][0],
                                                                   HCycleDup[cellIndexInHCycle + 3][1])
         while (tempOne[0] == tempTwo[0]):
-            self.movesAllGourdsCClockwiseAlongACycle(HPrimeCycleDup)
+            self.movesGourdsCClockwiseAlongACycle(HPrimeCycleDup)
 
             tempOne = self.myGourdsConstructor.gourdsSearchingByIndex(HCycleDup[cellIndexInHCycle + 0][0],
                                                                       HCycleDup[cellIndexInHCycle + 0][1])
             tempTwo = self.myGourdsConstructor.gourdsSearchingByIndex(HCycleDup[cellIndexInHCycle + 3][0],
                                                                       HCycleDup[cellIndexInHCycle + 3][1])
 
-    def typeOneCheckTheDirectionOfGourds(self):
+    def typeOneCheckTheDirectionOfGourds(self, leafIndex, threeConnection):
 
-        # check the directions
+        targetDirectionDict = self.myFinalHCycleOrderConfig.gourdsFinalDirectionInHCycle
         orderList, directionDict = self.gourdsPresentOrderAndDirectionInHCycleGetter()
-
-        if self.myFinalHCycleOrderConfig.gourdsFinalDirectionInHCycle == directionDict:
-            return True
-
-        while not self.myFinalHCycleOrderConfig.gourdsFinalDirectionInHCycle == directionDict:
-            #TODO
-            break
+        print("targetDirectionDict: ",targetDirectionDict)
+        print("directionDict: ",directionDict)
 
 
+        #TODO test
+        targetDirectionDict = {0:0, 1:0, 2:0}
+
+        # main loop L326
+        whileCounterMainLoop = 0
+        while not targetDirectionDict == directionDict:
+            whileCounterMainLoop += 1
+            print("targetDirectionDict: ", targetDirectionDict)
+            print("directionDict: ", directionDict)
+
+            indexOfGourdsShouldChangeDirection = -1
+            # identify the gourds with opposite direction
+            for i in range(len(self.myBoardsConfig.gourdsList)):
+                if not targetDirectionDict.get(i) == directionDict.get(i):
+                    indexOfGourdsShouldChangeDirection = i
+                    break
+            if indexOfGourdsShouldChangeDirection == -1:
+                print("---WARN--- Something went wrong in direction detection")
+                return False
 
 
-            # refresh the present dict
+
+            # move these gourds into the leaf (x+1) and (x+2)
+            indexOfGourdsNow, tempX, tempY = self.myGourdsConstructor.gourdsSearchingByIndex(self.HCycleAux[leafIndex+1][0], self.HCycleAux[leafIndex+1][1])
+            if threeConnection == 12: isEmptyPrepared = self.cellChecking(self.HCycleAux[leafIndex + 0])[0]
+            elif threeConnection == 123: isEmptyPrepared = self.cellChecking(self.HCycleAux[leafIndex + 3])[0]
+
+            # while loop phaseTwoN3 L350
+            whileCounter2 = 0
+            while not (indexOfGourdsNow == indexOfGourdsShouldChangeDirection and isEmptyPrepared):
+                whileCounterMainLoop = 0
+                whileCounter2 += 1
+                self.movesGourdsCClockwiseAlongACycle(self.HCycleAux)
+
+                # Ending: refresh the present gourds at leaf
+                if threeConnection == 12:
+                    isEmptyPrepared = self.cellChecking(self.HCycleAux[leafIndex + 0])[0]
+                elif threeConnection == 123:
+                    isEmptyPrepared = self.cellChecking(self.HCycleAux[leafIndex + 3])[0]
+
+                indexOfGourdsNow, tempX, tempY = self.myGourdsConstructor.gourdsSearchingByIndex(
+                    self.HCycleAux[leafIndex+1][0], self.HCycleAux[leafIndex+1][1])
+
+                print("isEmptyPrepared", isEmptyPrepared)
+                print("indexOfGourdsNow", indexOfGourdsNow)
+                print("indexOfGourdsShouldChangeDirection", indexOfGourdsShouldChangeDirection)
+
+                # while counter checking
+                if whileCounter2 > len(self.HCycleAux)*2:
+                    print("---WARN--- Infinitely while loop in phaseTwoN3 L350")
+                    return False
+
+
+            # change direction
+            self.typeOneChangeGourdsDirection(leafIndex, threeConnection)
+
+            # Ending: refresh the present dict
             orderList, directionDict = self.gourdsPresentOrderAndDirectionInHCycleGetter()
 
+            # while counter checking
+            if whileCounterMainLoop > len(self.HCycleAux)*2:
+                print("---WARN--- Infinitely while loop in phaseTwoN3 L326")
+                return False
 
-        # # check the direction
-        # tempFlagOne = self.myBoardsConfig.gourdsList[gourdsIndexAtXPlusOne][0] == \
-        #               self.HCycleAux[cellIndexInHCycle + 1][0]
-        # tempFlagTwo = self.myBoardsConfig.gourdsList[gourdsIndexAtXPlusOne][1] == \
-        #               self.HCycleAux[cellIndexInHCycle + 1][1]
-        # if tempFlagOne and tempFlagTwo:
-        #     direction = 0
-        # else:
-        #     direction = 1
-        #
-        # print("\tgourdsIndexAtXPlusOne: ", gourdsIndexAtXPlusOne, "Direction: ", direction, "should be: ",
-        #       self.myFinalHCycleOrderConfig.gourdsFinalDirectionInHCycle.get(gourdsIndexAtXPlusOne))
-        #
-        # if self.myFinalHCycleOrderConfig.gourdsFinalDirectionInHCycle.get(gourdsIndexAtXPlusOne) == direction:
-        #     pass
-        # else:
-        #     # change direction
-        #     self.typeOneChangeGourdsDirection(cellIndexInHCycle, threeConnection, HPrimeCycleDup)
-        #     print("\tDirection changing results: \tgourdsIndexAtXPlusOne: ", gourdsIndexAtXPlusOne,
-        #           "Direction: ", direction, "should be: ",
-        #           self.myFinalHCycleOrderConfig.gourdsFinalDirectionInHCycle.get(gourdsIndexAtXPlusOne))
-        #
-        # for counter in range(lenOfACycle):
-        #     self.movesAllGourdsCClockwiseAlongACycle(HCycleDup)
 
-        return
+        return True
 
-    def typeOneChangeGourdsDirection(self, leafIndex, threeConnection, HPrimeCycleAux):
+    def typeOneChangeGourdsDirection(self, leafIndex, threeConnection):
         print("\tChange the direction! threeConnection: ", threeConnection, "cellIndexInHCycle: ", leafIndex)
 
 
-        if threeConnection == 2:
-            if not self.isCellEmpty(self.HCycleAux[leafIndex + 3])[0]:
+        if threeConnection == 123:
+            if not self.cellChecking(self.HCycleAux[leafIndex + 3])[0]:
                 return False
-            print(self.HCycleAux[leafIndex + 3])
-            print(self.isCellEmpty(self.HCycleAux[leafIndex + 3]))
-            print(leafIndex)
-            print("leafIndex + 3 is empty")
+            print(leafIndex + 3, " is empty")
             self.myGourdsConstructor.gourdsClicked(self.HCycleAux[leafIndex + 1], 'al')
             self.myGourdsConstructor.gourdsClicked(self.HCycleAux[leafIndex + 2], 'al')
             self.myGourdsConstructor.gourdsClicked(self.HCycleAux[leafIndex + 3], 'al')
 
 
-        elif threeConnection == 1:
-            if not self.isCellEmpty(self.HCycleAux[leafIndex + 0])[0]:
+        elif threeConnection == 12:
+            if not self.cellChecking(self.HCycleAux[leafIndex + 0])[0]:
                 return False
-            print(leafIndex)
-            print("leafIndex + 0 is empty")
+            print(leafIndex, " is empty")
             self.myGourdsConstructor.gourdsClicked(self.HCycleAux[leafIndex + 2], 'al')
             self.myGourdsConstructor.gourdsClicked(self.HCycleAux[leafIndex + 1], 'al')
             self.myGourdsConstructor.gourdsClicked(self.HCycleAux[leafIndex + 0], 'al')
 
         else:
             print("---WARN--- Something went wrong in direction changing!")
+            return False
+
 
         return True
-
 
     def typeTwoBubbleSort(self, cellIndexInHCycle):
         # this is also not really a Bubble Sort, it just a Bubble Sort-like algorithm.
