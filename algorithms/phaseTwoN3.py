@@ -113,24 +113,27 @@ class phaseTwoN3(object):
     def gourdsFinalOrderInHCycleGetter(self):
         return self.gourdsFinalOrderInHCycle
 
-    def gourdsPresentOrderInHCycleGetter(self):
+    def gourdsPresentOrderAndDirectionInHCycleGetter(self):
         order = []
+        directionDict = {}
         for cell in self.myHamiltonianCycle.hamiltonianCycleStack:
             for i in range(self.myFinalGourdsConfig.totalNumberOfGourds):
                 if i not in order:
                     gourd = self.myBoardsConfig.gourdsList[i]
                     if gourd[0] == cell[0] and gourd[1] == cell[1]:
                         order.append(i)
+                        directionDict[i] = 0
                         break
                     elif gourd[2] == cell[0] and gourd[3] == cell[1]:
                         order.append(i)
+                        directionDict[i] = 1
                         break
 
-        return order
+        return order, directionDict
 
     def gourdsOrderedWithOffset(self):
         # measure the offset
-        presentGourdsOrder = self.gourdsPresentOrderInHCycleGetter()
+        presentGourdsOrder = self.gourdsPresentOrderAndDirectionInHCycleGetter()[0]
         offset = 0
         for i in range(len(presentGourdsOrder)):
             if presentGourdsOrder[i] == self.gourdsFinalOrderInHCycle[0]:
@@ -205,20 +208,20 @@ class phaseTwoN3(object):
         HPrimeCycleDup = HPrimeCycleDup * 2
         gourdsFinalOrderInHCycleAux = self.gourdsFinalOrderInHCycle * 2
         print(gourdsFinalOrderInHCycleAux)
-        print("\tThe order of gourds now: ", self.gourdsPresentOrderInHCycleGetter())
+        print("\tThe order of gourds now: ", self.gourdsPresentOrderAndDirectionInHCycleGetter())
 
 
 
 
         while(True):
-            presentGourdsOrder = self.gourdsPresentOrderInHCycleGetter()
+            presentGourdsOrder = self.gourdsPresentOrderAndDirectionInHCycleGetter()[0]
 
             lenOfACycle = int(len(HCycleDup) / 2)
 
 
             # check if it is done (but with an offset)
             if self.gourdsOrderedWithOffset():
-                print("\tThe order of gourds now: ", self.gourdsPresentOrderInHCycleGetter())
+                print("\tThe order of gourds now: ", self.gourdsPresentOrderAndDirectionInHCycleGetter())
                 return True
 
 
@@ -278,7 +281,7 @@ class phaseTwoN3(object):
                 if self.isCellEmpty(HCycleDup[i])[0]:
                     self.movesAGourdAloneTheACycle(HCycleDup, i)
                     break
-            print("\tThe order of gourds now: ", self.gourdsPresentOrderInHCycleGetter())
+            print("\tThe order of gourds now: ", self.gourdsPresentOrderAndDirectionInHCycleGetter())
 
 
 
@@ -312,7 +315,23 @@ class phaseTwoN3(object):
                                                                       HCycleDup[cellIndexInHCycle + 3][1])
 
     def typeOneCheckTheDirectionOfGourds(self):
-        #TODO
+
+        # check the directions
+        orderList, directionDict = self.gourdsPresentOrderAndDirectionInHCycleGetter()
+
+        if self.myFinalHCycleOrderConfig.gourdsFinalDirectionInHCycle == directionDict:
+            return True
+
+        while not self.myFinalHCycleOrderConfig.gourdsFinalDirectionInHCycle == directionDict:
+            #TODO
+            break
+
+
+
+
+            # refresh the present dict
+            orderList, directionDict = self.gourdsPresentOrderAndDirectionInHCycleGetter()
+
 
         # # check the direction
         # tempFlagOne = self.myBoardsConfig.gourdsList[gourdsIndexAtXPlusOne][0] == \
@@ -346,8 +365,8 @@ class phaseTwoN3(object):
 
 
         if threeConnection == 2:
-            while not self.isCellEmpty(self.HCycleAux[leafIndex + 3])[0]:
-                self.movesAllGourdsCClockwiseAlongACycle(HPrimeCycleAux)
+            if not self.isCellEmpty(self.HCycleAux[leafIndex + 3])[0]:
+                return False
             print(self.HCycleAux[leafIndex + 3])
             print(self.isCellEmpty(self.HCycleAux[leafIndex + 3]))
             print(leafIndex)
@@ -358,8 +377,8 @@ class phaseTwoN3(object):
 
 
         elif threeConnection == 1:
-            while not self.isCellEmpty(self.HCycleAux[leafIndex + 0])[0]:
-                self.movesAllGourdsCClockwiseAlongACycle(HPrimeCycleAux)
+            if not self.isCellEmpty(self.HCycleAux[leafIndex + 0])[0]:
+                return False
             print(leafIndex)
             print("leafIndex + 0 is empty")
             self.myGourdsConstructor.gourdsClicked(self.HCycleAux[leafIndex + 2], 'al')
@@ -370,6 +389,7 @@ class phaseTwoN3(object):
             print("---WARN--- Something went wrong in direction changing!")
 
         return True
+
 
     def typeTwoBubbleSort(self, cellIndexInHCycle):
         # this is also not really a Bubble Sort, it just a Bubble Sort-like algorithm.
