@@ -41,8 +41,8 @@ class buttons(object):
         pygame.draw.rect(self.screen, self.coloursLibrary['backGround'],
                          (self.sizeOfTheWindow[0] - self.buttonSize[0] - 10, 0, self.buttonSize[0], self.sizeOfTheWindow[1]), 0)
 
-        self.buttonPainter(1, "<-", "<-", "running")
-        self.buttonPainter(2, "->", "->", "running")
+        self.buttonPainter(1, "<- Prev.", "<-     ", "running")
+        self.buttonPainter(2, "Next ->", "        ->", "running")
 
         self.buttonPainter(8, "Start", "Finished", "running")
 
@@ -54,20 +54,13 @@ class buttons(object):
 
         indexOfButton = -1
         if pos[0] > self.sizeOfTheWindow[0] - self.buttonSize[0]:
-            if pos[1] < self.buttonSize[1] + 10:  self.buttonStates[1] = 1 - self.buttonStates[1]
-            elif pos[1] < self.buttonSize[1] * 2 + 20: self.buttonStates[2] = 1 - self.buttonStates[2]
-            elif pos[1] < self.buttonSize[1] * 3 + 30:
-                if self.buttonStates[3] == 0:
-                    self.buttonStates[3] = 2
-            elif pos[1] < self.buttonSize[1] * 4 + 40:
-                if self.buttonStates[4] == 0:
-                    self.buttonStates[4] = 2
-            elif pos[1] < self.buttonSize[1] * 5 + 50:
-                if self.buttonStates[5] == 0:
-                    self.buttonStates[5] = 2
-            elif pos[1] < self.buttonSize[1] * 6 + 60:
-                if self.buttonStates[6] == 0:
-                    self.buttonStates[6] = 2
+            if pos[1] < self.buttonSize[1] + 10:
+                if self.buttonStates[1] == 0:
+                    self.buttonStates[1] = 2
+            elif pos[1] < self.buttonSize[1] * 2 + 20:
+                if self.buttonStates[2] == 0:
+                    self.buttonStates[2] = 2
+
             elif pos[1] < self.buttonSize[1] * 8 + 80:
                 if self.buttonStates[8] == 0:
                     self.buttonStates[8] = 2

@@ -67,6 +67,7 @@ class board(object):
 
         xLengthOfTheWindow = int(len(self.boardConfig.board[0]) * 50 + 250)
         yLengthOfTheWindow = int(len(self.boardConfig.board) * 90 + 60)
+        if yLengthOfTheWindow <= 330: yLengthOfTheWindow = 330
         self.sizeOfTheWindow = (xLengthOfTheWindow, yLengthOfTheWindow)
         # button size
         self.buttonSize = 200, 30
