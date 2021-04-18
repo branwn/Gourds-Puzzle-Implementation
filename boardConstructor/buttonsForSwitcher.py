@@ -60,7 +60,8 @@ class buttons(object):
             elif pos[1] < self.buttonSize[1] * 2 + 20:
                 if self.buttonStates[2] == 0:
                     self.buttonStates[2] = 2
-
+            elif pos[1] < self.buttonSize[1] * 7 + 70:
+                pass
             elif pos[1] < self.buttonSize[1] * 8 + 80:
                 if self.buttonStates[8] == 0:
                     self.buttonStates[8] = 2
