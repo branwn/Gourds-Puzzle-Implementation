@@ -43,19 +43,19 @@ class phaseTwoN3(object):
 
 
         # search type one
-        leafIndex, threeConnection = self.searchLeafInTypeOne()
-        if leafIndex != -1:
-            self.leafType = 2
-            print("\t", self.HCycleAux[leafIndex], "is the x of leaf type one")
-            resultOfSort = self.typeOneInsertionSort(leafIndex)
-            self.typeOneCheckTheDirectionOfGourds(leafIndex, threeConnection)
+        self.leafIndex, threeConnection = self.searchLeafInTypeOne()
+        if self.leafIndex != -1:
+            self.leafType = 1
+            print("\t", self.HCycleAux[self.leafIndex], "is the x of leaf type one")
+            resultOfSort = self.typeOneInsertionSort(self.leafIndex)
+            self.typeOneCheckTheDirectionOfGourds(self.leafIndex, threeConnection)
 
         else:
             # search type two
-            leafIndex = self.searchLeafInTypeTwo()
-            if leafIndex != -1:
+            self.leafIndex = self.searchLeafInTypeTwo()
+            if self.leafIndex != -1:
                 self.leafType = 2
-                resultOfSort = self.typeTwoBubbleSort(leafIndex)
+                resultOfSort = self.typeTwoBubbleSort(self.leafIndex)
 
 
 
@@ -319,8 +319,8 @@ class phaseTwoN3(object):
 
         targetDirectionDict = self.myFinalHCycleOrderConfig.gourdsFinalDirectionInHCycle
         orderList, directionDict = self.gourdsPresentOrderAndDirectionInHCycleGetter()
-        print("targetDirectionDict: ",targetDirectionDict)
-        print("directionDict: ",directionDict)
+        # print("targetDirectionDict: ",targetDirectionDict)
+        # print("directionDict: ",directionDict)
 
 
 
@@ -328,8 +328,8 @@ class phaseTwoN3(object):
         whileCounterMainLoop = 0
         while not targetDirectionDict == directionDict:
             whileCounterMainLoop += 1
-            print("targetDirectionDict: ", targetDirectionDict)
-            print("directionDict: ", directionDict)
+            # print("targetDirectionDict: ", targetDirectionDict)
+            # print("directionDict: ", directionDict)
 
             indexOfGourdsShouldChangeDirection = -1
             # identify the gourds with opposite direction
@@ -364,9 +364,9 @@ class phaseTwoN3(object):
                 indexOfGourdsNow, tempX, tempY = self.myGourdsConstructor.gourdsSearchingByIndex(
                     self.HCycleAux[leafIndex+1][0], self.HCycleAux[leafIndex+1][1])
 
-                print("isEmptyPrepared", isEmptyPrepared)
-                print("indexOfGourdsNow", indexOfGourdsNow)
-                print("indexOfGourdsShouldChangeDirection", indexOfGourdsShouldChangeDirection)
+                # print("isEmptyPrepared", isEmptyPrepared)
+                # print("indexOfGourdsNow", indexOfGourdsNow)
+                # print("indexOfGourdsShouldChangeDirection", indexOfGourdsShouldChangeDirection)
 
                 # while counter checking
                 if whileCounter2 > len(self.HCycleAux)*2:
@@ -389,7 +389,7 @@ class phaseTwoN3(object):
         return True
 
     def typeOneChangeGourdsDirection(self, leafIndex, threeConnection):
-        print("\tChange the direction! threeConnection: ", threeConnection, "cellIndexInHCycle: ", leafIndex)
+        # print("\tChange the direction! threeConnection: ", threeConnection, "cellIndexInHCycle: ", leafIndex)
 
 
         if threeConnection == 123:
@@ -429,6 +429,46 @@ class phaseTwoN3(object):
         self.myCellsConstructor.cellsAndAxisConstructor(self.myButtons.buttonStates[1])
         self.myGourdsConstructor.gourdsConstructor(self.myButtons.buttonStates[1])
         self.myHamiltonianCycle.hamiltonianCycleDrawer(self.myButtons.buttonStates[2])
+
+        offset = self.myHamiltonianCycle.offset
+        widthOfHexCell = self.myHamiltonianCycle.widthOfHexCell
+        # draw the sub H-cycle
+
+
+        if self.leafType == 1:
+            pygame.draw.line(self.screen, self.myBoardsConfig.coloursLibrary['backGround'],
+                             (int(offset + self.HCycleAux[self.leafIndex][0] * widthOfHexCell),
+                              int(offset + self.HCycleAux[self.leafIndex][1] * widthOfHexCell * 1.732)),
+                             (int(offset + self.HCycleAux[self.leafIndex + 3][0] * widthOfHexCell),
+                              int(offset + self.HCycleAux[self.leafIndex + 3][1] * widthOfHexCell * 1.732)),
+                             4)
+            pygame.draw.line(self.screen, self.myBoardsConfig.coloursLibrary['hamiltonianCycle'],
+                             (int(offset + self.HCycleAux[self.leafIndex][0] * widthOfHexCell),
+                              int(offset + self.HCycleAux[self.leafIndex][
+                                  1] * widthOfHexCell * 1.732)),
+                             (int(offset + self.HCycleAux[self.leafIndex + 3][
+                                 0] * widthOfHexCell),
+                              int(offset + self.HCycleAux[self.leafIndex + 3][
+                                  1] * widthOfHexCell * 1.732)),
+                             2)
+
+        if self.leafType == 2:
+            pygame.draw.line(self.screen, self.myBoardsConfig.coloursLibrary['backGround'],
+                             (int(offset + self.HCycleAux[self.leafIndex][0] * widthOfHexCell),
+                              int(offset + self.HCycleAux[self.leafIndex][1] * widthOfHexCell * 1.732)),
+                             (int(offset + self.HCycleAux[self.leafIndex + 4][0] * widthOfHexCell),
+                              int(offset + self.HCycleAux[self.leafIndex + 4][1] * widthOfHexCell * 1.732)),
+                             4)
+            pygame.draw.line(self.screen, self.myBoardsConfig.coloursLibrary['hamiltonianCycle'],
+                             (int(offset + self.HCycleAux[self.leafIndex][0] * widthOfHexCell),
+                              int(offset + self.HCycleAux[self.leafIndex][
+                                  1] * widthOfHexCell * 1.732)),
+                             (int(offset + self.HCycleAux[self.leafIndex + 4][
+                                 0] * widthOfHexCell),
+                              int(offset + self.HCycleAux[self.leafIndex + 4][
+                                  1] * widthOfHexCell * 1.732)),
+                             2)
+
 
         pygame.display.update()
 
