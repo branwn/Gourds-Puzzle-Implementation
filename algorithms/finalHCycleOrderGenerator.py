@@ -42,7 +42,7 @@ class finalHCycleOrderGenerator(object):
             rootIndex = -1
             for aCell in self.myHamiltonianCycle.hamiltonianCycleStack:
                 rootIndex += 1
-                isEmpty, indexOfGourds = self.isCellEmpty(aCell)
+                isEmpty, indexOfGourds = self.cellChecking(aCell)
                 if isEmpty: break
 
             if rootIndex == -1:
@@ -55,7 +55,7 @@ class finalHCycleOrderGenerator(object):
 
         # record the empty cell
         for i in range(len(self.myHamiltonianCycle.HCycleAux)):
-            isEmpty, indexOfGourds = self.isCellEmpty(self.myHamiltonianCycle.HCycleAux[i])
+            isEmpty, indexOfGourds = self.cellChecking(self.myHamiltonianCycle.HCycleAux[i])
             if isEmpty:
                 self.emptyCellIndex = i
                 break
@@ -71,12 +71,15 @@ class finalHCycleOrderGenerator(object):
         directionDict = {}
 
         # set the first gourds
-        if not self.isCellEmpty(self.HCycleAux[0]):
-            if self.gourdsSearchingByIndex(self.HCycleAux[0])[0] == self.gourdsSearchingByIndex(self.HCycleAux[-1])[0]:
-                orderList.append(self.gourdsSearchingByIndex(self.HCycleAux[-1])[0])
-                directionDict[self.gourdsSearchingByIndex(self.HCycleAux[-1])[0]] = self.gourdsSearchingByIndex(self.HCycleAux[-1])[1]
 
-        for cell in self.myHamiltonianCycle.hamiltonianCycleStack:
+        HCycle = copy.deepcopy(self.myHamiltonianCycle.hamiltonianCycleStack)
+
+        if self.gourdsSearchingByIndex(self.HCycleAux[0][0],self.HCycleAux[0][1])[0] == self.gourdsSearchingByIndex(self.HCycleAux[-1][0],self.HCycleAux[-1][1])[0]:
+            print("a pair of gourds cross the root")
+            HCycle.insert(0, HCycle[-1])
+
+
+        for cell in HCycle:
             for i in range(len(self.gourdsList)):
                 if i not in orderList:
                     gourd = self.gourdsList[i]
@@ -89,7 +92,7 @@ class finalHCycleOrderGenerator(object):
                         directionDict[i] = 1
                         break
 
-        print("\tThe order of gourds should be reached in phase 2: ",orderList)
+        print("\tThe order of gourds should be reached in phase 2: ",orderList, directionDict)
         self.gourdsFinalOrderInHCycle = orderList
         self.gourdsFinalDirectionInHCycle = directionDict
         # print(self.gourdsFinalOrderInHCycle)
@@ -116,7 +119,7 @@ class finalHCycleOrderGenerator(object):
                     return True
         return False
 
-    def isCellEmpty(self, aCell):
+    def cellChecking(self, aCell):
         isEmpty = True
         gourdsIndexInHCycle = -1
         for aGourds in self.myBoardsConfig.gourdsList:
@@ -155,7 +158,7 @@ class finalHCycleOrderGenerator(object):
             self.gourdsClicked(nextPartofGourds, 'al')
 
     def gourdsMovementControllerInOrderGenerator(self, HCycleIndex):
-        isEmpty, indexOfGourds = self.isCellEmpty(self.HCycleAux[HCycleIndex])
+        isEmpty, indexOfGourds = self.cellChecking(self.HCycleAux[HCycleIndex])
         if not isEmpty:
             if (self.myBoardsConfig.gourdsList[indexOfGourds][0] == self.HCycleAux[HCycleIndex][0]
                     and self.myBoardsConfig.gourdsList[indexOfGourds][1] == self.HCycleAux[HCycleIndex][1]):

@@ -111,7 +111,7 @@ class phaseTwoN3(object):
             # move the next part
             self.myGourdsConstructor.gourdsClicked(nextPartofGourds, 'al')
 
-            self.redrawTheScreen()
+        self.redrawTheScreen()
 
     def gourdsFinalOrderInHCycleGetter(self):
         return self.gourdsFinalOrderInHCycle
@@ -323,8 +323,6 @@ class phaseTwoN3(object):
         print("directionDict: ",directionDict)
 
 
-        #TODO test
-        targetDirectionDict = {0:0, 1:0, 2:0}
 
         # main loop L326
         whileCounterMainLoop = 0
