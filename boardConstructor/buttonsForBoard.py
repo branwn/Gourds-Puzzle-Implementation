@@ -47,6 +47,7 @@ class buttons(object):
         self.buttonPainter(4, "Phase 2 O(n^3)", "Phase 2 Finished", "running")
         self.buttonPainter(5, "Phase 2 O(n^2)", "Phase 2 Finished", "running")
         self.buttonPainter(6, "Phase 3", "Phase 3 Finished", "running")
+        self.buttonPainter(8, "Exit", "Finished", "running")
 
         return
 
@@ -70,6 +71,9 @@ class buttons(object):
             elif pos[1] < self.buttonSize[1] * 6 + 60:
                 if self.buttonStates[6] == 0:
                     self.buttonStates[6] = 2
+            elif pos[1] < self.buttonSize[1] * 8 + 80:
+                if self.buttonStates[8] == 0:
+                    self.buttonStates[8] = 2
 
         return
 
