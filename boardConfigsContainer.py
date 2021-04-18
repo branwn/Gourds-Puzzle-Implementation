@@ -1,4 +1,21 @@
 import numpy
+class boardsContainer(object):
+
+    container = []
+
+    def __init__(self):
+        self.container = []
+        self.container.append(boardConfig1)
+        self.container.append(boardConfig2)
+        self.container.append(boardConfig3)
+        self.container.append(boardConfig4)
+        self.container.append(boardConfig5)
+        self.container.append(boardConfig6)
+        self.container.append(boardConfig7)
+        self.container.append(boardConfig8)
+        self.container.append(boardConfig9)
+        self.container.append(boardConfig10)
+
 class boardConfig1(object):
     board = numpy.array([
        # x  0, 1, 2, 3, 4, 5, 6, 7, 8
@@ -267,7 +284,7 @@ class boardConfig7(object):
         6: (91, 231, 196),
     }
 
-class boardConfig11(object):
+class boardConfig8(object):
     board = numpy.array([
         # x 0, 1, 2, 3, 4, 5, 6, 7, 8
         [0, 4, 0, 4, 0],  # 0
@@ -297,7 +314,7 @@ class boardConfig11(object):
         6: (91, 231, 196),
     }
 
-class boardConfig12(object):
+class boardConfig9(object):
     board = numpy.array([
         # x 0, 1, 2, 3, 4, 5, 6, 7, 8
         [0, 4, 0, 4, 0, 1, 0],  # 0
@@ -331,7 +348,7 @@ class boardConfig12(object):
         6: (91, 231, 196),
     }
 
-class boardConfig13(object):
+class boardConfig10(object):
     board = numpy.array([
         # x 0, 1, 2, 3, 4, 5, 6, 7, 8
         [0, 4, 0, 4, 0, 1, 0],  # 0

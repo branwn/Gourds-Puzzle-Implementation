@@ -1,7 +1,7 @@
 import pygame
 
 from algorithms.finalHCycleOrderGenerator import finalHCycleOrderGenerator
-from boardConfigsContainer import boardConfig12 as boardConfig
+from boardConfigsContainer import boardsContainer
 from boardConstructor.buttons import buttons
 from boardConstructor.cellsConstructor import cellsConstructor
 from boardConstructor.gourdsConstructor import gourdsConstructor
@@ -15,6 +15,11 @@ from algorithms.phaseOne import phaseOne
 from algorithms.phaseThree import phaseThree
 from algorithms.phaseTwoN2 import phaseTwoN2
 from algorithms.phaseTwoN3 import phaseTwoN3
+
+
+
+myBoardContainer = boardsContainer()
+boardConfig = myBoardContainer.container[0]
 
 xLengthOfTheWindow = int(len(boardConfig.board[0])*50 + 250)
 yLengthOfTheWindow = int(len(boardConfig.board)*90 + 50)
