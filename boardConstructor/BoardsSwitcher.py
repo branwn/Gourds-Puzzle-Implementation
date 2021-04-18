@@ -82,7 +82,7 @@ class boardsSwitcher(object):
             # size of the window
             self.boardScreen = pygame.display.set_mode(self.sizeOfTheWindow)
             # caption setting
-            caption = "Board Switcher    ( Index = "+ str(self.indexOfBoard) + " )"
+            caption = "Boards Switcher    ( Index = "+ str(self.indexOfBoard) + " )"
             pygame.display.set_caption(caption)
 
 
