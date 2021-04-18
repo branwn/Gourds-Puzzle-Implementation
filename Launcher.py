@@ -1,4 +1,3 @@
-from boardConstructor.Board import board
 from boardConstructor.BoardsSwitcher import boardsSwitcher
 
 def main():

@@ -12,7 +12,7 @@ class boardsSwitcher(object):
     def __init__(self):
 
 
-        self.indexOfBoard = 6
+        self.indexOfBoard = 0
 
     def mouseClicked(self, pos):
 
@@ -82,7 +82,8 @@ class boardsSwitcher(object):
             # size of the window
             self.boardScreen = pygame.display.set_mode(self.sizeOfTheWindow)
             # caption setting
-            pygame.display.set_caption('Board Switcher')
+            caption = "Board Switcher    ( Index = "+ str(self.indexOfBoard) + " )"
+            pygame.display.set_caption(caption)
 
 
             self.myBoardsConfig = self.boardConfig();
