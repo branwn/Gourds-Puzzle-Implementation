@@ -18,7 +18,7 @@ class boardsContainer(object):
 
 class boardConfig1(object):
     board = numpy.array([
-       # x  0, 1, 2, 3, 4, 5, 6, 7, 8
+    # x  0, 1, 2, 3, 4,
         [0, 4, 0, 4, 0],  # 0
         [2, 0, 2, 0, 2],  # 1
         [0, 6, 0, 6, 0],  # 2
@@ -286,14 +286,14 @@ class boardConfig7(object):
 
 class boardConfig8(object):
     board = numpy.array([
-        # x 0, 1, 2, 3, 4, 5, 6, 7, 8
+    #  x 0, 1, 2, 3, 4,
         [0, 4, 0, 4, 0],  # 0
         [2, 0, 2, 0, 3],  # 1
         [0, 1, 0, 1, 0],  # 2
     ])
 
     gourdsList = numpy.array([
-        # x, y, x, y, colourLib_1, colourLib_2
+       #x1 y1 x2 y2 i1 i2
         [1, 0, 0, 1, 4, 2],
         [2, 1, 4, 1, 4, 3],
         [1, 2, 3, 2, 1, 2],
