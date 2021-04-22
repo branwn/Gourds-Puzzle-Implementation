@@ -369,7 +369,7 @@ class phaseTwoN3(object):
                 # print("indexOfGourdsShouldChangeDirection", indexOfGourdsShouldChangeDirection)
 
                 # while counter checking
-                if whileCounter2 > len(self.HCycleAux)*2:
+                if whileCounter2 > len(self.HCycleAux)*4:
                     print("---WARN--- Infinitely while loop in phaseTwoN3 L350")
                     return False
 
@@ -381,7 +381,7 @@ class phaseTwoN3(object):
             orderList, directionDict = self.gourdsPresentOrderAndDirectionInHCycleGetter()
 
             # while counter checking
-            if whileCounterMainLoop > len(self.HCycleAux)*2:
+            if whileCounterMainLoop > len(self.HCycleAux)*8:
                 print("---WARN--- Infinitely while loop in phaseTwoN3 L326")
                 return False
 
